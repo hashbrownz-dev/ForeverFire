@@ -57,7 +57,15 @@
         - Moves slowly, spawning at the top of the screen, moves from left to right in the top 30% of the screen
         - Fires projectiles in patterns, projectiles aimed at the player, and homing rockets that follow the player
 - The game consists of 14 rounds followed by a 15th boss round.  After the boss round, the game loops indefinitely, becoming increasingly difficult with each iteration.
-- Gameplay ends when the player has lost all of their lives.
+- Gameplay ends when the player has lost all of their lives
+
+### Scoring
+
+- Player receives 1 point for each successful shot.
+- Small Planes
+    - White = 9 points
+    - Green = 19 points
+    - Red = 24 points
 
 ## Development
 
@@ -109,6 +117,16 @@ The base game should meet the following requirements:
 - Create Enemy Class
 - Create Enemy Controller
 - Collisions
+
+### Phase 3
+
+- Implement Player Lives
+- Add Game Over State
+- Display Score
+- Display Lives
+- Save High Scores to localStorage
+- Add Medium Enemies
+- Add Power Up
 
 #### Systems
 

@@ -3,10 +3,10 @@ class Player {
         this.health = 100;
         this.shotLevel = 1;
         this.shotCooldown = 15;
-        this.x = 0;
-        this.y = 0;
         this.w = 48;
         this.h = 48;
+        this.x = viewport.width / 2 - this.w;
+        this.y = viewport.height - (this.h * 3);
         this.speed = 2;
         this.type = 'player';
     }
@@ -38,6 +38,10 @@ class Player {
         ctx.fillStyle = 'white';
         ctx.fillRect(this.x, this.y, this.w, this.h);
     }
+
+    get clear(){
+        return this.health <= 0;
+    }
 }
 
 class PlayerShot {
@@ -47,6 +51,7 @@ class PlayerShot {
         this.w = 8;
         this.h = 8;
         this.speed = 8;
+        this.power = 1;
         this.type = 'player'
         this.clear = false;
     }

@@ -37,8 +37,11 @@ class View{
         Actors.forEach((actor) => View.drawActor(actor));
 
         // DEBUG
-        document.getElementById('actors').innerHTML = JSON.stringify(Actors);
-        document.getElementById('timer').innerHTML = JSON.stringify(Game.TimeMS);
+        document.getElementById('actors').innerHTML = JSON.stringify(Game.Controllers);
+        // document.getElementById('timer').innerHTML = JSON.stringify(Game.TimeMS);
+        // document.getElementById('proj').innerHTML = JSON.stringify(this.Projectiles);
+        // document.getElementById('player').innerHTML = JSON.stringify(Player);
+        // document.getElementById('player').innerHTML = JSON.stringify(Game.Score);
 
         // Draw Projectiles ( pBullet, Rocket, eBullet )
         Projectiles.forEach((projectile)=> View.drawActor(projectile));
