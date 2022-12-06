@@ -15,7 +15,7 @@ class View{
     }
     // The render function handles all of the Drawing
     static render(Game){
-        const { Player, Projectiles, Background } = Game;
+        const { Player, Projectiles, Background, Actors } = Game;
 
         // Clear View
 
@@ -33,6 +33,12 @@ class View{
         if(Player) View.drawActor(Player);
 
         // Draw Enemies
+
+        Actors.forEach((actor) => View.drawActor(actor));
+
+        // DEBUG
+        document.getElementById('actors').innerHTML = JSON.stringify(Actors);
+        document.getElementById('timer').innerHTML = JSON.stringify(Game.TimeMS);
 
         // Draw Projectiles ( pBullet, Rocket, eBullet )
         Projectiles.forEach((projectile)=> View.drawActor(projectile));

@@ -73,6 +73,30 @@ The base game should meet the following requirements:
 - There must be a Game Over state.
 - High Scores must be saved to localStorage
 
+### Classes
+
+- Game
+    - Handles all game logic
+    - *Properties:*
+        1. *Score* - An Integer; the current score
+        1. *Player* - An instance of class *Player;* the player character
+        1. *Actors* - An array containing instances of the class *Actor* and it's descendents
+        1. *Projectiles* - An array containing instances of the classes *PlayerShot and EnemyShot*
+        1. *EFX* - An array containing instances of the class *Effect* and it's descendents
+        1. *Background* - An instance of class *Background;*
+        
+    - *Methods:*
+        1. *getInput(controller)* - handles user input.  accepts one argument, a controller object (the return value of trackKeys()).
+        2. *updateActors()* - calls the update method of each Actor in the Actors array.
+        1. *updateProjectiles()* - calls the update method of each Projectile in the Projectiles array.
+- View
+- Background
+- Player
+- PlayerShot
+- Actor
+- 
+- EnemyShot
+
 ### Phase 1
 
 - Get User Input

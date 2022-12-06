@@ -1,5 +1,5 @@
 const _Game = new Game();
-const _Controller = trackKeys();
+const _UserInput = trackKeys();
 
 const main = () => {
     let previousTime;
@@ -13,9 +13,7 @@ const main = () => {
 
         // Execute Game Logic
 
-        _Game.getInput(_Controller);
-        _Game.updateActors();
-        _Game.updateProjectiles();
+        _Game.update(_UserInput, elapsed);
 
         // Draw
 
