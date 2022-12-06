@@ -14,11 +14,23 @@
     <script src="./scripts/App.js" defer></script>
 </head>
 <body>
-    <p id = 'keylog'></p>
-    <p id = 'proj'></p>
-    <p id = 'actors'></p>
-    <p id = 'timer'></p>
-    <p id = 'player'></p>
-    <canvas height="720" width="600" id="viewport"></canvas>
+    <div id="game-container">
+        <div id="panel-left" class="panel">
+            <div id="debug">
+                <p id = 'keylog'>KeyLog</p>
+                <p id = 'proj'>Projectiles</p>
+                <p id = 'actors'>Actors</p>
+                <p id = 'controllers'>Controllers</p>
+                <p id = 'timer'>Game Time</p>
+                <p id = 'player'>Player</p>
+            </div>
+        </div>
+        <canvas height="720" width="540" id="viewport"></canvas>
+        <div id="panel-right" class="panel">
+            <p id="hi-score">Hi-Score</p>
+            <p id="score">Score</p>
+            <p id="lives">Lives</p>
+        </div>
+    </div>
 </body>
 </html>

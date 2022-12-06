@@ -124,9 +124,9 @@ The base game should meet the following requirements:
 - Add Game Over State
 - Display Score
 - Display Lives
-- Save High Scores to localStorage
 - Add Medium Enemies
 - Add Power Up
+- Save High Scores to localStorage
 
 #### Systems
 

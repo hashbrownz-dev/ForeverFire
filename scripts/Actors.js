@@ -48,9 +48,50 @@ class SWPlane extends SmallPlane{
 
 // Small Red Plane
 
-// Plane
-// each plane should have an x and y... a clear bool... a w and an h...
-// each size class will have the same w and h...
+// Medium Plane
+
+class MidPlane extends Actor{
+    constructor(x){
+        const spawnY = viewport.height + 8;
+        super(x, spawnY);
+        this.w = 50;
+        this.h = 50;
+        this.speed = 1;
+        this.health = 10;
+    }
+}
+
+class MGPlane extends MidPlane{
+    constructor(x){
+        super(x);
+        this.points = 50;
+        this.toShoot = 3000;
+    }
+    update(time, game){
+        // Check if it can shoot
+        this.toShoot -= time;
+        if(this.toShoot <= 0){
+            this.toShoot = 3000;
+            // Fire a shot AT the player...
+        }
+        this.y-=this.speed;
+        if(this.y < -this.h) this.health = 0;
+    }
+    draw(){
+        ctx.fillStyle = 'pink';
+        ctx.fillRect(this.x,this.y,this.w,this.h);
+    }
+    static spawn(x = 300){
+
+        return new MGPlane(x);
+    }
+}
+
+class EnemyShot {
+    constructor(x,y,dir){
+
+    }
+}
 
 class Alarm{
     constructor(duration, func){

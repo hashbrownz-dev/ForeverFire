@@ -1,4 +1,4 @@
-const _Game = new Game();
+let _Game = new Game();
 const _UserInput = trackKeys();
 
 const main = () => {
@@ -13,11 +13,15 @@ const main = () => {
 
         // Execute Game Logic
 
-        _Game.update(_UserInput, elapsed);
+        if(!_Game.gameOver)_Game.update(_UserInput, elapsed);
+
+        // Restart the Game
+
+        if(_Game.gameOver && _UserInput['z']) _Game = new Game();
 
         // Draw
 
-        View.render(_Game);
+        View.render(_Game, _UserInput);
 
         // Loop
 

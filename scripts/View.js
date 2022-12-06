@@ -14,8 +14,8 @@ class View{
         ctx.clearRect(0,0,viewport.width,viewport.height);
     }
     // The render function handles all of the Drawing
-    static render(Game){
-        const { Player, Projectiles, Background, Actors } = Game;
+    static render(Game, userInput){
+        const { Player, Projectiles, Background, Actors, Score, Lives } = Game;
 
         // Clear View
 
@@ -37,7 +37,9 @@ class View{
         Actors.forEach((actor) => View.drawActor(actor));
 
         // DEBUG
-        document.getElementById('actors').innerHTML = JSON.stringify(Game.Controllers);
+        // document.getElementById('keylog').innerHTML = JSON.stringify(userInput)
+        document.getElementById('actors').innerHTML = JSON.stringify(Actors)
+        document.getElementById('controllers').innerHTML = JSON.stringify(Game.Controllers);
         // document.getElementById('timer').innerHTML = JSON.stringify(Game.TimeMS);
         // document.getElementById('proj').innerHTML = JSON.stringify(this.Projectiles);
         // document.getElementById('player').innerHTML = JSON.stringify(Player);
@@ -48,6 +50,15 @@ class View{
 
         // Draw GUI
 
+        // Draw High Score
+
+        // Draw Score
+
+        document.getElementById('score').innerHTML = `SCORE: ${Score}`
+
+        // Draw Lives
+
+        document.getElementById('lives').innerHTML = `LIVES: ${Lives}`
     }
     // Draw Actor
     static drawActor(actor){

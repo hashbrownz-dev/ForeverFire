@@ -2,13 +2,14 @@ class Game{
     constructor(){
         this.Score = 0;
         this.Timer;
-        this.Lives = 3;
+        this.Lives = 0;
         this.Player = new Player();
         this.Actors = [];
         this.Projectiles = [];
         this.Controllers = [];
         this.EFX = [];
         this.Background = new Background();
+        this.gameOver = false;
     }
 
     update(input, elapsed){
@@ -21,10 +22,10 @@ class Game{
         this.getInput(input);
 
         // Update Actors
-        this.updateActors();
+        this.Actors.forEach( actor => actor.update(elapsed, this) );
 
         // Update Projectiles
-        this.updateProjectiles();
+        this.Projectiles.forEach( projectile => projectile.update(elapsed, this));
 
         // Check for Collisions
         this.checkForCollisions();
@@ -33,11 +34,20 @@ class Game{
         if(this.Player && this.Player.clear){
             this.Player = undefined;
             this.Lives--;
-            // Set player Respawn Timer
-            const respawnPlayer = (game) => {
-                game.Player = new Player();
+            // IF Lives >= 0, Respawn the Player
+            if(this.Lives >= 0){
+                // Set player Respawn Timer
+                const respawnPlayer = (game) => {
+                    game.Player = new Player();
+                }
+                this.Controllers.push(new Alarm(3000, respawnPlayer))
+            } else { // Otherwise, Set GAMEOVER Timer
+                const setGameOver = (game) => {
+                    game.gameOver = true;
+                }
+                this.Controllers.push(new Alarm(3000, setGameOver));
             }
-            this.Controllers.push(new Alarm(3000, respawnPlayer))
+            
         }
 
         // Filter ACTORS & PROJECTILES
@@ -50,9 +60,9 @@ class Game{
         // TEST CODE
         if(this.Controllers.length === 0){
             const spawnPlane = (g) => {
-                g.Actors.push(SWPlane.spawn());
+                g.Actors.push(MGPlane.spawn());
             }
-            this.Controllers.push(new EnemyController(10000,1000, spawnPlane))
+            this.Controllers.push(new EnemyController(10000,5000, spawnPlane))
         }
     }
 
@@ -67,20 +77,9 @@ class Game{
         }
     }
 
-    updateActors(){
-        this.Actors.forEach( actor => actor.update() );
-    }
-
     filterActors(){
-        // Check for ACTOR x PLAYER Collisions
-        // Check for PROJECTILE X PLAYER Collisions
-        // Check for PROJECTILE X ACTOR Collisions
         this.Actors = this.Actors.filter( actor => !actor.clear);
         this.Projectiles = this.Projectiles.filter( proj => !proj.clear);
-    }
-
-    updateProjectiles(){
-        this.Projectiles.forEach( (projectile) => projectile.update());
     }
 
     updateScore(points){
