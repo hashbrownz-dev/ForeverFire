@@ -25,8 +25,6 @@ class View{
 
         View.drawActor(Background);
 
-        // Draw Deco
-
         // Draw Effects
 
         // Draw Player
@@ -35,15 +33,6 @@ class View{
         // Draw Enemies
 
         Actors.forEach((actor) => View.drawActor(actor));
-
-        // DEBUG
-        // document.getElementById('keylog').innerHTML = JSON.stringify(userInput)
-        document.getElementById('actors').innerHTML = JSON.stringify(Actors)
-        document.getElementById('controllers').innerHTML = JSON.stringify(Game.Controllers);
-        // document.getElementById('timer').innerHTML = JSON.stringify(Game.TimeMS);
-        document.getElementById('proj').innerHTML = JSON.stringify(Projectiles);
-        // document.getElementById('player').innerHTML = JSON.stringify(Player);
-        // document.getElementById('player').innerHTML = JSON.stringify(Game.Score);
 
         // Draw Projectiles ( pBullet, Rocket, eBullet )
         Projectiles.forEach((projectile)=> View.drawActor(projectile));
@@ -59,6 +48,9 @@ class View{
         // Draw Lives
 
         document.getElementById('lives').innerHTML = `LIVES: ${Lives}`
+
+        // DEBUG
+        drawDebug(Game, userInput);
     }
     // Draw Actor
     static drawActor(actor){
@@ -104,4 +96,15 @@ class Background{
             ctx.stroke();
         })
     }
+}
+
+const drawDebug = (game, userInput)=>{
+    const { Actors, Controllers, Time, Projectiles, Player, Score } = game;
+    document.getElementById('keylog').innerHTML = JSON.stringify(userInput)
+    document.getElementById('actors').innerHTML = JSON.stringify(Actors)
+    document.getElementById('controllers').innerHTML = JSON.stringify(Controllers);
+    document.getElementById('timer').innerHTML = JSON.stringify(Time);
+    document.getElementById('proj').innerHTML = JSON.stringify(Projectiles);
+    document.getElementById('player').innerHTML = JSON.stringify(Player);
+    document.getElementById('player').innerHTML = JSON.stringify(Score);
 }
