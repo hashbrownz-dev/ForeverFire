@@ -27,7 +27,7 @@ const main = () => {
 
         requestAnimationFrame(update);
     }
-    update();
+    requestAnimationFrame(update);
 }
 
 main();

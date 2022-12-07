@@ -39,7 +39,7 @@ class SWPlane extends SmallPlane{
         ctx.fillRect(this.x,this.y,this.w,this.h);
     }
     static spawn(){
-        const x = Math.floor(Math.random() * (560 - 40 + 1) + 40);
+        const x = Math.floor(Math.random() * (viewport.width - 40 + 1) + 40);
         return new SWPlane(x);
     }
 }

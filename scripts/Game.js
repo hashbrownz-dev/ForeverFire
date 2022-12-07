@@ -3,6 +3,8 @@ class Game{
         this.Score = 0;
         this.Timer;
         this.Lives = 0;
+        this.Wave = 0;
+        this.Waves = [];
         this.Player = new Player();
         this.Actors = [];
         this.Projectiles = [];
@@ -10,13 +12,17 @@ class Game{
         this.EFX = [];
         this.Background = new Background();
         this.gameOver = false;
+
+        // START GAME
+        this.Waves.push(testTimeline3(),testTimeline2());
+        this.Controllers.push(this.Waves[this.Wave])
     }
 
     update(input, elapsed){
         // Update Timer
         this.updateTimer(elapsed);
         // Update Controllers
-        this.updateControllers(elapsed);
+        this.Controllers.forEach( controller => controller.update(elapsed, this));
 
         // Get User Input
         this.getInput(input);
@@ -29,6 +35,8 @@ class Game{
 
         // Check for Collisions
         this.checkForCollisions();
+
+        // CLEAN UP
 
         // Check Player Status
         if(this.Player && this.Player.clear){
@@ -50,19 +58,21 @@ class Game{
             
         }
 
-        // Filter ACTORS & PROJECTILES
-        this.filterActors();
-    }
+        // Filter CLEARED Items
+        this.filterCleared();
 
-    updateControllers(time){
-        this.Controllers.forEach( controller => controller.update(time, this));
-        this.Controllers = this.Controllers.filter( controller => !controller.clear);
-        // TEST CODE
-        if(this.Controllers.length === 0 && this.Actors.length === 0){
-            const spawnPlane = (g) => {
-                g.Actors.push(MGPlane.spawn());
+        // Check game state
+        if(!this.Controllers.length){
+            // if all controllers have been cleared... and the player is still alive. we look at actors + proj
+            if(!this.Actors.length && !this.Projectiles.length){
+                this.Wave++;
+                if(this.Wave < this.Waves.length){
+                    this.Controllers.push(this.Waves[this.Wave]);
+                } else {
+                    this.gameOver = true;
+                    console.log('You Win');
+                }
             }
-            this.Controllers.push(new EnemyController(1000,1000, spawnPlane))
         }
     }
 
@@ -77,9 +87,11 @@ class Game{
         }
     }
 
-    filterActors(){
+    filterCleared(){
         this.Actors = this.Actors.filter( actor => !actor.clear);
         this.Projectiles = this.Projectiles.filter( proj => !proj.clear);
+        this.EFX = this.EFX.filter( effect => !effect.clear);
+        this.Controllers = this.Controllers.filter( controller => !controller.clear);
     }
 
     updateScore(points){
@@ -146,3 +158,5 @@ class Game{
         }
     }
 }
+
+// WAVES
