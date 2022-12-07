@@ -58,11 +58,11 @@ class Game{
         this.Controllers.forEach( controller => controller.update(time, this));
         this.Controllers = this.Controllers.filter( controller => !controller.clear);
         // TEST CODE
-        if(this.Controllers.length === 0){
+        if(this.Controllers.length === 0 && this.Actors.length === 0){
             const spawnPlane = (g) => {
                 g.Actors.push(MGPlane.spawn());
             }
-            this.Controllers.push(new EnemyController(10000,5000, spawnPlane))
+            this.Controllers.push(new EnemyController(1000,1000, spawnPlane))
         }
     }
 
@@ -123,10 +123,10 @@ class Game{
                 if(proj.type === 'enemy' && !proj.clear){
                     if(overlap(this.Player,proj) || overlap(proj,this.Player)){
                         // Apply Damage
-                        this.Player -= proj.power;
+                        this.Player.health -= proj.power;
 
                         // Remove Projectile
-                        proj.clear = true;
+                        proj.health = 0;
                     }
                 }
             }
@@ -146,22 +146,3 @@ class Game{
         }
     }
 }
-
-// COLLISION DETECTION
-
-const overlapX = (actor1, actor2) => {
-    return (( actor1.x > actor2.x && actor1.x < actor2.x + actor2.w ) || ( actor1.x + actor1.w > actor2.x && actor1.x + actor1.w < actor2.x + actor2.w))
-}
-
-const overlapY = (actor1, actor2) => {
-    return (( actor1.y > actor2.y && actor1.y < actor2.y + actor2.h) || ( actor1.y + actor1.w > actor2.y && actor1.y + actor1.h < actor2.y + actor2.h))
-}
-
-const overlap = (actor1, actor2) => {
-    return (overlapX(actor1, actor2) && overlapY(actor1, actor2));
-}
-
-// ALARMS
-
-// I figure, the alarm class can help with things like iframes, and respawns and shit like that...  basically... an alarm is a simple actor, it just has a single value, duration (ms), which decrements with each screen update...  and that's it... when it's value hits 0 it does whatever it needs to do...
-

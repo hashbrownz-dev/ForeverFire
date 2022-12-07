@@ -41,7 +41,7 @@ class View{
         document.getElementById('actors').innerHTML = JSON.stringify(Actors)
         document.getElementById('controllers').innerHTML = JSON.stringify(Game.Controllers);
         // document.getElementById('timer').innerHTML = JSON.stringify(Game.TimeMS);
-        // document.getElementById('proj').innerHTML = JSON.stringify(this.Projectiles);
+        document.getElementById('proj').innerHTML = JSON.stringify(Projectiles);
         // document.getElementById('player').innerHTML = JSON.stringify(Player);
         // document.getElementById('player').innerHTML = JSON.stringify(Game.Score);
 
