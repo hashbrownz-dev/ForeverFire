@@ -1,7 +1,11 @@
 class Actor{
-    constructor(x,y){
+    constructor(x,y,w,h,dw,dh){
         this.x = x;
         this.y = y;
+        this.w = w;
+        this.h = h;
+        this.drawW = dw;
+        this.drawH = dh;
         this.health = 1;
         this.type = 'enemy';
     }
@@ -11,22 +15,34 @@ class Actor{
     get isOutOfBounds(){
         return (this.x < 0 || this.y < 0 || this.x > viewport.width || this.y > viewport.height)
     }
+    get drawX(){
+        return this.x - (this.drawW/2);
+    }
+    get drawY(){
+        return this.y - (this.drawH/2);
+    }
+    get boundingRect(){
+        return {
+            x: this.x - (this.w/2),
+            y: this.y - (this.h/2),
+            w: this.w,
+            h: this.h
+        }
+    }
 }
 
 // Small Planes
 
 class SmallPlane extends Actor{
-    constructor(x,y){
-        super(x,y);
-        this.w = 32;
-        this.h = 32;
+    constructor(x,y,dw,dh){
+        super(x,y,32,32,dw,dh);
         this.speed = 2;
     }
 }
 
 class SWPlane extends SmallPlane{
     constructor(x){
-        super(x,0);
+        super(x,0,32,32);
         this.y -= this.h;
         this.points = 9;
     }
@@ -36,7 +52,7 @@ class SWPlane extends SmallPlane{
     }
     draw(){
         ctx.fillStyle = 'pink';
-        ctx.fillRect(this.x,this.y,this.w,this.h);
+        ctx.fillRect(this.drawX,this.drawY,this.w,this.h);
     }
     static spawn(){
         const x = Math.floor(Math.random() * (viewport.width - 40 + 1) + 40);
@@ -56,9 +72,7 @@ class SWPlane extends SmallPlane{
 class MidPlane extends Actor{
     constructor(x){
         const spawnY = viewport.height + 8;
-        super(x, spawnY);
-        this.w = 50;
-        this.h = 50;
+        super(x, spawnY, 50, 50, 50, 50);
         this.speed = 1;
         this.health = 10;
     }
@@ -90,7 +104,7 @@ class MGPlane extends MidPlane{
     }
     draw(){
         ctx.fillStyle = 'pink';
-        ctx.fillRect(this.x,this.y,this.w,this.h);
+        ctx.fillRect(this.drawX,this.drawY,this.w,this.h);
     }
     static spawn(x = 300){
 
@@ -100,7 +114,7 @@ class MGPlane extends MidPlane{
 
 class EnemyShot extends Actor {
     constructor(x,y,dir,speed){
-        super(x,y);
+        super(x,y,8,8,8,8);
         this.power = 50;
         this.dir = dir ? dir : 0;
         this.speed = speed ? speed : 2;

@@ -12,6 +12,7 @@ class Game{
         this.EFX = [];
         this.Background = new Background();
         this.gameOver = false;
+        this.DBR = true;
 
         // START GAME
         this.Waves.push(testTimeline3(),testTimeline2());
@@ -119,7 +120,7 @@ class Game{
                         actor.health -= proj.power;
 
                         // Remove Projectile
-                        proj.clear = true;
+                        proj.health = 0;
 
                         // Update Score
                         this.updateScore(1);
@@ -133,7 +134,7 @@ class Game{
         if(this.Player){
             for(const proj of this.Projectiles){
                 if(proj.type === 'enemy' && !proj.clear){
-                    if(overlap(this.Player,proj) || overlap(proj,this.Player)){
+                    if(overlap(this.Player, proj) || overlap(proj,this.Player)){
                         // Apply Damage
                         this.Player.health -= proj.power;
 
