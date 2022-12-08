@@ -35,7 +35,7 @@ class Actor{
 
 class SmallPlane extends Actor{
     constructor(x,y,dw,dh){
-        super(x,y,32,32,dw,dh);
+        super(x,y,48,48,dw,dh);
         this.speed = 2;
     }
 }
@@ -60,12 +60,26 @@ class SWPlane extends SmallPlane{
     }
 }
 
-// Small White Plane - moves vertically... slightly arching towards the player
-
-// Small Green Plane
-
-
-// Small Red Plane
+class Kamikaze extends SmallPlane{
+    constructor(x){
+        super(x,0,54,56);
+        this.y -= this.drawH;
+        this.points = 9;
+        this.sprite = _VECT_Kamikaze;
+    }
+    update(){
+        this.y += this.speed;
+        if(this.drawY > viewport.height) this.health = 0;
+    }
+    draw(){
+        const frame = this.sprite[0];
+        renderSprite(frame, this.drawX, this.drawY);
+    }
+    static spawn(){
+        const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
+        return new Kamikaze(x);
+    }
+}
 
 // Medium Plane
 

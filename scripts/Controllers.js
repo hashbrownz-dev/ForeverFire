@@ -99,6 +99,10 @@ const ActionSWPSpawn = (game) => {
     game.Actors.push(SWPlane.spawn());
 }
 
+const ActionKamikazeSpawn = (game) => {
+    game.Actors.push(Kamikaze.spawn());
+}
+
 const ActionMGPSpawn = (game) => {
     const MGP1 = new MGPlane(100);
     const MGP2 = new MGPlane(viewport.width - 100 - MGP1.w);
@@ -108,6 +112,10 @@ const ActionMGPSpawn = (game) => {
 const ActionSWPSpawner = (game) => {
     // Define the Spawners Action
     game.Controllers.push(new EnemySpawner(secondsToMS(30), 1500, ActionSWPSpawn));
+}
+
+const ActionKamikazeSpawner = (game) => {
+    game.Controllers.push(new EnemySpawner(secondsToMS(15), 1500, ActionKamikazeSpawn));
 }
 
 // TEST CODE
@@ -140,7 +148,7 @@ const testTimeline2 = (duration = secondsToMS(20)) => {
 
 const testTimeline3 = (duration = secondsToMS(30)) => {
     const moments = [];
-    moments.push(new Moment(0, ActionSWPSpawner));
+    moments.push(new Moment(0, ActionKamikazeSpawner));
     for( let i = secondsToMS(5); i <= duration; i+=i){
         moments.push(new Moment(i, ActionMGPSpawn));
     }

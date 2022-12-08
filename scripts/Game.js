@@ -12,7 +12,7 @@ class Game{
         this.EFX = [];
         this.Background = new Background();
         this.gameOver = false;
-        this.DBR = true;
+        this.DBR = false;
 
         // START GAME
         this.Waves.push(testTimeline3(),testTimeline2());
