@@ -29,20 +29,20 @@ class View{
         
         if(Player) {
             View.drawActor(Player)
-            if(DBR) View.drawBoundingRect(Player);
+            if(DBR) View.drawHitBoxes(Player);
         };
 
         // Draw Enemies
 
         Actors.forEach((actor) => {
             View.drawActor(actor);
-            if(DBR) View.drawBoundingRect(actor);
+            if(DBR) View.drawHitBoxes(actor);
         });
 
         // Draw Projectiles ( pBullet, Rocket, eBullet )
         Projectiles.forEach((projectile)=> {
             View.drawActor(projectile);
-            if(DBR) View.drawBoundingRect(projectile);
+            // if(DBR) View.drawBoundingRect(projectile);
         });
 
         // Draw GUI
@@ -68,10 +68,17 @@ class View{
         // reset the transformation
         ctx.resetTransform();
     }
-    static drawBoundingRect(actor){
-        const {x,y,w,h} = actor.boundingRect;
-        ctx.strokeStyle = '#33ff00';
-        ctx.strokeRect(x,y,w,h);
+    // static drawBoundingRect(actor){
+    //     const {x,y,w,h} = actor.boundingRect;
+    //     ctx.strokeStyle = '#33ff00';
+    //     ctx.strokeRect(x,y,w,h);
+    // }
+    static drawHitBoxes(actor){
+        for(let i = 0; i < actor.hitBoxes.length; i++){
+            const {x,y,w,h} = actor.getHitBox(i);
+            ctx.strokeStyle = '#33ff00';
+            ctx.strokeRect(x,y,w,h);
+        }
     }
 }
 
@@ -111,10 +118,14 @@ class Background{
     }
 }
 
-const renderSprite = (sprite, x, y) => {
+const renderSprite = (sprite, x, y, dir) => {
     const { classes, shapes } = sprite;
     // TRANSLATE
     ctx.translate(x,y);
+    // ROTATE
+    if(dir){
+        // ROTATE THIS BITCH
+    }
     for( const shape of shapes){
         // draw our shape (path)
         const path = drawShape(shape);

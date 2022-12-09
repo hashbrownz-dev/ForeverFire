@@ -77,13 +77,11 @@ const moveTowards = (actor, dest = {x:0,y:0}) => {
 
 // COLLISION DETECTION
 
-const overlapX = (a1, a2) => {
-    const actor1 = a1.boundingRect, actor2 = a2.boundingRect;
+const overlapX = (actor1, actor2) => {
     return (( actor1.x > actor2.x && actor1.x < actor2.x + actor2.w ) || ( actor1.x + actor1.w > actor2.x && actor1.x + actor1.w < actor2.x + actor2.w))
 }
 
-const overlapY = (a1, a2) => {
-    const actor1 = a1.boundingRect, actor2 = a2.boundingRect;
+const overlapY = (actor1, actor2) => {
     return (( actor1.y > actor2.y && actor1.y < actor2.y + actor2.h) || ( actor1.y + actor1.w > actor2.y && actor1.y + actor1.h < actor2.y + actor2.h))
 }
 

@@ -12,10 +12,10 @@ class Game{
         this.EFX = [];
         this.Background = new Background();
         this.gameOver = false;
-        this.DBR = false;
+        this.DBR = true;
 
         // START GAME
-        this.Waves.push(testTimeline3(),testTimeline2());
+        this.Waves.push(testTimeline3(),testTimeline3());
         this.Controllers.push(this.Waves[this.Wave])
     }
 
@@ -115,16 +115,21 @@ class Game{
         for(const actor of this.Actors){
             if(actor.type === 'enemy'){
                 for(const proj of this.Projectiles){
-                    if(proj.type === 'player' && (overlap(actor,proj) || overlap(proj,actor))){
-                        // Apply Damage
-                        actor.health -= proj.power;
+                    if(proj.type === 'player'){
+                        // CYLCE THROUGH HITBOXES
+                        for(const hitbox of actor.getHitBoxes()){
+                            if(overlap(hitbox,proj.getHitBox(0)) || overlap(proj.getHitBox(0),hitbox)){
+                            // Apply Damage
+                            actor.health -= proj.power;
 
-                        // Remove Projectile
-                        proj.health = 0;
-
-                        // Update Score
-                        this.updateScore(1);
-                        if(actor.clear) this.updateScore(actor.points);
+                            // Remove Projectile
+                            proj.health = 0;
+    
+                            // Update Score
+                            this.updateScore(1);
+                            if(actor.clear) this.updateScore(actor.points);
+                            }
+                        }  
                     }
                 }
             }
@@ -134,12 +139,15 @@ class Game{
         if(this.Player){
             for(const proj of this.Projectiles){
                 if(proj.type === 'enemy' && !proj.clear){
-                    if(overlap(this.Player, proj) || overlap(proj,this.Player)){
-                        // Apply Damage
-                        this.Player.health -= proj.power;
+                    //CYCLE through PLAYER hitBoxes
+                    for(const hitbox of this.Player.getHitBoxes){
+                        if(overlap(hitbox, proj.getHitBox(0)) || overlap(proj.getHitBox(0), hitbox)){
+                            // Apply Damage
+                            this.Player.health -= proj.power;
 
-                        // Remove Projectile
-                        proj.health = 0;
+                            // Remove Projectile
+                            proj.health = 0;
+                        }
                     }
                 }
             }
@@ -148,11 +156,17 @@ class Game{
         // ACTOR x PLAYER
         if(this.Player){
             for(const actor of this.Actors){
-                if(actor.type === 'enemy' && !actor.clear){
-                    if(overlap(this.Player, actor) || overlap(actor, this.Player)){
-                        // Apply Damage
-                        this.Player.health -= 100;
-                        actor.health -= 100;
+                if(actor.type === 'enemy' && !actor.clear && !this.Player.clear){
+                    // CYCLE ACTOR HITBOXES
+                    for(const actorHitBox of actor.getHitBoxes()){
+                        // CYCLE PLAYER HITBOXES
+                        for(const playerHitBox of this.Player.getHitBoxes()){
+                            if(overlap(playerHitBox, actorHitBox) || overlap(actorHitBox, playerHitBox)){
+                                // Apply Damage
+                                this.Player.health -= 100;
+                                actor.health -= 100;
+                            }
+                        }
                     }
                 }
             }

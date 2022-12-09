@@ -2,7 +2,10 @@ class Player extends Actor {
     constructor(){
         const x = viewport.width /2;
         const y = viewport.height - (48 * 2);
-        super(x,y,48,48,90,60);
+        super(x,y,90,60,[
+            [39,8,12,8],
+            [20,16,50,38]
+        ]);
         this.health = 100;
         this.shotLevel = 1;
         this.shotCooldown = 15;
@@ -12,12 +15,16 @@ class Player extends Actor {
         this.sprite = _VECT_player;
     }
     getBoundaries(){
-        if(this.x < 8) this.x = 8;
-        if(this.x > viewport.width - (this.w + 8)) this.x = viewport.width - (this.w + 8);
-        if(this.y < 8) this.y = 8;
-        if(this.y > viewport.height - (this.h + 8)) this.y = viewport.height - (this.h+8);
+        if(this.x < (this.drawW / 2) + 8) this.x = (this.drawW / 2) + 8;
+        if(this.x > viewport.width - (this.drawW / 2) - 8) this.x = viewport.width - (this.drawW / 2) - 8;
+        if(this.y < (this.drawH / 2) + 8) this.y = (this.drawH / 2) + 8;
+        if(this.y > (viewport.height - (this.drawH / 2)) - 8) this.y = (viewport.height - ( this.drawH/2 )) - 8;
     }
     update(inputs){
+        // update frame
+        this.updateFrame();
+
+        // Handle Shooting
         this.shotCooldown--;
 
         const { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, z } = inputs;
@@ -35,17 +42,11 @@ class Player extends Actor {
         }
         return false;
     }
-    draw(){
-        this.frame++;
-        if(this.frame >= this.sprite.length) this.frame = 0;
-        const frame = this.sprite[this.frame];
-        renderSprite(frame,this.drawX,this.drawY);
-    }
 }
 
 class PlayerShot extends Actor {
     constructor(x,y){
-        super(x,y,8,8,8,8);
+        super(x, y, 5, 17, [ [0.5,0.5,4,16] ]);
         this.speed = 8;
         this.power = 1;
         this.type = 'player'
@@ -55,11 +56,7 @@ class PlayerShot extends Actor {
         if(this.y < -32) this.health = 0;
     }
     draw(){
-        // OKAY... so now is the time to start rendering everything from the center.
-        // There is one central center point.
-        // From there, we have our hitbox
-        // And from THERE, we have our sprite.
-        ctx.fillStyle = 'black';
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.fillStyle = '#ffff33';
+        ctx.fillRect(this.drawX, this.drawY, this.drawW, this.drawH);
     }
 }

@@ -149,8 +149,8 @@ const testTimeline2 = (duration = secondsToMS(20)) => {
 const testTimeline3 = (duration = secondsToMS(30)) => {
     const moments = [];
     moments.push(new Moment(0, ActionKamikazeSpawner));
-    for( let i = secondsToMS(5); i <= duration; i+=i){
-        moments.push(new Moment(i, ActionMGPSpawn));
-    }
+    // for( let i = secondsToMS(5); i <= duration; i+=i){
+    //     moments.push(new Moment(i, ActionMGPSpawn));
+    // }
     return new Timeline(duration, moments);
 }
