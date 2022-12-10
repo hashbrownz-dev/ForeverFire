@@ -2,14 +2,6 @@
 
 // MOVEMENT
 
-// a func to convert degrees to radians
-
-const degToRad = (deg) => Math.PI / 180 * deg;
-
-// a func to convert radians to degrees
-
-const radToDeg = (rad) => 180 / Math.PI * rad;
-
 // a func that allows one object to point in the direction of another (target another object)
 const getDirection = (actor, target) => {
     const y = target.y - actor.y;
@@ -82,7 +74,7 @@ const overlapX = (actor1, actor2) => {
 }
 
 const overlapY = (actor1, actor2) => {
-    return (( actor1.y > actor2.y && actor1.y < actor2.y + actor2.h) || ( actor1.y + actor1.w > actor2.y && actor1.y + actor1.h < actor2.y + actor2.h))
+    return (( actor1.y > actor2.y && actor1.y < actor2.y + actor2.h) || ( actor1.y + actor1.h > actor2.y && actor1.y + actor1.h < actor2.y + actor2.h))
 }
 
 const overlap = (actor1, actor2) => {

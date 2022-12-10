@@ -118,14 +118,19 @@ class Background{
     }
 }
 
-const renderSprite = (sprite, x, y, dir) => {
+const renderSprite = (sprite, x, y, w, h, dir, mirrorX) => {
     const { classes, shapes } = sprite;
-    // TRANSLATE
-    ctx.translate(x,y);
+    // MIRROR
+    if(mirrorX){
+        flipX(x+(w/2));
+    }
     // ROTATE
     if(dir){
         // ROTATE THIS BITCH
     }
+    // TRANSLATE
+    ctx.translate(x,y);
+
     for( const shape of shapes){
         // draw our shape (path)
         const path = drawShape(shape);
@@ -220,6 +225,27 @@ const drawCirc = (circ) => {
     ctx.beginPath();
     ctx.arc(circ.x, circ.y, circ.r, 0,7);
 }
+
+const flipX = (anchor) =>{
+    ctx.translate(anchor,0);
+    ctx.scale(-1,1);
+    ctx.translate(-anchor,0);
+}
+
+const rotate = (anchor, angle) => {
+    const { x, y } = anchor;
+    ctx.translate(x,y);
+    ctx.rotate(degToRad(angle));
+    ctx.translate(-x,-y);
+}
+
+// a func to convert degrees to radians
+
+const degToRad = (deg) => Math.PI / 180 * deg;
+
+// a func to convert radians to degrees
+
+const radToDeg = (rad) => 180 / Math.PI * rad;
 
 // const drawDebug = (game, userInput)=>{
 //     const { Actors, Controllers, Time, Projectiles, Player, Score } = game;

@@ -56,7 +56,7 @@ class Actor{
     }
     draw(){
         const frame = this.sprite[this.frame];
-        renderSprite(frame, this.drawX, this.drawY, this.dir);
+        renderSprite(frame, this.drawX, this.drawY, this.drawW, this.drawH, this.dir, this.mirrorX);
     }
 }
 
@@ -69,16 +69,51 @@ class SmallPlane extends Actor{
     }
 }
 
+// The Kamikaze plane should bank towards the player.  The distance between the two actors on the x axis determines the xSpeed of the kamikaze plane.
+
 class Kamikaze extends SmallPlane{
     constructor(x){
         super(x,0,54,56,[ [15,16,24,24] ]);
         this.y -= this.drawH;
+        this.speed = 4;
+        this.distance;
+        this.xSpeed = 1.5;
         this.points = 9;
         this.sprite = _VECT_Kamikaze;
+        this.mirrorX = false;
     }
-    update(){
+    update(time, game){
+        // Set our initial distance
+        if (!this.distance) {
+            if(game.Player){
+                this.distance = Math.abs(this.x - game.Player.x);
+            }
+        }
+
         this.y += this.speed;
         if(this.drawY > viewport.height) this.health = 0;
+        if(game.Player){
+            let x = game.Player.x;
+
+            const currentDistance = Math.abs(this.x - x);
+            const delta = currentDistance / this.distance;
+            const xSpeed = this.xSpeed * delta;
+
+            this.frame = 0;
+            if(delta >=0.375) this.frame = 1;
+            if(delta >= 0.75) this.frame = 2;       
+
+            // Go Right
+            if( this.x < x) {
+                this.x += xSpeed;
+                this.mirrorX = false;
+            }
+            // Go Left
+            if( this.x > x) {
+                this.x -= xSpeed;
+                this.mirrorX = true;
+            }
+        }
     }
     static spawn(){
         const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
@@ -133,7 +168,20 @@ class MGPlane extends MidPlane{
 }
 
 class DynaMid extends MidPlane{
-
+    // hitbox = 34 34 56 56
+    // draw = 124 124
+    constructor(x,y){
+        super(x, 124, 124, [ [34, 34, 56, 56] ]);
+        this.speed = 1;
+        this.health = 10;
+        // this.y???
+        // this.dir???
+        this.toShoot = 5000
+        this.sprite = _VECT_MidDyna;
+    }
+    update(){
+        
+    }
 }
 
 class EnemyShot extends Actor {
@@ -152,10 +200,4 @@ class EnemyShot extends Actor {
             this.health = 0;
         }
     }
-    // draw(){
-    //     ctx.fillStyle = 'red';
-    //     ctx.beginPath();
-    //     ctx.arc(this.x, this.y, this.drawW / 2, 0, 7);
-    //     ctx.fill();
-    // }
 }

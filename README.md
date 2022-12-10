@@ -26,7 +26,7 @@
 - The player begins with 3 lives and 100 Health
 - If the player collides with an enemy ship or enemy projectile:
     - Enemy Ships deal 100 damage to the player.
-    - Bullets deal 50 damage to the player.
+    - Bullets deal 36 damage to the player.
     - Rockets deal 75 damage to the player.
 - If the player's health falls below 1, the player loses a life.
 - The player can collect power ups to improve the quality of their ship:
@@ -104,29 +104,23 @@ The base game should meet the following requirements:
 - Actor
 - 
 - EnemyShot
+### TO DO:
 
-### Phase 1
+- Implement complex enemy behavior
 
-- Get User Input
-- Create Player Class
-- Control Player
-- Scroll Background
+- Draw Health Bars
+    - Draw Player Health
+    - (?) Draw Enemy Health
 
-### Phase 2
+- Add Power Ups
+    - Increase firepower
+    - Increase Speed
+    - Regain Health
+    - Clear Screen
 
-- Create Enemy Class
-- Create Enemy Controller
-- Collisions
-
-### Phase 3
-
-- Implement Player Lives
-- Add Game Over State
-- Display Score
-- Display Lives
-- Add Medium Enemies
-- Add Power Up
-- Save High Scores to localStorage
+- Add EFX
+    - Add Explosion Effect
+    - Add Particle Effects
 
 #### Systems
 
