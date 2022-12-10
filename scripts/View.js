@@ -25,6 +25,12 @@ class View{
 
         // Draw Effects
 
+        // Draw Projectiles ( pBullet, Rocket, eBullet )
+        Projectiles.forEach((projectile)=> {
+            View.drawActor(projectile);
+            // if(DBR) View.drawBoundingRect(projectile);
+        });
+
         // Draw Player
         
         if(Player) {
@@ -39,11 +45,7 @@ class View{
             if(DBR) View.drawHitBoxes(actor);
         });
 
-        // Draw Projectiles ( pBullet, Rocket, eBullet )
-        Projectiles.forEach((projectile)=> {
-            View.drawActor(projectile);
-            // if(DBR) View.drawBoundingRect(projectile);
-        });
+        
 
         // Draw GUI
 
@@ -118,11 +120,14 @@ class Background{
     }
 }
 
-const renderSprite = (sprite, x, y, w, h, dir, mirrorX) => {
+const renderSprite = (sprite, x, y, w, h, dir, mirrorX, mirrorY) => {
     const { classes, shapes } = sprite;
     // MIRROR
     if(mirrorX){
         flipX(x+(w/2));
+    }
+    if(mirrorY){
+        flipY(y+(h/2));
     }
     // ROTATE
     if(dir){
@@ -230,6 +235,12 @@ const flipX = (anchor) =>{
     ctx.translate(anchor,0);
     ctx.scale(-1,1);
     ctx.translate(-anchor,0);
+}
+
+const flipY = (anchor) => {
+    ctx.translate(0,anchor);
+    ctx.scale(1,-1);
+    ctx.translate(0,-anchor)
 }
 
 const rotate = (anchor, angle) => {

@@ -61,6 +61,16 @@ const move = (actor) => {
     return {x:newX, y:newY}
 }
 
+const turn = (actor, angle) => {
+    actor.dir += angle;
+    if(actor.dir >= 360){
+        actor.dir = actor.dir - 360;
+    }
+    if(actor.dir < 0){
+        actor.dir = 359 + actor.dir;
+    }
+}
+
 // a func that moves an object towards a point
 const moveTowards = (actor, dest = {x:0,y:0}) => {
     const direction = getDirection(actor, dest);
