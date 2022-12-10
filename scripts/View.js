@@ -148,6 +148,8 @@ const drawShape = (shape) => {
             return drawPolygon(shape);
         case 'rect':
             return drawRect(shape);
+        case 'circle':
+            return drawCirc(shape);
     }
 }
 
@@ -212,6 +214,11 @@ const drawPolygon = (poly) => {
     drawPolyline(poly);
     ctx.closePath();
     return
+}
+
+const drawCirc = (circ) => {
+    ctx.beginPath();
+    ctx.arc(circ.x, circ.y, circ.r, 0,7);
 }
 
 // const drawDebug = (game, userInput)=>{

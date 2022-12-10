@@ -2,33 +2,9 @@ class Actor{
     constructor(x,y,dw,dh,hitBoxes){
         this.x = x;
         this.y = y;
-        // the Actor constructor should now look like (x,y,dw,dh,[hBox])
-        // hBox HAS to be an array that contains the objects i posted below...
-        // To add multiple hitboxes, we'll have to cut the w and h from the constructor...
-        // we'll have to add an array there...
-        // and the array will have little bounding rects
-        /* [
-            [x,y,w,h],
-            [x,y,w,h]
-        ]
-        */
-        // once we have the hitboxes... then bounding rect will probably be deprecated...
-        // we'll need a new... method called getHitBox(i) which will work similarly...
-        // the actor class will have a frame property
-        // and it should have an update frame method as well...
-        // as MOST actors will loop through their sprite
-        // Finally, we'll need to update the View class, so it draws hitboxes instead of boundingRects
-        // And we'll need to update our collision checking method in the game class, and make sure we are looping through arrays...
-        // A hitboxes x and y are relative to it's drawX(0) and drawY(0).
-        // So the value will range between 0 and drawW || drawH
-        // to get the absolute x and y of a hitbox, we use this formula:
-        // absoluteX = hbX + drawX || absoluteY = hbY + drawY
         this.drawW = dw;
         this.drawH = dh;
         this.hitBoxes = hitBoxes;
-        // this.w = w;
-        // this.h = h;
-
         this.health = 1;
         this.frame = 0;
         this.type = 'enemy';
@@ -110,41 +86,24 @@ class Kamikaze extends SmallPlane{
     }
 }
 
-// class SWPlane extends SmallPlane{
-//     constructor(x){
-//         super(x,0,32,32);
-//         this.y -= this.h;
-//         this.points = 9;
-//     }
-//     update(){
-//         this.y += this.speed;
-//         if(this.y > viewport.height) this.health = 0;
-//     }
-//     draw(){
-//         ctx.fillStyle = 'pink';
-//         ctx.fillRect(this.drawX,this.drawY,this.w,this.h);
-//     }
-//     static spawn(){
-//         const x = Math.floor(Math.random() * (viewport.width - 40 + 1) + 40);
-//         return new SWPlane(x);
-//     }
-// }
-
 // Medium Plane
 
 class MidPlane extends Actor{
-    constructor(x){
+    constructor(x, dw, dh, hitBoxes){
         const spawnY = viewport.height + 8;
-        super(x, spawnY, 50, 50, 112, 92);
-        this.speed = 1;
-        this.health = 10;
+        super(x, spawnY, dw, dh, hitBoxes);
     }
 }
 
 class MGPlane extends MidPlane{
     constructor(x){
-        super(x);
+        super(x, 111, 90, [
+            [0.5, 23, 110, 14],
+            [33.5, 37, 44, 7],
+            [47, 44, 17, 41]
+        ]);
         this.speed = 1;
+        this.health = 10;
         this.y = viewport.height + 8;
         this.points = 50;
         this.toShoot = 1000;
@@ -153,9 +112,10 @@ class MGPlane extends MidPlane{
     }
     update(time, game){
         // Check if it can shoot
+        this.updateFrame();
         this.toShoot -= time;
         if(this.toShoot <= 0){
-            this.toShoot = 1000;
+            this.toShoot = 3000;
 
             // Aim
             if(game.Player) this.target = getDirection(this, game.Player);
@@ -164,15 +124,7 @@ class MGPlane extends MidPlane{
             game.Projectiles.push(new EnemyShot(this.x, this.y, this.target));
         }
         this.y-=this.speed;
-        if(this.y < -this.h) this.health = 0;
-    }
-    draw(){
-        this.frame++;
-        if(this.frame >= this.sprite.length){
-            this.frame = 0;
-        }
-        const frame = this.sprite[this.frame];
-        renderSprite(frame, this.drawX, this.drawY);
+        if(this.y < -this.drawH) this.health = 0;
     }
     static spawn(x = 300){
 
@@ -180,12 +132,17 @@ class MGPlane extends MidPlane{
     }
 }
 
+class DynaMid extends MidPlane{
+
+}
+
 class EnemyShot extends Actor {
     constructor(x,y,dir,speed){
-        super(x,y,8,8,8,8);
-        this.power = 50;
+        super(x,y,17,17,[ [2.5,2.5,12,12] ]);
+        this.power = 36;
         this.dir = dir ? dir : 0;
         this.speed = speed ? speed : 2;
+        this.sprite = _VECT_EnemyBullet;
     }
     update(time, game){
         move(this);
@@ -195,10 +152,10 @@ class EnemyShot extends Actor {
             this.health = 0;
         }
     }
-    draw(){
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 4, 0, 7);
-        ctx.fill();
-    }
+    // draw(){
+    //     ctx.fillStyle = 'red';
+    //     ctx.beginPath();
+    //     ctx.arc(this.x, this.y, this.drawW / 2, 0, 7);
+    //     ctx.fill();
+    // }
 }

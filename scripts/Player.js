@@ -50,13 +50,10 @@ class PlayerShot extends Actor {
         this.speed = 8;
         this.power = 1;
         this.type = 'player'
+        this.sprite = _VECT_PlayerBullet
     }
     update(){
         this.y-=this.speed;
         if(this.y < -32) this.health = 0;
-    }
-    draw(){
-        ctx.fillStyle = '#ffff33';
-        ctx.fillRect(this.drawX, this.drawY, this.drawW, this.drawH);
     }
 }

@@ -140,7 +140,7 @@ class Game{
             for(const proj of this.Projectiles){
                 if(proj.type === 'enemy' && !proj.clear){
                     //CYCLE through PLAYER hitBoxes
-                    for(const hitbox of this.Player.getHitBoxes){
+                    for(const hitbox of this.Player.getHitBoxes()){
                         if(overlap(hitbox, proj.getHitBox(0)) || overlap(proj.getHitBox(0), hitbox)){
                             // Apply Damage
                             this.Player.health -= proj.power;
