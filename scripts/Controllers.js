@@ -48,8 +48,6 @@ class Timeline{
             currentMoment.action(game);
             currentMoment.clear = true;
         }
-        // timelines execute in a linear fashion... but i don't necessarily think they should have to be programmed that way...
-        // but for simplicity, we WILL definitely execute the first 
         // timelines clear themselves once all of their events have been cleared...
     }
 }
@@ -104,7 +102,16 @@ const ActionPotShotSpawn = (game, form = 'psycho') => {
 }
 
 const ActionAceSpawn = (game) => {
-    
+    // Fly in from the left
+    // Perform a U Turn
+    // Exit Stage Right
+    // The Final keyFrame, should always have a duration of 1...
+    const keyFrames = [
+        Ace.setKeyFrame( 0, 70),
+        Ace.setKeyFrame(-360, 180),
+        Ace.setKeyFrame( 0, 1)
+    ]
+    game.Actors.push(new Ace(100, false, keyFrames));
 }
 
 const ActionMGPSpawn = (game) => {
@@ -124,6 +131,10 @@ const ActionPotShotSpawner = (game) => {
 
 const ActionKamikazeSpawner = (game) => {
     game.Controllers.push(new EnemySpawner(secondsToMS(15), 1500, ActionKamikazeSpawn));
+}
+
+const ActionAceSpawner = (game) => {
+    game.Controllers.push(new EnemySpawner(secondsToMS(5), 1000, ActionAceSpawn));
 }
 
 // BUILD TIMELINES
@@ -154,4 +165,11 @@ const testTimeline3 = (duration = secondsToMS(30)) => {
     //     moments.push(new Moment(i, ActionMGPSpawn));
     // }
     return new Timeline(duration, moments);
+}
+
+const testAceTimeline = (duration = secondsToMS(5)) => {
+    const moments = [
+        new Moment(0, ActionAceSpawner)
+    ]
+    return new Timeline(0, moments);
 }

@@ -25,18 +25,18 @@ class View{
 
         // Draw Effects
 
-        // Draw Projectiles ( pBullet, Rocket, eBullet )
-        Projectiles.forEach((projectile)=> {
-            View.drawActor(projectile);
-            // if(DBR) View.drawBoundingRect(projectile);
-        });
-
         // Draw Player
         
         if(Player) {
             View.drawActor(Player)
             if(DBR) View.drawHitBoxes(Player);
         };
+
+        // Draw Projectiles ( pBullet, Rocket, eBullet )
+        Projectiles.forEach((projectile)=> {
+            View.drawActor(projectile);
+            // if(DBR) View.drawBoundingRect(projectile);
+        });
 
         // Draw Enemies
 
@@ -122,16 +122,21 @@ class Background{
 
 const renderSprite = (sprite, x, y, w, h, dir, mirrorX, mirrorY) => {
     const { classes, shapes } = sprite;
+    const anchor = {
+        x: x + (w/2),
+        y: y + (h/2)
+    }
     // MIRROR
     if(mirrorX){
-        flipX(x+(w/2));
+        flipX(anchor.x);
     }
     if(mirrorY){
-        flipY(y+(h/2));
+        flipY(anchor.y);
     }
     // ROTATE
     if(dir){
         // ROTATE THIS BITCH
+        rotate(anchor, dir);
     }
     // TRANSLATE
     ctx.translate(x,y);

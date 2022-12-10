@@ -4,7 +4,7 @@ class Player extends Actor {
         const y = viewport.height - (48 * 2);
         super(x,y,90,60,[
             [39,8,12,8],
-            [20,16,50,38]
+            [35,16,20,18]
         ]);
         this.health = 100;
         this.shotLevel = 1;
@@ -20,7 +20,7 @@ class Player extends Actor {
         if(this.y < (this.drawH / 2) + 8) this.y = (this.drawH / 2) + 8;
         if(this.y > (viewport.height - (this.drawH / 2)) - 8) this.y = (viewport.height - ( this.drawH/2 )) - 8;
     }
-    update(inputs){
+    update(inputs, game){
         // update frame
         this.updateFrame();
 
@@ -36,11 +36,10 @@ class Player extends Actor {
         if(z){
             //if z is held down... the player needs to check if it can fire or not...
             if(this.shotCooldown <= 0){
+                game.Projectiles.push(new PlayerShot(this.x, this.y - (this.drawH/2)))
                 this.shotCooldown = 15;
-                return true;
             }
         }
-        return false;
     }
 }
 

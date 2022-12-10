@@ -13,7 +13,7 @@ class Actor{
         return this.health <= 0
     }
     get isOutOfBounds(){
-        return (this.x < 0 || this.y < 0 || this.x > viewport.width || this.y > viewport.height)
+        return (this.x < -this.drawW || this.y < -this.drawH || this.x > viewport.width + this.drawW || this.y > viewport.height + this.drawH)
     }
     get drawX(){
         return this.x - (this.drawW/2);
@@ -248,14 +248,17 @@ class PotShot extends SmallPlane{
 // return function(ace) ace.dir +=
 
 class Ace extends SmallPlane{
-    constructor(x,y,keyFrames){
-        super(x, y, 56, 56, [ [7,7,42,42] ]);
+    constructor(y,spawnLeft,keyFrames){
+        super(0, y, 56, 56, [ [7,7,42,42] ]);
+        this.x = spawnLeft ? 0 : viewport.width;
         this.speed = 4;
+        this.dir = spawnLeft ? 0 : 180;
         this.points = 19;
         this.currentKeyFrame = 0;
         this.keyFrames = keyFrames;
         this.timer = this.keyFrames[this.currentKeyFrame].duration;
         this.action = this.keyFrames[this.currentKeyFrame].action;
+        this.sprite = _VECT_SmallDyna;
     }
     update(time, game){
         // Update Time
@@ -266,16 +269,24 @@ class Ace extends SmallPlane{
             if(this.currentKeyFrame >= this.keyFrames.length){
                 this.timer = -1;
                 // perform the last action indefinitely
+            } else {
+                const { duration, action } = this.keyFrames[this.currentKeyFrame];
+                // Reset timer
+                this.timer = duration;
+                this.action = action;
             }
-            const { duration, action } = this.keyFrames[this.currentKeyFrame];
-            // Reset timer
-            this.timer = duration;
-            this.action = action;
         }
         // Perform Action
         this.action(this);
         // action is a function that performs side effects on this
         // function(this){ this.x = 1; this.y = 20 }
+
+        // Shoot
+
+        // Perform Clean Up
+        if(this.timer < 0 && this.isOutOfBounds){
+            this.health =  0;
+        }
     }
     static setKeyFrame( turnDegree, duration ){
         const interval = turnDegree / duration;

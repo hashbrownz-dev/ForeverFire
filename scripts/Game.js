@@ -15,7 +15,7 @@ class Game{
         this.DBR = true;
 
         // START GAME
-        this.Waves.push(testTimeline3(),testTimeline3());
+        this.Waves.push(testAceTimeline(),testTimeline3());
         this.Controllers.push(this.Waves[this.Wave])
     }
 
@@ -25,8 +25,8 @@ class Game{
         // Update Controllers
         this.Controllers.forEach( controller => controller.update(elapsed, this));
 
-        // Get User Input
-        this.getInput(input);
+        // Update Player
+        if(this.Player) this.Player.update(input, this);
 
         // Update Actors
         this.Actors.forEach( actor => actor.update(elapsed, this) );
@@ -73,17 +73,6 @@ class Game{
                     this.gameOver = true;
                     console.log('You Win');
                 }
-            }
-        }
-    }
-
-    getInput(input){
-        if(this.Player){
-            // Player.update() will return true if the player is firing
-            let isFiring = this.Player.update(input);
-            if(isFiring){
-                const {x, y} = this.Player;
-                this.Projectiles.push(new PlayerShot(x,y));
             }
         }
     }
