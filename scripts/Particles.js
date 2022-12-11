@@ -114,12 +114,13 @@ class Bloom extends Particle{
 }
 
 class Fade extends Particle {
-    constructor(x,y, duration, radius){
-        super(x,y,duration,0,0,0);
+    constructor(x,y, duration, radius, scrollRate){
+        super(x,y,duration,0,0,scrollRate);
         this.radius = radius;
     }
     update(){
         this.decay--;
+        this.y+=this.scrollRate;
     }
     draw(){
         const currentRadius = (this.decay / this.duration) * this.radius;
@@ -165,6 +166,9 @@ const setEffectCircleExplosion = (x,y,radius) => {
 // EFFECT - TRAIL
 
 const setEffectTrailKamikaze = (x,y) => {
-    return new Emitter(x,y,-1, [new Fade(x,y,15,5)])
+    return new Emitter(x,y,-1, [new Fade(x,y,15,5,0)])
 }
-// I want to do TWO trails,  a smoke trail that appears when bigger enemies are damaged and the smoke trail that Kamikaze jets leave behind...
+
+const setEffectTrailBurn = (x,y) => {
+    return new Emitter(x,y,-1, [new Fade(x,y,20,6,3)])
+}

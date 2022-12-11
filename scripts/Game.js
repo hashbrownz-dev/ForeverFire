@@ -12,10 +12,10 @@ class Game{
         this.EFX = [];
         this.Background = new Background();
         this.gameOver = false;
-        this.DBR = true;
+        this.DBR = false;
 
         // START GAME
-        this.Waves.push(testTimeline3(),testAceTimeline(),testTimeline3());
+        this.Waves.push(testTimeline2(),testAceTimeline(),testTimeline3());
         this.Controllers.push(this.Waves[this.Wave])
     }
 
@@ -125,6 +125,14 @@ class Game{
                             if(actor.clear){
                                 this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
                                 this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
+                            }
+                            // Generate Burn Trail
+                            if(actor.hasOwnProperty('emitters')){
+                                // if actor's health is at 70% or 30%
+                                const percent = Math.floor(actor.health / actor.maxHealth * 10);
+                                if((percent === 7 && !actor.emitters.length) || (percent === 3 && actor.emitters.length === 1)){
+                                    actor.emitters.push([proj.x - actor.x , proj.drawY - actor.y])
+                                }
                             }
 
                             // Update Score
