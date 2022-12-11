@@ -13,7 +13,7 @@ class View{
     }
     // The render function handles all of the Drawing
     static render(Game, userInput){
-        const { Player, Projectiles, Background, Actors, Score, Lives, DBR } = Game;
+        const { Player, Projectiles, Background, Actors, Score, Lives, EFX, DBR } = Game;
 
         // Clear View
 
@@ -22,8 +22,6 @@ class View{
         // Draw Background
 
         View.drawActor(Background);
-
-        // Draw Effects
 
         // Draw Player
         
@@ -45,7 +43,11 @@ class View{
             if(DBR) View.drawHitBoxes(actor);
         });
 
-        
+        // Draw Effects
+
+        EFX.forEach( emitter => {
+            emitter.particles.forEach( particle => particle.draw())
+        })
 
         // Draw GUI
 

@@ -84,7 +84,7 @@ class Kamikaze extends SmallPlane{
         this.invert = invert;
         this.mirrorY = invert;
     }
-    update(time, game){
+    update(game){
         // Set our initial distance
         if (!this.distance) {
             if(game.Player){
@@ -122,6 +122,15 @@ class Kamikaze extends SmallPlane{
                 this.mirrorX = true;
             }
         }
+
+        const emitX = this.drawX + 27;
+        const emitY = this.invert ? this.drawY + this.drawH + 5 : this.drawY - 5;
+        // const emitY = this.drawY + 54;
+        game.EFX.push(setEffectTrailKamikaze(emitX,emitY));
+        // to perform our trail effect... will have to create emitters dynamically...
+        // or we can create a single emitter, and attach it to the plane...
+        // if we create a single emitter... and attach it to the plane... we will need a way to remove it when the plane dies...
+        // so we can have a variable on the instance, that points to the emitter in Game.EFX... and when the plane dies... we can set the del property of those emitters to true...
     }
     static spawn(invert = false){
         const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
@@ -149,7 +158,7 @@ class PotShot extends SmallPlane{
         this.mirrorY = invert;
         this.sprite = _VECT_PotShot;
     }
-    update(time, game){
+    update(game){
         this.updateFrame();
 
         // update position
@@ -260,7 +269,7 @@ class Ace extends SmallPlane{
         this.action = this.keyFrames[this.currentKeyFrame].action;
         this.sprite = _VECT_SmallDyna;
     }
-    update(time, game){
+    update(game){
         // Update Time
         this.timer --;
         if(this.timer === 0){
@@ -319,14 +328,14 @@ class MGPlane extends MidPlane{
         this.health = 10;
         this.y = viewport.height + 8;
         this.points = 50;
-        this.toShoot = 1000;
+        this.toShoot = 60;
         this.target = 270;
         this.sprite = _VECT_MidPlane;
     }
-    update(time, game){
+    update(game){
         // Check if it can shoot
         this.updateFrame();
-        this.toShoot -= time;
+        this.toShoot--;
         if(this.toShoot <= 0){
             this.toShoot = 3000;
 
@@ -370,7 +379,7 @@ class EnemyShot extends Actor {
         this.speed = speed ? speed : 2;
         this.sprite = _VECT_EnemyBullet;
     }
-    update(time, game){
+    update(game){
         move(this);
         
         // If OUT OF BOUNDS

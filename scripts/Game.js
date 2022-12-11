@@ -15,7 +15,7 @@ class Game{
         this.DBR = true;
 
         // START GAME
-        this.Waves.push(testAceTimeline(),testTimeline3());
+        this.Waves.push(testTimeline3(),testAceTimeline(),testTimeline3());
         this.Controllers.push(this.Waves[this.Wave])
     }
 
@@ -29,13 +29,16 @@ class Game{
         if(this.Player) this.Player.update(input, this);
 
         // Update Actors
-        this.Actors.forEach( actor => actor.update(elapsed, this) );
+        this.Actors.forEach( actor => actor.update(this) );
 
         // Update Projectiles
         this.Projectiles.forEach( projectile => projectile.update(elapsed, this));
 
         // Check for Collisions
         this.checkForCollisions();
+
+        // Update EFX
+        this.EFX.forEach( emitter => emitter.update(this) );
 
         // CLEAN UP
 
@@ -114,6 +117,16 @@ class Game{
                             // Remove Projectile
                             proj.health = 0;
     
+                            // Generate Effects
+                            // Generate Bullet Impact
+                            this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));
+                            this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
+                            // Generate Explosion
+                            if(actor.clear){
+                                this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
+                                this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
+                            }
+
                             // Update Score
                             this.updateScore(1);
                             if(actor.clear) this.updateScore(actor.points);
@@ -136,6 +149,15 @@ class Game{
 
                             // Remove Projectile
                             proj.health = 0;
+
+                            // Generate Effects
+                            // Generate Bullet Impact
+                            this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
+                            // Generate Explosion
+                            if(this.Player.clear){
+                                this.EFX.push(setEffectPartExplosion(this.Player.x,this.Player.y))
+                                this.EFX.push(setEffectCircleExplosion(this.Player.x,this.Player.y,this.Player.drawW/2))
+                            }
                         }
                     }
                 }
@@ -154,6 +176,16 @@ class Game{
                                 // Apply Damage
                                 this.Player.health -= 100;
                                 actor.health -= 100;
+
+                                // Generate Effects
+                                if(this.Player.clear){
+                                    this.EFX.push(setEffectPartExplosion(this.Player.x,this.Player.y))
+                                    this.EFX.push(setEffectCircleExplosion(this.Player.x,this.Player.y,this.Player.drawW/2))
+                                }
+                                if(actor.clear){
+                                    this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
+                                    this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
+                                }
                             }
                         }
                     }
