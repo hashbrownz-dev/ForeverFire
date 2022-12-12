@@ -93,40 +93,92 @@ class EnemySpawner extends Alarm{
 
 // Actions are functions to be called by Controllers.  Every action takes one parameter, a reference to the game.
 
+const getRandomX = () => {
+    return Math.floor(Math.random() * (viewport.width - 105) + 50)
+}
+
 const ActionKamikazeSpawn = (game) => {
+    let spawnX = getRandomX();
+    if(game.Player){
+        while(spawnX > game.Player.x - 50 && spawnX < game.Player.x + 50){
+            spawnX = getRandomX();
+        }
+    }
+    game.Actors.push(Kamikaze.spawn(false));
+}
+
+const ActionKamikazeSpawnInv = (game) => {
+    let spawnX = getRandomX();
+    if(game.Player){
+        while(spawnX > game.Player.x - 50 && spawnX < game.Player.x + 50){
+            spawnX = getRandomX();
+        }
+    }
     game.Actors.push(Kamikaze.spawn(true));
 }
 
-const ActionPotShotSpawn = (game, form = 'psycho') => {
-    game.Actors.push(PotShot.spawn(viewport.width/2, form));
+const ActionPotShotSpawn = (game) => {
+    game.Actors.push(PotShot.spawn(getRandomX(), 'basic'));
 }
 
-const ActionAceSpawn = (game) => {
+const ActionPotShotSpawnInv = (game) => {
+    game.Actors.push(PotShot.spawn(getRandomX(), 'inverted'));
+}
+
+const ActionPotShotSpawnSpr = (game) => {
+    game.Actors.push(PotShot.spawn(getRandomX(), 'spread'));
+}
+
+const ActionPotShotSpawnHybrid = (game) => {
+    game.Actors.push(PotShot.spawn(getRandomX(), 'hybrid'));
+}
+
+const ActionPotShotSpawnPsycho = (game) => {
+    game.Actors.push(PotShot.spawn(getRandomX(), 'psycho'));
+}
+
+const ActionAceSpawnU = (game) => {
     // Fly in from the left
     // Perform a U Turn
     // Exit Stage Right
     // The Final keyFrame, should always have a duration of 1...
     const keyFrames = [
         Ace.setKeyFrame( 0, 70),
-        Ace.setKeyFrame(-360, 180),
+        Ace.setKeyFrame(-180, 180),
         Ace.setKeyFrame( 0, 1)
     ]
     game.Actors.push(new Ace(100, false, keyFrames));
 }
 
+const ActionAceSpawnUInv = (game) => {
+    // Fly in from the left
+    // Perform a U Turn
+    // Exit Stage Right
+    // The Final keyFrame, should always have a duration of 1...
+    const keyFrames = [
+        Ace.setKeyFrame( 0, 70),
+        Ace.setKeyFrame(180, 180),
+        Ace.setKeyFrame( 0, 1)
+    ]
+    game.Actors.push(new Ace(100, true, keyFrames));
+}
+
 const ActionMGPSpawn = (game) => {
     const MGP1 = new MGPlane(100);
     const MGP2 = new MGPlane(viewport.width - 100);
-    game.Actors.push(MGP1);
+    game.Actors.push(MGP1,MGP2);
 }
 
-const ActionSWPSpawner = (game) => {
-    // Define the Spawners Action
-    game.Controllers.push(new EnemySpawner(secondsToMS(30), 1500, ActionSWPSpawn));
+const ActionMGPSpawner = (game) => {
+    game.Controllers.push(new EnemySpawner(secondsToMS(15), 5000, ActionMGPSpawn))
 }
 
 const ActionPotShotSpawner = (game) => {
     game.Controllers.push(new EnemySpawner(secondsToMS(15), 1500, ActionPotShotSpawn));
+}
+
+const ActionPotShotSpawnerSpr = (game) => {
+    game.Controllers.push(new EnemySpawner(secondsToMS(15), 1500, ActionPotShotSpawnSpr));
 }
 
 const ActionKamikazeSpawner = (game) => {
@@ -134,7 +186,8 @@ const ActionKamikazeSpawner = (game) => {
 }
 
 const ActionAceSpawner = (game) => {
-    game.Controllers.push(new EnemySpawner(secondsToMS(5), 1000, ActionAceSpawn));
+    game.Controllers.push(new EnemySpawner(secondsToMS(10), 1000, ActionAceSpawnU));
+    game.Controllers.push(new EnemySpawner(secondsToMS(10), 1000, ActionAceSpawnUInv))
 }
 
 // BUILD TIMELINES
@@ -173,3 +226,34 @@ const testAceTimeline = (duration = secondsToMS(5)) => {
     ]
     return new Timeline(0, moments);
 }
+
+// DEMONSTRATION
+
+const demoTimeline = () => {
+    const moments = [
+        new Moment(0, ActionPotShotSpawner),
+        new Moment(secondsToMS(15), ActionPotShotSpawnerSpr),
+        new Moment(secondsToMS(30), ActionKamikazeSpawner),
+        new Moment(secondsToMS(45), ActionAceSpawner),
+        new Moment(secondsToMS(60), ActionMGPSpawner)
+    ]
+    // const interval = secondsToMS(10);
+    // for( let i = 7000; i >= 0; i -= interval){
+    //     moments.push(new Moment(i, ActionMGPSpawn));
+    // }
+    return new Timeline(secondsToMS(180), moments)
+}
+
+// SPAWN POTSHOTS RANDOMLY
+// SPAWN Flying V Potshots
+// SPAWN SPREAD POT SHOTS
+// SPAWN AN INVERSION OF THE PREVIOUS
+// SPAWN KAMIKAZE SEMI-RANDOMLY
+// SPAWN 6 KAMIKAZE at once
+// SPAWN an INVERSION OF THE PREVIOUS
+// SPAWN ACE THAT PERFORM A U-TURN
+// SPAWN ACE THAT PERFORM A 90 DEG TURN
+// SPAWN ACE THAT PERFORM A 360 DEG TURN
+// SPAWN AN INVERSION OF THE PREVIOUS
+// SPAWN TWO MGS
+// SPAWN AN INVERSION

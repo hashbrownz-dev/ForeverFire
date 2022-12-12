@@ -2,7 +2,7 @@ class Game{
     constructor(){
         this.Score = 0;
         this.Timer;
-        this.Lives = 0;
+        this.Lives = 3;
         this.Wave = 0;
         this.Waves = [];
         this.Player = new Player();
@@ -15,7 +15,7 @@ class Game{
         this.DBR = false;
 
         // START GAME
-        this.Waves.push(testTimeline2(),testAceTimeline(),testTimeline3());
+        this.Waves.push(demoTimeline());
         this.Controllers.push(this.Waves[this.Wave])
     }
 

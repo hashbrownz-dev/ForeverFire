@@ -319,7 +319,7 @@ class MGPlane extends MidPlane{
         this.updateFrame();
         this.toShoot--;
         if(this.toShoot <= 0){
-            this.toShoot = 3000;
+            this.toShoot = 60;
 
             // Aim
             if(game.Player) this.target = getDirection(this, game.Player);
