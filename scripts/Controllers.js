@@ -170,7 +170,7 @@ const ActionMGPSpawn = (game) => {
 }
 
 const ActionMGPSpawner = (game) => {
-    game.Controllers.push(new EnemySpawner(secondsToMS(15), 5000, ActionMGPSpawn))
+    game.Controllers.push(new EnemySpawner(secondsToMS(40), 8000, ActionMGPSpawn))
 }
 
 const ActionPotShotSpawner = (game) => {
@@ -235,7 +235,7 @@ const demoTimeline = () => {
         new Moment(secondsToMS(15), ActionPotShotSpawnerSpr),
         new Moment(secondsToMS(30), ActionKamikazeSpawner),
         new Moment(secondsToMS(45), ActionAceSpawner),
-        new Moment(secondsToMS(60), ActionMGPSpawner)
+        new Moment(secondsToMS(50), ActionMGPSpawner)
     ]
     // const interval = secondsToMS(10);
     // for( let i = 7000; i >= 0; i -= interval){
