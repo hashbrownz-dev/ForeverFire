@@ -1,13 +1,14 @@
 class Actor{
-    constructor(x,y,dw,dh,hitBoxes){
-        this.x = x;
-        this.y = y;
-        this.drawW = dw;
-        this.drawH = dh;
-        this.hitBoxes = hitBoxes;
+    constructor(Sprite){
+        const { dimensions, hitboxes } = Sprite;
+        this.x = 0;
+        this.y = 0;
+        this.drawW = dimensions.drawW;
+        this.drawH = dimensions.drawH;
+        this.hitboxes = hitboxes;
         this.health = 1;
         this.frame = 0;
-        this.type = 'enemy';
+        this.type = '';
     }
     get clear(){
         return this.health <= 0
@@ -21,14 +22,14 @@ class Actor{
     get drawY(){
         return this.y - (this.drawH/2);
     }
-    get boundingRect(){
-        return {
-            x: this.x - (this.w/2),
-            y: this.y - (this.h/2),
-            w: this.w,
-            h: this.h
-        }
-    }
+    // get boundingRect(){
+    //     return {
+    //         x: this.x - (this.w/2),
+    //         y: this.y - (this.h/2),
+    //         w: this.w,
+    //         h: this.h
+    //     }
+    // }
     static setHitBox(x,y,w,h){
         return [x,y,w,h]
     }
@@ -62,35 +63,56 @@ class Actor{
 
 // Small Planes
 
-class SmallPlane extends Actor{
-    constructor(x,y,dw,dh,hitBoxes){
-        super(x,y,dw,dh,hitBoxes);
-        this.speed = 2;
+class EnemyPlane extends Actor{
+    constructor(sprite, toShoot = -1, shootFunc){
+        // Calls the Actor Constructor...
+        super(sprite[0]);
+        this.sprite = sprite;
+        this.toShoot = toShoot;
+        this.shootFunc = shootFunc ? shootFunc : ()=>{console.log('No Shooting Function')};
+        this.type = 'enemy'
+    }
+    update(game){
+        this.move(game);
+        this.shoot(game);
+    }
+    shoot(game){
+        this.toShoot--;
+        if(this.toShoot === 0){
+            this.shootFunc(this, game);
+        }
     }
 }
 
 // The Kamikaze plane should bank towards the player.  The distance between the two actors on the x axis determines the xSpeed of the kamikaze plane.
 
-class Kamikaze extends SmallPlane{
-    constructor(x, invert){
-        super(x,0,54,56,[ [15,16,24,24] ]);
+class Kamikaze extends EnemyPlane{
+    constructor(x, invert, toShoot = -1, shootingFunc){
+        const sprite = [
+            spriteData['Kamikaze-01'],
+            spriteData['Kamikaze-02'],
+            spriteData['Kamikaze-03']
+        ];
+        super(sprite, toShoot, shootingFunc);
+        this.x = x;
         this.y = invert ? viewport.height + this.drawH : -this.drawH;
         this.speed = 4;
+        this.points = 9;
+        this.invert = invert;
+        this.mirrorX = false;
+        this.mirrorY = invert;
         this.distance;
         this.xSpeed = 1.5;
-        this.points = 9;
-        this.sprite = _VECT_Kamikaze;
-        this.mirrorX = false;
-        this.invert = invert;
-        this.mirrorY = invert;
     }
-    update(game){
+    move(game){
         // Set our initial distance
         if (!this.distance) {
             if(game.Player){
                 this.distance = Math.abs(this.x - game.Player.x);
             }
         }
+
+        // MOVEMENT
 
         if(this.invert){
             this.y -= this.speed;
@@ -123,10 +145,13 @@ class Kamikaze extends SmallPlane{
             }
         }
 
+        // EFX
+
         const emitX = this.drawX + 27;
         const emitY = this.invert ? this.drawY + this.drawH + 5 : this.drawY - 5;
         game.EFX.push(setEffectTrailKamikaze(emitX,emitY));
     }
+
     static spawn(invert = false){
         const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
         return new Kamikaze(x, invert);
@@ -141,149 +166,165 @@ class Kamikaze extends SmallPlane{
 // Hybrid potshots have the behaviors of inverted and Spread potshots...
 // Psycho can appear either from the top or bottom, and shoot bullets in circular patterns.  guaranteed to drop a power up
 
-class PotShot extends SmallPlane{
-    constructor(x, form, invert){
-        super(x, 0, 54, 56, [ [9,10,36,36] ]);
+class PotShot extends EnemyPlane{
+    constructor(x, invert, toShoot = -1, shootFunc){
+        const sprite = [
+            spriteData['PotShot-01'],
+            spriteData['PotShot-02'],
+            spriteData['PotShot-03'],
+            spriteData['PotShot-02']
+        ]
+        super(sprite, toShoot, shootFunc);
+        this.x = x;
         this.y = !invert ? -this.drawH : viewport.height + this.drawH;
         this.speed = 2.5;
         this.points = 14;
-        this.shotCooldown = 120;
-        this.form = form;
         this.invert = invert;
         this.mirrorY = invert;
-        this.sprite = _VECT_PotShot;
     }
-    update(game){
+    move(game){
         this.updateFrame();
-
-        // update position
-
         if(this.invert){
             this.y -= this.speed;
-            if(this.y < -this.drawH)this.health = 0;
+            if( this.y < -this.drawH ) this.health = 0;
         } else {
             this.y += this.speed;
-            if(this.drawY > viewport.height)this.health = 0;
-        }
-
-        // update shotCooldown
-        this.shotCooldown--;
-
-        // type specific behavior
-        switch(this.form){
-            case 'basic':
-                // Shoot a single bullet targeting the player
-                if(this.shotCooldown <= 0){
-                    if(game.Player){
-                        game.Projectiles.push(new EnemyShot(this.x,this.y, getDirection(this, game.Player), 5));
-                    }
-                    this.shotCooldown = 60;
-                }
-                break;
-            case 'spread':
-                // Shoot a spread Shot
-                if(this.shotCooldown <= 0){
-                    this.shotCooldown = 90;
-                    // Determine if we fire upwards or downwards
-                    const centershot = this.invert ? 270 : 90,
-                        speed = 4;
-
-                    // Create our three shots
-                    const shots = [
-                        new EnemyShot(this.x, this.y, centershot, speed),
-                        new EnemyShot(this.x, this.y, centershot - 30, speed),
-                        new EnemyShot(this.x, this.y, centershot + 30, speed)
-                    ];
-                    shots.forEach( shot => game.Projectiles.push(shot));
-                }
-                break;
-            case 'psycho':
-                // Shoot in a circle (8 shots?)
-                if(this.shotCooldown <= 0){
-                    this.shotCooldown = 120;
-                    for(let i = 0; i < 360; i+= 45){
-                        game.Projectiles.push( new EnemyShot(this.x, this.y, i, 1.5) )
-                    }
-                }
-                break;
+            if( this.drawY > viewport.height ) this.health = 0;
         }
     }
-    static spawn(x, form){
-        let f, invert;
-        switch (form){
-            case 'basic':
-                f = form;
-                invert = false;
-                break;
-            case 'spread':
-                f = form;
-                invert = false;
-                break;
-            case 'inverted':
-                f = 'basic';
-                invert = true;
-                break;
-            case 'hybrid':
-                f = 'spread';
-                invert = true;
-                break;
-            case 'psycho':
-                f = form;
-                invert = Math.round(Math.random()) ? true : false;
-                break;
-        }
-        return new PotShot(x, f, invert);
-    }
+
+    // update(game){
+    //     this.updateFrame();
+
+    //     // update position
+
+    //     if(this.invert){
+    //         this.y -= this.speed;
+    //         if(this.y < -this.drawH)this.health = 0;
+    //     } else {
+    //         this.y += this.speed;
+    //         if(this.drawY > viewport.height)this.health = 0;
+    //     }
+
+    //     // update shotCooldown
+    //     this.toShoot--;
+
+    //     // type specific behavior
+    //     switch(this.form){
+    //         case 'basic':
+    //             // Shoot a single bullet targeting the player
+    //             if(this.shotCooldown <= 0){
+    //                 if(game.Player){
+    //                     game.Projectiles.push(new EnemyShot(this.x,this.y, getDirection(this, game.Player), 5));
+    //                 }
+    //                 this.shotCooldown = 60;
+    //             }
+    //             break;
+    //         case 'spread':
+    //             // Shoot a spread Shot
+    //             if(this.shotCooldown <= 0){
+    //                 this.shotCooldown = 90;
+    //                 // Determine if we fire upwards or downwards
+    //                 const centershot = this.invert ? 270 : 90,
+    //                     speed = 4;
+
+    //                 // Create our three shots
+    //                 const shots = [
+    //                     new EnemyShot(this.x, this.y, centershot, speed),
+    //                     new EnemyShot(this.x, this.y, centershot - 30, speed),
+    //                     new EnemyShot(this.x, this.y, centershot + 30, speed)
+    //                 ];
+    //                 shots.forEach( shot => game.Projectiles.push(shot));
+    //             }
+    //             break;
+    //         case 'psycho':
+    //             // Shoot in a circle (8 shots?)
+    //             if(this.shotCooldown <= 0){
+    //                 this.shotCooldown = 120;
+    //                 for(let i = 0; i < 360; i+= 45){
+    //                     game.Projectiles.push( new EnemyShot(this.x, this.y, i, 1.5) )
+    //                 }
+    //             }
+    //             break;
+    //     }
+    // }
+    // static spawn(x, form){
+    //     let f, invert;
+    //     switch (form){
+    //         case 'basic':
+    //             f = form;
+    //             invert = false;
+    //             break;
+    //         case 'spread':
+    //             f = form;
+    //             invert = false;
+    //             break;
+    //         case 'inverted':
+    //             f = 'basic';
+    //             invert = true;
+    //             break;
+    //         case 'hybrid':
+    //             f = 'spread';
+    //             invert = true;
+    //             break;
+    //         case 'psycho':
+    //             f = form;
+    //             invert = Math.round(Math.random()) ? true : false;
+    //             break;
+    //     }
+    //     return new PotShot(x, f, invert);
+    // }
 }
 
-class Ace extends SmallPlane{
-    constructor(y,spawnLeft,keyFrames){
-        super(0, y, 56, 56, [ [7,7,42,42] ]);
+class Ace extends EnemyPlane{
+    constructor(y, spawnLeft, keyFrames, toShoot = -1, shootFunc){
+        const sprite = [
+            spriteData['SmDyna-01']
+        ];
+        super(sprite, toShoot, shootFunc);
         this.x = spawnLeft ? 0 : viewport.width;
+        this.y = y;
         this.speed = 4;
         this.dir = spawnLeft ? 0 : 180;
         this.points = 19;
-        this.currentKeyFrame = 0;
         this.keyFrames = keyFrames;
-        this.timer = this.keyFrames[this.currentKeyFrame].duration;
-        this.action = this.keyFrames[this.currentKeyFrame].action;
-        this.sprite = _VECT_SmallDyna;
+        const { action, duration } = this.keyFrames.shift();
+        this.action = action;
+        this.timer = duration;
     }
-    update(game){
-        // Update Time
-        this.timer --;
-        if(this.timer === 0){
-            this.currentKeyFrame++;
-            // Once all keyFrames have been executed
-            if(this.currentKeyFrame >= this.keyFrames.length){
+
+    move(game){
+        // Update Action
+
+        this.timer--;
+        if(this.timer === 0 ){
+            if(!this.keyFrames.length){
                 this.timer = -1;
-                // perform the last action indefinitely
             } else {
-                const { duration, action } = this.keyFrames[this.currentKeyFrame];
-                // Reset timer
+                const { duration, action } = this.keyFrames.shift();
                 this.timer = duration;
                 this.action = action;
             }
         }
+
         // Perform Action
+
         this.action(this);
-        // action is a function that performs side effects on this
-        // function(this){ this.x = 1; this.y = 20 }
+        moveActor(this);
 
-        // Shoot
+        // Clean Up
 
-        // Perform Clean Up
         if(this.timer < 0 && this.isOutOfBounds){
-            this.health =  0;
+            this.health = 0;
         }
     }
+
     static setKeyFrame( turnDegree, duration ){
         const interval = turnDegree / duration;
         return {
             duration: duration,
             action: (ace) => {
-                turn(ace, interval);
-                move(ace);
+                turnActor(ace, interval)
             }
         }
     }
@@ -343,23 +384,6 @@ class MGPlane extends MidPlane{
     }
 }
 
-class DynaMid extends MidPlane{
-    // hitbox = 34 34 56 56
-    // draw = 124 124
-    constructor(x,y){
-        super(x, 124, 124, [ [34, 34, 56, 56] ]);
-        this.speed = 1;
-        this.health = 10;
-        // this.y???
-        // this.dir???
-        this.toShoot = 5000
-        this.sprite = _VECT_MidDyna;
-    }
-    update(){
-        
-    }
-}
-
 class EnemyShot extends Actor {
     constructor(x,y,dir,speed){
         super(x,y,17,17,[ [2.5,2.5,12,12] ]);
@@ -369,7 +393,7 @@ class EnemyShot extends Actor {
         this.sprite = _VECT_EnemyBullet;
     }
     update(game){
-        move(this);
+        moveActor(this);
         
         // If OUT OF BOUNDS
         if(this.isOutOfBounds){

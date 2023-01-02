@@ -42,7 +42,7 @@ const getDirection = (actor, target) => {
 }
 
 // a func that moves an object in any given direction
-const move = (actor) => {
+const moveActor = (actor) => {
     // Get Hypotenuse and Direction
     const { speed, dir } = actor;
 
@@ -61,7 +61,7 @@ const move = (actor) => {
     return {x:newX, y:newY}
 }
 
-const turn = (actor, angle) => {
+const turnActor = (actor, angle) => {
     actor.dir += angle;
     if(actor.dir >= 360){
         actor.dir = actor.dir - 360;
