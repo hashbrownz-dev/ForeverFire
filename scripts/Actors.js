@@ -386,11 +386,14 @@ class MGPlane extends MidPlane{
 
 class EnemyShot extends Actor {
     constructor(x,y,dir,speed){
-        super(x,y,17,17,[ [2.5,2.5,12,12] ]);
+        const sprite = [
+            spriteData['EnemyBulletRound-01']
+        ];
+        super(sprite[0]);
+        this.sprite = sprite;
         this.power = 36;
         this.dir = dir ? dir : 0;
         this.speed = speed ? speed : 2;
-        this.sprite = _VECT_EnemyBullet;
     }
     update(game){
         moveActor(this);
