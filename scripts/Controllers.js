@@ -1,5 +1,7 @@
 // Controllers handle additional game logic
 
+// Alarm -> Perform a specified action ONCE after a set amount of time.
+
 class Alarm{
     constructor(duration, action){
         this.duration = duration;
@@ -7,13 +9,31 @@ class Alarm{
     }
 
     get clear(){
-        return Math.floor(this.duration) <= 0;
+        return this.duration <= 0;
     }
 
-    update(time, game){
-        this.duration -= time;
+    update(game){
+        this.duration--;
         if(this.clear){
             this.action(game);
+        }
+    }
+}
+
+// Interval -> Repeat the specified every interval
+
+class Interval{
+    constructor(interval, action){
+        this.interval = interval;
+        this.timer = 0;
+        this.action = action;
+        this.clear = false;
+    }
+    update(game){
+        this.timer--;
+        if(this.timer <= 0){
+            this.action(game);
+            this.timer = this.interval;
         }
     }
 }
