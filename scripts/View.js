@@ -1,14 +1,16 @@
-
-// View will be a static class... viewport and ctx will be globally scoped variables.
-
 const viewport = document.getElementById('viewport');
 const ctx = viewport.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 ctx.lineWidth = 1.5;
 
+const defaultStyle = {
+    fill:'#000000',
+    stroke:'none'
+}
+
 class View{
     // Clears the screen prior to Drawing
-    static clearView(){
+    static clear(){
         ctx.clearRect(0,0,viewport.width,viewport.height);
     }
     // The render function handles all of the Drawing
@@ -17,7 +19,7 @@ class View{
 
         // Clear View
 
-        View.clearView();
+        View.clear();
 
         // Draw Background
 
@@ -33,10 +35,9 @@ class View{
         // Draw Projectiles ( pBullet, Rocket, eBullet )
         Projectiles.forEach((projectile)=> {
             View.drawActor(projectile);
-            // if(DBR) View.drawBoundingRect(projectile);
         });
 
-        // Draw Enemies
+        // Draw Actors
 
         Actors.forEach((actor) => {
             View.drawActor(actor);
@@ -69,19 +70,14 @@ class View{
         // DEBUG
         // drawDebug(Game, userInput);
     }
+
     // Draw Actor
+
     static drawActor(actor){
-        const { scale, rotate } = actor;
-        // set the transformation based on scale and rotate
         actor.draw();
-        // reset the transformation
         ctx.resetTransform();
     }
-    // static drawBoundingRect(actor){
-    //     const {x,y,w,h} = actor.boundingRect;
-    //     ctx.strokeStyle = '#33ff00';
-    //     ctx.strokeRect(x,y,w,h);
-    // }
+
     static drawHitBoxes(actor){
         for(let i = 0; i < actor.hitBoxes.length; i++){
             const {x,y,w,h} = actor.getHitBox(i);
@@ -127,12 +123,25 @@ class Background{
     }
 }
 
-const renderSprite = (sprite, x, y, w, h, dir, mirrorX, mirrorY) => {
-    const { classes, shapes } = sprite;
+// renderSprite(frame, this.drawX, this.drawY, this.drawW, this.drawH, this.dir, this.mirrorX, this.mirrorY)
+
+const renderSprite = (sprite, x, y, options = {}) => {
+    const { layers, hitboxes } = sprite;
+    const { drawW:w, drawH:h } = sprite.dimensions;
+    const { xScale, yScale, dir, mirrorX, mirrorY } = options;
     const anchor = {
         x: x + (w/2),
         y: y + (h/2)
     }
+
+    // SCALE
+    if(xScale){
+        scaleX(x,y,xScale);
+    }
+    if(yScale){
+        scaleY(x,y,yScale);
+    }
+
     // MIRROR
     if(mirrorX){
         flipX(anchor.x);
@@ -140,21 +149,40 @@ const renderSprite = (sprite, x, y, w, h, dir, mirrorX, mirrorY) => {
     if(mirrorY){
         flipY(anchor.y);
     }
+
     // ROTATE
     if(dir){
         // ROTATE THIS BITCH
         rotate(anchor, dir);
     }
+
     // TRANSLATE
     ctx.translate(x,y);
 
-    for( const shape of shapes){
-        // draw our shape (path)
-        const path = drawShape(shape);
-        // render our shape
-        const style = getStyle(classes, shape.className);
-        renderShape(style, path);
+    // OVERRIDE STYLES
+    // Create a copy of sprite.styles
+    const styles = JSON.parse(JSON.stringify(sprite.styles));
+
+    if(options.styles){
+        options.styles.forEach( style => {
+            if(style.method.toLowerCase() === 'stroke'){
+                getStyleByStroke(styles, style.defaultColor).stroke = style.newColor;
+            }
+            if(style.method.toLowerCase() === 'fill'){
+                getStyleByFill(styles, style.defaultColor).fill = style.newColor;
+            }
+        })
     }
+
+    for( const layer of layers){
+        const { shapes } = layer;
+        for( const shape of shapes){
+            const path = drawShape(shape);
+            const style = getStyle(styles, shape.className);
+            renderShape(style, path);
+        }
+    }
+
     ctx.resetTransform();
 }
 
@@ -181,11 +209,47 @@ const getStyle = (stylelist, name) => {
     return style;
 }
 
+const getStyleByFill = (styles, fill) => {
+    const style = styles.find( e => e.fill.toUpperCase() === fill.toUpperCase());
+    return style;
+}
+
+const getStyleByStroke = (styles, stroke) => {
+    const style = styles.find( e => e.stroke.toUpperCase() === stroke.toUpperCase());
+    return style;
+}
+
+const getDefaultStyles = (styles) => {
+    // styles is an array... so we'll sort through that and create the objects we need
+    // Actor.defaultStyles = [ { method, defaultColor }]
+    const defaultStyles = [];
+    for(const style of styles){
+        let method, defaultColor;
+        if(style.fill !== 'none'){
+            method = 'stroke';
+            defaultColor = style.stroke;
+        } else {
+            method = 'fill';
+            defaultColor = style.fill;
+        }
+        defaultStyles.push({
+            method,
+            defaultColor
+        })
+    }
+}
+
 const renderShape = (style, path) => {
     // if style is undefined... we'll render our shape with a black fill
     if(!style){
-        ctx.fillStyle = '#000000';
-        ctx.fill(path);
+        if(defaultStyle.fill !== 'none'){
+            ctx.fillStyle = defaultStyle.fill;
+            ctx.fill(path);
+        }
+        if(defaultStyle.stroke !== 'none'){
+            ctx.strokeStyle = defaultStyle.stroke;
+            ctx.stroke(path);
+        }
         return;
     }
     // every style has a fill...
@@ -259,6 +323,18 @@ const rotate = (anchor, angle) => {
     const { x, y } = anchor;
     ctx.translate(x,y);
     ctx.rotate(degToRad(angle));
+    ctx.translate(-x,-y);
+}
+
+const scaleX = (x, y, scale) => {
+    ctx.translate(x,y);
+    ctx.scale(scale,1);
+    ctx.translate(-x,-y);
+}
+
+const scaleY = (x, y, scale) => {
+    ctx.translate(x,y);
+    ctx.scale(1,scale);
     ctx.translate(-x,-y);
 }
 

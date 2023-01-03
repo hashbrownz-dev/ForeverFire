@@ -22,14 +22,6 @@ class Actor{
     get drawY(){
         return this.y - (this.drawH/2);
     }
-    // get boundingRect(){
-    //     return {
-    //         x: this.x - (this.w/2),
-    //         y: this.y - (this.h/2),
-    //         w: this.w,
-    //         h: this.h
-    //     }
-    // }
     static setHitBox(x,y,w,h){
         return [x,y,w,h]
     }
@@ -56,8 +48,14 @@ class Actor{
         }
     }
     draw(){
-        const frame = this.sprite[this.frame];
-        renderSprite(frame, this.drawX, this.drawY, this.drawW, this.drawH, this.dir, this.mirrorX, this.mirrorY);
+        renderSprite(this.sprite[this.frame], this.x, this.y, {
+            xScale : this.xScale,
+            yScale : this.yScale,
+            dir : this.dir,
+            mirrorX : this.mirrorX,
+            mirrorY : this.mirrorY,
+            styles : this.styles
+        });
     }
 }
 
@@ -331,56 +329,78 @@ class Ace extends EnemyPlane{
 }
 // Medium Plane
 
-class MidPlane extends Actor{
-    constructor(x, dw, dh, hitBoxes){
-        const spawnY = viewport.height + 8;
-        super(x, spawnY, dw, dh, hitBoxes);
-    }
-}
+// Gunner's can have variable health
 
-class MGPlane extends MidPlane{
-    constructor(x){
-        super(x, 111, 90, [
-            [0.5, 23, 110, 14],
-            [33.5, 37, 44, 7],
-            [47, 44, 17, 41]
-        ]);
+class Gunner extends EnemyPlane{
+    constructor(x, health = 10, toShoot = -1, shootingFunc){
+        const sprite = [
+            spriteData['MidPlane2-01'],
+            spriteData['MidPlane2-02'],
+            spriteData['MidPlane2-03'],
+            spriteData['MidPlane2-02']
+        ]
+        super(sprite, toShoot, shootingFunc);
         this.speed = 1;
-        this.health = 10;
+        this.health = health;
         this.maxHealth = this.health;
         this.y = viewport.height + 8;
         this.points = 50;
-        this.toShoot = 60;
-        this.target = 270;
-        this.sprite = _VECT_MidPlane;
+        this.toShoot = toShoot;
         this.emitters = [];
     }
-    update(game){
-        // Check if it can shoot
+    move(game){
         this.updateFrame();
-        this.toShoot--;
-        if(this.toShoot <= 0){
-            this.toShoot = 60;
-
-            // Aim
-            if(game.Player) this.target = getDirection(this, game.Player);
-
-            // Fire
-            game.Projectiles.push(new EnemyShot(this.x, this.y, this.target));
+        this.y -= this.speed;
+        if(this.speed > 0 ){
+            if( this.y < -this.drawH ) this.health = 0;
+        } else {
+            if( this.drawY > viewport.height ) this.health = 0;
         }
-        this.y-=this.speed;
-        if(this.y < -this.drawH) this.health = 0;
 
         // HULL DAMAGE
+
         for(const emitter of this.emitters){
             const emitX = this.x + emitter[0];
             const emitY = this.y + emitter[1];
             game.EFX.push(setEffectTrailBurn(emitX,emitY));
         }
     }
-    static spawn(x = 300){
 
-        return new MGPlane(x);
+    // update(game){
+    //     // Check if it can shoot
+    //     this.updateFrame();
+    //     this.toShoot--;
+    //     if(this.toShoot <= 0){
+    //         this.toShoot = 60;
+
+    //         // Aim
+    //         if(game.Player) this.target = getDirection(this, game.Player);
+
+    //         // Fire
+    //         game.Projectiles.push(new EnemyShot(this.x, this.y, this.target));
+    //     }
+    //     this.y-=this.speed;
+    //     if(this.y < -this.drawH) this.health = 0;
+
+    //     // HULL DAMAGE
+    //     for(const emitter of this.emitters){
+    //         const emitX = this.x + emitter[0];
+    //         const emitY = this.y + emitter[1];
+    //         game.EFX.push(setEffectTrailBurn(emitX,emitY));
+    //     }
+    // }
+
+    static spawn(x = 300){
+        const shootingFunc = (self, game) => {
+            // AIM
+            const target = game.Player ? getDirection(self, game.Player) : 270;
+            // FIRE
+            game.Projectiles.push(new EnemyShot(self.x, self.y, target));
+            // CLEAN UP
+            self.toShoot = 60;
+        }
+
+        return new Gunner(x, 10, 120, shootingFunc);
     }
 }
 
@@ -391,14 +411,14 @@ class EnemyShot extends Actor {
         ];
         super(sprite[0]);
         this.sprite = sprite;
+        this.x = x;
+        this.y = y;
         this.power = 36;
         this.dir = dir ? dir : 0;
         this.speed = speed ? speed : 2;
     }
     update(game){
         moveActor(this);
-        
-        // If OUT OF BOUNDS
         if(this.isOutOfBounds){
             this.health = 0;
         }
