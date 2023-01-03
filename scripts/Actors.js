@@ -180,6 +180,7 @@ class PotShot extends EnemyPlane{
         this.invert = invert;
         this.mirrorY = invert;
     }
+
     move(game){
         this.updateFrame();
         if(this.invert){
@@ -191,87 +192,23 @@ class PotShot extends EnemyPlane{
         }
     }
 
-    // update(game){
-    //     this.updateFrame();
+    static spawn(invert = false){
+        // x, invert, toShoot, shootFunc
+        const { drawW } = spriteData['PotShot-01']['dimensions'];
+        const x = Math.floor(Math.random() * (viewport.width - (drawW + 10)) + (drawW + 10));
 
-    //     // update position
+        const shootingFunc = (self, game) => {
+            self.toShoot = 60;
+            if(game.Player){
+                // AIM
+                const target = getDirection(self, game.Player);
+                // FIRE
+                game.Projectiles.push(new EnemyShot(self.x, self.y, target, 5));
+            }
+        }
 
-    //     if(this.invert){
-    //         this.y -= this.speed;
-    //         if(this.y < -this.drawH)this.health = 0;
-    //     } else {
-    //         this.y += this.speed;
-    //         if(this.drawY > viewport.height)this.health = 0;
-    //     }
-
-    //     // update shotCooldown
-    //     this.toShoot--;
-
-    //     // type specific behavior
-    //     switch(this.form){
-    //         case 'basic':
-    //             // Shoot a single bullet targeting the player
-    //             if(this.shotCooldown <= 0){
-    //                 if(game.Player){
-    //                     game.Projectiles.push(new EnemyShot(this.x,this.y, getDirection(this, game.Player), 5));
-    //                 }
-    //                 this.shotCooldown = 60;
-    //             }
-    //             break;
-    //         case 'spread':
-    //             // Shoot a spread Shot
-    //             if(this.shotCooldown <= 0){
-    //                 this.shotCooldown = 90;
-    //                 // Determine if we fire upwards or downwards
-    //                 const centershot = this.invert ? 270 : 90,
-    //                     speed = 4;
-
-    //                 // Create our three shots
-    //                 const shots = [
-    //                     new EnemyShot(this.x, this.y, centershot, speed),
-    //                     new EnemyShot(this.x, this.y, centershot - 30, speed),
-    //                     new EnemyShot(this.x, this.y, centershot + 30, speed)
-    //                 ];
-    //                 shots.forEach( shot => game.Projectiles.push(shot));
-    //             }
-    //             break;
-    //         case 'psycho':
-    //             // Shoot in a circle (8 shots?)
-    //             if(this.shotCooldown <= 0){
-    //                 this.shotCooldown = 120;
-    //                 for(let i = 0; i < 360; i+= 45){
-    //                     game.Projectiles.push( new EnemyShot(this.x, this.y, i, 1.5) )
-    //                 }
-    //             }
-    //             break;
-    //     }
-    // }
-    // static spawn(x, form){
-    //     let f, invert;
-    //     switch (form){
-    //         case 'basic':
-    //             f = form;
-    //             invert = false;
-    //             break;
-    //         case 'spread':
-    //             f = form;
-    //             invert = false;
-    //             break;
-    //         case 'inverted':
-    //             f = 'basic';
-    //             invert = true;
-    //             break;
-    //         case 'hybrid':
-    //             f = 'spread';
-    //             invert = true;
-    //             break;
-    //         case 'psycho':
-    //             f = form;
-    //             invert = Math.round(Math.random()) ? true : false;
-    //             break;
-    //     }
-    //     return new PotShot(x, f, invert);
-    // }
+        return new PotShot(x, invert, 120, shootingFunc);
+    }
 }
 
 class Ace extends EnemyPlane{
@@ -326,6 +263,30 @@ class Ace extends EnemyPlane{
             }
         }
     }
+
+    static spawn( spawnLeft = true ){
+        // Set Y
+        const { drawH } = spriteData['SmDyna-01']['dimensions'];
+        const y = drawH * 2;
+        // Set Key Frames
+        const keyFrames = [
+            Ace.setKeyFrame(0, 70),
+            Ace.setKeyFrame(-180,180),
+            Ace.setKeyFrame(0,1)
+        ]
+        // Set shootingFunc
+        const shootingFunc = (self, game) => {
+            self.toShoot = 120;
+            if(game.Player){
+                // AIM
+                const target = getDirection(self, game.Player);
+                // FIRE
+                game.Projectiles.push(new EnemyShot(self.x, self.y, target, 4));
+            }
+        }
+        // return new Ace
+        return new Ace(y, spawnLeft, keyFrames, 120, shootingFunc);
+    }
 }
 // Medium Plane
 
@@ -365,30 +326,6 @@ class Gunner extends EnemyPlane{
             game.EFX.push(setEffectTrailBurn(emitX,emitY));
         }
     }
-
-    // update(game){
-    //     // Check if it can shoot
-    //     this.updateFrame();
-    //     this.toShoot--;
-    //     if(this.toShoot <= 0){
-    //         this.toShoot = 60;
-
-    //         // Aim
-    //         if(game.Player) this.target = getDirection(this, game.Player);
-
-    //         // Fire
-    //         game.Projectiles.push(new EnemyShot(this.x, this.y, this.target));
-    //     }
-    //     this.y-=this.speed;
-    //     if(this.y < -this.drawH) this.health = 0;
-
-    //     // HULL DAMAGE
-    //     for(const emitter of this.emitters){
-    //         const emitX = this.x + emitter[0];
-    //         const emitY = this.y + emitter[1];
-    //         game.EFX.push(setEffectTrailBurn(emitX,emitY));
-    //     }
-    // }
 
     static spawn(x = 300){
         const shootingFunc = (self, game) => {
