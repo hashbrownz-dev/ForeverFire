@@ -16,36 +16,31 @@ const shootAtPlayer = (interval, speed, defTarget) => {
     }
 }
 
-const shootSpread = (interval, speed, defTarget, amount, space) => {
+const shootSpread = (interval, speed, amount, space, defTarget) => {
     return (self, game) => {
         self.toShoot = interval;
+        const { Player } = game;
+        const target = Player ? getDirection(self, Player) : defTarget;
+        if(target){
+            const n = amount % 2 ? Math.floor(amount / 2) : (amount/2) - 0.5;
+            const origin = target - (space * n);
+            for(let i = 0; i < amount; i++){
+                const dir = origin + (space * i);
+                const bullet = new EnemyShot(self.x, self.y, dir, speed);
+                game.Projectiles.push(bullet);
+            }
+        }
     }
 }
 
 const shootArc = (interval, speed, amount, startAngle, endAngle) => {
     return (self, game) => {
         self.toShoot = interval;
-        const bullets = [];
+        const n = (endAngle - startAngle) / amount;
+        for(let i = 0; i < amount; i++){
+            const dir = startAngle + (i * n);
+            const bullet = new EnemyShot(self.x, self.y, dir, speed);
+            game.Projectiles.push(bullet);
+        }
     }
 }
-
-// const shootPlayer = (self, game) => {
-//     self.toShoot = 60;  // this needs to be a variable we can change...
-//     const { Player } = game;
-//     if(Player){
-//         //AIM
-//         const target = getDirection(self, Player);
-//         // FIRE
-//         game.Projectiles.push(new EnemyShot(self.x, self.y, target, 5)); // bullet speed also needs to be a variable we can change...
-//     }
-// }
-
-// const shootingFunc = (self, game) => {
-//     self.toShoot = 60;
-//     if(game.Player){
-//         // AIM
-//         const target = getDirection(self, game.Player);
-//         // FIRE
-//         game.Projectiles.push(new EnemyShot(self.x, self.y, target, 5));
-//     }
-// }
