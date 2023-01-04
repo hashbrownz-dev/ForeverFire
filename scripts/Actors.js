@@ -353,6 +353,7 @@ class EnemyShot extends Actor {
         this.power = 36;
         this.dir = dir ? dir : 0;
         this.speed = speed ? speed : 2;
+        this.type = 'enemy';
     }
     update(game){
         moveActor(this);
