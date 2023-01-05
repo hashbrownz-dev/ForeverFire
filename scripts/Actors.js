@@ -68,7 +68,8 @@ class EnemyPlane extends Actor{
         this.sprite = sprite;
         this.toShoot = toShoot;
         this.shootFunc = shootFunc ? shootFunc : ()=>{console.log('No Shooting Function')};
-        this.type = 'enemy'
+        this.type = 'enemy';
+        this.outline = '#FFFFFF';
     }
     update(game){
         this.move(game);
@@ -101,6 +102,7 @@ class Kamikaze extends EnemyPlane{
         this.mirrorY = invert;
         this.distance;
         this.xSpeed = 1.5;
+        this.fill = '#EC1E24';
     }
     move(game){
         // Set our initial distance
@@ -179,6 +181,7 @@ class PotShot extends EnemyPlane{
         this.points = 14;
         this.invert = invert;
         this.mirrorY = invert;
+        this.fill = '#EC1C24'
     }
 
     move(game){
@@ -216,6 +219,7 @@ class Ace extends EnemyPlane{
         const { action, duration } = this.keyFrames.shift();
         this.action = action;
         this.timer = duration;
+        this.fill = '#ED1C24';
     }
 
     move(game){
@@ -288,6 +292,7 @@ class Gunner extends EnemyPlane{
         this.points = 50;
         this.toShoot = toShoot;
         this.emitters = [];
+        this.fill = '#EC1E24';
     }
     move(game){
         this.updateFrame();
