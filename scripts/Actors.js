@@ -197,17 +197,7 @@ class PotShot extends EnemyPlane{
         const { drawW } = spriteData['PotShot-01']['dimensions'];
         const x = Math.floor(Math.random() * (viewport.width - (drawW + 10)) + (drawW + 10));
 
-        const shootingFunc = (self, game) => {
-            self.toShoot = 60;
-            if(game.Player){
-                // AIM
-                const target = getDirection(self, game.Player);
-                // FIRE
-                game.Projectiles.push(new EnemyShot(self.x, self.y, target, 5));
-            }
-        }
-
-        return new PotShot(x, invert, 120, shootingFunc);
+        return new PotShot(x, invert, 120, shootAtPlayer(60, 5, 90));
     }
 }
 
@@ -274,18 +264,8 @@ class Ace extends EnemyPlane{
             Ace.setKeyFrame(-180,180),
             Ace.setKeyFrame(0,1)
         ]
-        // Set shootingFunc
-        const shootingFunc = (self, game) => {
-            self.toShoot = 120;
-            if(game.Player){
-                // AIM
-                const target = getDirection(self, game.Player);
-                // FIRE
-                game.Projectiles.push(new EnemyShot(self.x, self.y, target, 4));
-            }
-        }
         // return new Ace
-        return new Ace(y, spawnLeft, keyFrames, 120, shootingFunc);
+        return new Ace(y, spawnLeft, keyFrames, 120, shootAtPlayer(120, 5));
     }
 }
 // Medium Plane
@@ -328,16 +308,7 @@ class Gunner extends EnemyPlane{
     }
 
     static spawn(x = 300){
-        const shootingFunc = (self, game) => {
-            // AIM
-            const target = game.Player ? getDirection(self, game.Player) : 270;
-            // FIRE
-            game.Projectiles.push(new EnemyShot(self.x, self.y, target));
-            // CLEAN UP
-            self.toShoot = 60;
-        }
-
-        return new Gunner(x, 10, 120, shootingFunc);
+        return new Gunner(x, 10, 120, shootAtPlayer(60, 5, 270));
     }
 }
 
