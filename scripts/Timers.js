@@ -38,9 +38,8 @@ class Interval{
             this.timer = this.interval;
         }
 
-        if(this.duration === 0){
-            this.clear = true;
-        }
+        if(this.duration === 0) this.clear = true;
+        if(this.duration < 0 ) this.duration = -1;
     }
 }
 
@@ -67,3 +66,18 @@ class Timeline{
 const secondsToFrames = (seconds) => {
     return seconds * 60
 }
+
+// DEMO TIMELINE
+
+const alarms = [];
+for(let i = 1000; i > 0; i--){
+    const a = new Alarm(30, (game) => {
+        const e = spawnSample();
+        game.Actors.push(e);
+    })
+}
+const demoTimeline = new Timeline(alarms);
+
+const demoInterval = new Interval(30, (game) => {
+    game.Actors.push(spawnSample());
+})

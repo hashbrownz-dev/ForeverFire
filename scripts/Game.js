@@ -3,8 +3,6 @@ class Game{
         this.Score = 0;
         this.Timer;
         this.Lives = 3;
-        this.Wave = 0;
-        this.Waves = [];
         this.Player = new Player();
         this.Actors = [];
         this.Projectiles = [];
@@ -12,18 +10,20 @@ class Game{
         this.EFX = [];
         this.Background = new Background();
         this.gameOver = false;
-        this.DBR = false;
+        this.DBR = true;
 
         // START GAME
-        this.Waves.push(demoTimeline());
-        this.Controllers.push(this.Waves[this.Wave])
+        // this.Wave = 0;
+        // this.Waves = [];
+        // this.Waves.push(demoTimeline);
+        this.Controllers.push(demoInterval)
     }
 
     update(input, elapsed){
         // Update Timer
-        this.updateTimer(elapsed);
+        // this.updateTimer(elapsed);
         // Update Controllers
-        this.Controllers.forEach( controller => controller.update(elapsed, this));
+        this.Controllers.forEach( controller => controller.update(this));
 
         // Update Player
         if(this.Player) this.Player.update(input, this);
@@ -32,7 +32,7 @@ class Game{
         this.Actors.forEach( actor => actor.update(this) );
 
         // Update Projectiles
-        this.Projectiles.forEach( projectile => projectile.update(elapsed, this));
+        this.Projectiles.forEach( projectile => projectile.update(this));
 
         // Check for Collisions
         this.checkForCollisions();
@@ -67,16 +67,18 @@ class Game{
 
         // Check game state
         if(!this.Controllers.length){
+            this.gameOver = true;
+            console.log('You Win');
             // if all controllers have been cleared... and the player is still alive. we look at actors + proj
-            if(!this.Actors.length && !this.Projectiles.length){
-                this.Wave++;
-                if(this.Wave < this.Waves.length){
-                    this.Controllers.push(this.Waves[this.Wave]);
-                } else {
-                    this.gameOver = true;
-                    console.log('You Win');
-                }
-            }
+            // if(!this.Actors.length && !this.Projectiles.length){
+            //     this.Wave++;
+            //     if(this.Wave < this.Waves.length){
+            //         this.Controllers.push(this.Waves[this.Wave]);
+            //     } else {
+            //         this.gameOver = true;
+            //         console.log('You Win');
+            //     }
+            // }
         }
     }
 

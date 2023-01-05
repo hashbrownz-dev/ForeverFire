@@ -1,18 +1,21 @@
 class Player extends Actor {
     constructor(){
-        const x = viewport.width /2;
-        const y = viewport.height - (48 * 2);
-        super(x,y,90,60,[
-            [39,8,12,8],
-            [35,16,20,18]
-        ]);
+        const sprite = [
+            spriteData['Player-01'],
+            spriteData['Player-02'],
+            spriteData['Player-03'],
+            spriteData['Player-02']
+        ];
+        super(sprite[0]);
+        this.x = viewport.width / 2;
+        this.y = viewport.height - (48 * 2);
         this.health = 100;
         this.shotLevel = 1;
         this.shotCooldown = 15;
         this.speed = 2;
         this.type = 'player';
         this.frame = 0;
-        this.sprite = _VECT_player;
+        this.sprite = sprite;
     }
     getBoundaries(){
         if(this.x < (this.drawW / 2) + 8) this.x = (this.drawW / 2) + 8;

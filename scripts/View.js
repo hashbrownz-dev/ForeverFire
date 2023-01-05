@@ -79,7 +79,7 @@ class View{
     }
 
     static drawHitBoxes(actor){
-        for(let i = 0; i < actor.hitBoxes.length; i++){
+        for(let i = 0; i < actor.hitboxes.length; i++){
             const {x,y,w,h} = actor.getHitBox(i);
             ctx.strokeStyle = '#33ff00';
             ctx.strokeRect(x,y,w,h);

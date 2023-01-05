@@ -14,9 +14,9 @@ class Particle{
     }
     updatePos(dir=0){
         // Update the direction of the particle.
-        turn(this,dir)
+        turnActor(this,dir)
         // Move the particle
-        move(this);
+        moveActor(this);
         // Move with background
         this.y += this.scrollRate;
     }

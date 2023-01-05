@@ -5,7 +5,7 @@ class Actor{
         this.y = 0;
         this.drawW = dimensions.drawW;
         this.drawH = dimensions.drawH;
-        this.hitboxes = hitboxes;
+        this.hitboxes = Actor.setHitBoxes(hitboxes);
         this.health = 1;
         this.frame = 0;
         this.type = '';
@@ -26,20 +26,33 @@ class Actor{
         return [x,y,w,h]
     }
     getHitBox(i){
-        const hitbox = this.hitBoxes[i];
+        // const hitbox = this.hitboxes[i];
+        const { x, y, w, h } = this.hitboxes[i];
         return {
-            x: this.drawX + hitbox[0],
-            y: this.drawY + hitbox[1],
-            w: hitbox[2],
-            h: hitbox[3]
+            x: this.drawX + x,
+            y: this.drawY + y,
+            w,
+            h
         }
     }
     getHitBoxes(){
         const hitBoxes = [];
-        for(let i = 0; i < this.hitBoxes.length; i++){
+        for(let i = 0; i < this.hitboxes.length; i++){
             hitBoxes.push(this.getHitBox(i));
         }
         return hitBoxes;
+    }
+    static setHitBoxes(hitboxes){
+        const hbs = [];
+        for(let i = 0; i < hitboxes.length; i++){
+            hbs.push({
+                x : Number(hitboxes[i].x),
+                y : Number(hitboxes[i].y),
+                w : Number(hitboxes[i].w),
+                h : Number(hitboxes[i].h)
+            })
+        }
+        return hbs;
     }
     updateFrame(){
         this.frame++;
