@@ -61,7 +61,7 @@ class Actor{
         }
     }
     draw(){
-        renderSprite(this.sprite[this.frame], this.x, this.y, {
+        renderSprite(this.sprite[this.frame], this.drawX, this.drawY, {
             xScale : this.xScale,
             yScale : this.yScale,
             dir : this.dir,

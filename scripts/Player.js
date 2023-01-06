@@ -48,11 +48,16 @@ class Player extends Actor {
 
 class PlayerShot extends Actor {
     constructor(x,y){
-        super(x, y, 5, 17, [ [0.5,0.5,4,16] ]);
+        const sprite = [
+            spriteData['PlayerBullet-01'],
+        ]
+        super(sprite[0]);
+        this.x = x;
+        this.y = y;
         this.speed = 8;
         this.power = 1;
         this.type = 'player'
-        this.sprite = _VECT_PlayerBullet
+        this.sprite = sprite
     }
     update(){
         this.y-=this.speed;
