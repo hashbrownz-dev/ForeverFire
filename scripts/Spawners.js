@@ -6,10 +6,10 @@
 // EXAMPLE SPAWN FUNCTION
 
 const spawnSample = () => {
-    const potShot = new PotShot(0, false, 120, shootAtPlayer(60,5));
+    const potShot = new PotShot(0, false, 60, shootAtPlayer(120,3));
     potShot.x = getRandom(potShot.drawW, viewport.width - (potShot.drawW * 2));
     // If we need to adjust the flight speed
-    potShot.speed = 5;
+    // potShot.speed = 5;
     // Or ANY other properties
     potShot.points = 19;
     // Style Override
@@ -24,10 +24,68 @@ const spawnSample = () => {
     return potShot;
 }
 
-// SPAWN POTSHOTS RANDOMLY
-const spawnPotShot = (invert = false) => {
-    return PotShot.spawn(invert);
+// PotShots - Flies vertically
+
+const spawnPotShot = (x, invert = false, intensity = 1) => {
+    const potShot = new PotShot(0, invert);
+    if(!x){
+        const drawW = potShot.drawW;
+        const spawnLimit = drawW / 2 + drawW;
+        potShot.x = getRandom(spawnLimit, viewport.width - spawnLimit);
+    } else {
+        potShot.x = x;
+    }
+    potShot.speed = 2 + (0.5 * intensity);
+    // CHANGE COLORS
+    // potShot.styles = [];
+    // potShot.styles.push({
+    //     method:'stroke',
+    //     defaultColor:potShot.outline,
+    //     newColor: enemyColors[intensity - 1]
+    // })
+    return potShot;
 }
+
+// Pacifist - Does NOT Shoot
+
+const spawnPotShotPacifist = (x, invert = false, intensity = 1) => {
+    return spawnPotShot(x, invert, intensity);
+}
+
+// Sniper - Fires Projectiles targeting the player
+
+const spawnPotShotSniper = (x, invert = false, intensity = 1) => {
+    const potShot = spawnPotShot(x, invert, intensity);
+    // SHOOTING MECHANICS
+    potShot.toShoot = 60;
+    potShot.shootFunc = shootAtPlayer(120,3);
+    // CHANGE COLORS
+    // potShot.styles.push({
+    //     method:'fill',
+    //     defaultColor:potShot.fill,
+    //     newColor: enemyColors[intensity - 1]
+    // })
+    return potShot;
+}
+
+// Cover - Fires Projectiles
+
+// KAMIKAZE
+
+// Pacifist
+
+const spawnKamikazePacifist = (x, invert = false, intensity = 1) => {
+    const kamikaze = new Kamikaze(0, invert);
+    const spawnLimit = kamikaze.drawW /2 + kamikaze.drawW;
+    kamikaze.x = getRandom(spawnLimit, viewport.width - spawnLimit);
+    // CHANGE COLORS
+    return kamikaze
+}
+
+// Sniper
+
+// Cover
+
 // SPAWN Flying V Potshots
 // SPAWN SPREAD POT SHOTS
 // SPAWN AN INVERSION OF THE PREVIOUS

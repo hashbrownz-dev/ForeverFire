@@ -78,6 +78,10 @@ for(let i = 1000; i > 0; i--){
 }
 const demoTimeline = new Timeline(alarms);
 
-const demoInterval = new Interval(30, (game) => {
-    game.Actors.push(spawnSample());
+const demoInterval = new Interval(60, (game) => {
+    const i = Math.floor(Math.random() * 6 + 1);
+    const invert = Math.round(Math.random()) ? true : false;
+    // game.Actors.push(spawnPotShotPacifist(0, invert, i));
+    game.Actors.push(spawnPotShotSniper(0, invert, i));
+    // game.Actors.push(spawnKamikazePacifist(0, invert, i));
 })

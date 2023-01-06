@@ -3,8 +3,8 @@ class Actor{
         const { dimensions, hitboxes } = Sprite;
         this.x = 0;
         this.y = 0;
-        this.drawW = dimensions.drawW;
-        this.drawH = dimensions.drawH;
+        this.drawW = Number(dimensions.drawW);
+        this.drawH = Number(dimensions.drawH);
         this.hitboxes = Actor.setHitBoxes(hitboxes);
         this.health = 1;
         this.frame = 0;
@@ -112,7 +112,7 @@ class Kamikaze extends EnemyPlane{
         this.points = 9;
         this.invert = invert;
         this.mirrorX = false;
-        this.mirrorY = invert;
+        this.mirrorY = !invert;
         this.distance;
         this.xSpeed = 1.5;
         this.fill = '#EC1E24';
@@ -135,6 +135,7 @@ class Kamikaze extends EnemyPlane{
             if(this.drawY > viewport.height) this.health = 0;
         }
         
+        this.frame = 0;
         if(game.Player){
             let x = game.Player.x;
 
@@ -142,7 +143,6 @@ class Kamikaze extends EnemyPlane{
             const delta = currentDistance / this.distance;
             const xSpeed = this.xSpeed * delta;
 
-            this.frame = 0;
             if(delta >=0.375) this.frame = 1;
             if(delta >= 0.75) this.frame = 2;       
 
@@ -194,7 +194,12 @@ class PotShot extends EnemyPlane{
         this.points = 14;
         this.invert = invert;
         this.mirrorY = invert;
-        this.fill = '#EC1C24'
+        this.fill = '#EC1C24';
+        // Invert HitBox
+        if(this.invert){
+            const hb = this.hitboxes[0];
+            hb.y = this.drawH - (hb.y + hb.h);
+        }
     }
 
     move(game){
