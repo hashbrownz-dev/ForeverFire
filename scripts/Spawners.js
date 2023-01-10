@@ -13,21 +13,15 @@ const spawnSample = () => {
     // Or ANY other properties
     potShot.points = 19;
     // Style Override
-    potShot.styles = [
-        // Override outline
-        { method: 'stroke', defaultColor:potShot.outline, newColor:'#32CD32'},
-        // Override cokpit color
-        { method: 'fill', defaultColor: potShot.fill, newColor: '#30D5C8'}
-    ]
-    // We can do it in our spawn function AFTER we instantiate our enemy
-    // Finally we return our instantiated object so that it can be pushed into Game.Actors
+    potShot.styles = setColors(red, yellow, potShot);
     return potShot;
 }
 
 // PotShots - Flies vertically
 
-const spawnPotShot = (x, invert = false, intensity = 1) => {
+const spawnPotShot = (x, invert = false, speed = 2.5, intensity = 0) => {
     const potShot = new PotShot(0, invert);
+
     if(!x){
         const drawW = potShot.drawW;
         const spawnLimit = drawW / 2 + drawW;
@@ -35,42 +29,113 @@ const spawnPotShot = (x, invert = false, intensity = 1) => {
     } else {
         potShot.x = x;
     }
-    potShot.speed = 2 + (0.5 * intensity);
+
+    potShot.speed = speed;
+    potShot.points = 9;
+    potShot.points += (potShot.points + 1) * intensity;
+
     // CHANGE COLORS
-    // potShot.styles = [];
-    // potShot.styles.push({
-    //     method:'stroke',
-    //     defaultColor:potShot.outline,
-    //     newColor: enemyColors[intensity - 1]
-    // })
+    potShot.styles = setColors(white, aqua, potShot);
+
     return potShot;
 }
 
 // Pacifist - Does NOT Shoot
 
-const spawnPotShotPacifist = (x, invert = false, intensity = 1) => {
-    return spawnPotShot(x, invert, intensity);
+const spawnPotShotPacifist = (x, invert = false, speed = 3) => {
+    return spawnPotShot(x, invert, speed, 0);
 }
 
 // Sniper - Fires Projectiles targeting the player
 
-const spawnPotShotSniper = (x, invert = false, intensity = 1) => {
-    const potShot = spawnPotShot(x, invert, intensity);
+const spawnPotShotSniper = (x, invert = false, speed = 3, intensity = 0) => {
+    const potShot = spawnPotShot(x, invert, speed, intensity);
+
     // SHOOTING MECHANICS
-    potShot.toShoot = 60;
-    potShot.shootFunc = shootAtPlayer(120,3);
+    // 90 - intensity * 6 ... 84, 78, 72, 66, 60
+    // 4 + intensity * 0.6 ... 4.6, 5.2, 5.8, 6.4, 7
+    // MIN = 90 / 4
+    // MAX = 60 / 7
+    const rof = 90 - (intensity * 6);
+    const spd = 4 + (intensity * 0.6);
+
+    potShot.toShoot = 60 - (intensity * 6);
+    if(intensity >= 4){
+        potShot.shootFunc = shootSpread(rof, spd, 4, 15);
+    }else if(intensity >= 2){
+        potShot.shootFunc = shootSpread(rof,spd, 2, 30);
+    } else {
+        potShot.shootFunc = shootAtPlayer(rof, spd);
+    }
+
+    potShot.points = 19;
+    potShot.points += (potShot.points + 1) * intensity;
+
     // CHANGE COLORS
-    // potShot.styles.push({
-    //     method:'fill',
-    //     defaultColor:potShot.fill,
-    //     newColor: enemyColors[intensity - 1]
-    // })
+    const palette = [
+        pink,
+        purple,
+        aqua,
+        yellow,
+        orange,
+        red,
+    ]
+    potShot.styles = setColors(orange, palette[intensity], potShot);
+
     return potShot;
 }
 
 // Cover - Fires Projectiles
 
+const spawnPotShotCover = (x, invert = false, speed = 3, intensity = 0) => {
+    const potShot = spawnPotShot(x, invert, speed, intensity);
+
+    // SHOOTING MECHANICS
+    // 90 - intensity * 6 ... 84, 78, 72, 66, 60
+    // 4 + intensity * 0.6 ... 4.6, 5.2, 5.8, 6.4, 7
+    // MIN = 90 / 4
+    // MAX = 60 / 7
+    const rof = 90 - (intensity * 6);
+    const spd = 4 + (intensity * 0.6);
+
+    potShot.toShoot = 60 - (intensity * 6);
+    if(intensity >= 3){
+        potShot.shootFunc = shootArc(rof, spd, 8, 0, 360);
+    } else {
+        potShot.shootFunc = shootArc(rof, spd, 4, 0, 360);
+    }
+
+    potShot.points = 49;
+    potShot.points += (potShot.points + 1) * intensity;
+
+    // CHANGE COLORS
+    const palette = [
+        pink,
+        purple,
+        aqua,
+        yellow,
+        orange,
+        red,
+    ]
+    potShot.styles = setColors(aqua, palette[intensity], potShot);
+
+    return potShot;
+}
+
 // KAMIKAZE
+
+const spawnKamikaze = (x, invert = false, speed = 4, intensity = 1) => {
+    const kamikaze = new Kamikaze(0, invert);
+    if(!x){
+        const drawW = kamikaze.drawW;
+        const spawnLimit = drawW / 2 + drawW;
+        kamikaze.x = getRandom(spawnLimit, viewport.width - spawnLimit);
+    } else {
+        kamikaze.x = x;
+    }
+
+    kamikaze.speed = speed;
+}
 
 // Pacifist
 
@@ -101,4 +166,19 @@ const spawnKamikazePacifist = (x, invert = false, intensity = 1) => {
 
 const getRandom = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+const setColors = (outline, fill, actor) => {
+    return [
+        {
+            method : 'stroke',
+            defaultColor : actor.outline,
+            newColor : outline,
+        },
+        {
+            method : 'fill',
+            defaultColor : actor.fill,
+            newColor : fill
+        },
+    ];
 }

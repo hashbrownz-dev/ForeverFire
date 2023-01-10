@@ -190,8 +190,6 @@ class PotShot extends EnemyPlane{
         super(sprite, toShoot, shootFunc);
         this.x = x;
         this.y = !invert ? -this.drawH : viewport.height + this.drawH;
-        this.speed = 2.5;
-        this.points = 14;
         this.invert = invert;
         this.mirrorY = invert;
         this.fill = '#EC1C24';
