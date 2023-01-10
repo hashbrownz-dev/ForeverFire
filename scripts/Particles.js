@@ -45,18 +45,6 @@ class Emitter{
     }
 }
 
-// EXPLOSION PALETTE
-
-const explosionPalette = [
-    '#660000',  // Crimson
-    '#cc3333',  // Scarlett
-    '#ff9900',  // Orange
-    '#ffcc00',  // Gold
-    '#ffff33',  // Yellow
-    '#ffff99',  // Naples Yellow
-    '#ffffff'   // White
-]
-
 // UPDATE COLOR
 const updateColor = (particle, palette) => {
     const interval = 1 / palette.length;
