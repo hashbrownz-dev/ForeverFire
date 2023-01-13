@@ -14,7 +14,7 @@ class View{
         ctx.clearRect(0,0,viewport.width,viewport.height);
     }
     // The render function handles all of the Drawing
-    static render(Game, userInput){
+    static renderGame(Game, userInput){
         const { Player, Projectiles, Background, Actors, Score, Lives, EFX, DBR } = Game;
 
         // Clear View

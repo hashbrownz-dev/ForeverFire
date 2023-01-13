@@ -1,4 +1,4 @@
-let _Game = new Game();
+let _Game;
 const _UserInput = trackKeys();
 
 const main = () => {
@@ -11,17 +11,27 @@ const main = () => {
         const elapsed = timeStamp - previousTime;
         previousTime = timeStamp;
 
-        // Execute Game Logic
+        // Title
 
-        if(!_Game.gameOver)_Game.update(_UserInput, elapsed);
+        // Game
 
-        // Restart the Game
+        if(_Game){
+            // Execute Game Logic
 
-        if(_Game.gameOver && _UserInput['z']) _Game = new Game();
+            if(!_Game.gameOver)_Game.update(_UserInput, elapsed);
 
-        // Draw
+            // Restart the Game
 
-        View.render(_Game, _UserInput);
+            if(_Game.gameOver && _UserInput['z']) _Game = new Game();
+
+            // Draw
+
+            View.renderGame(_Game, _UserInput);
+        } else {
+            if(_UserInput['z']) _Game = new Game();
+        }
+
+        // Game Over
 
         // Loop
 

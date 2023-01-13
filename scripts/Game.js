@@ -2,7 +2,7 @@ class Game{
     constructor(){
         this.Score = 0;
         this.Timer;
-        this.Lives = 3;
+        this.Lives = 0;
         this.Player = new Player();
         this.Actors = [];
         this.Projectiles = [];
@@ -52,12 +52,12 @@ class Game{
                 const respawnPlayer = (game) => {
                     game.Player = new Player();
                 }
-                this.Controllers.push(new Alarm(3000, respawnPlayer))
+                this.Controllers.push(new Alarm(120, respawnPlayer))
             } else { // Otherwise, Set GAMEOVER Timer
                 const setGameOver = (game) => {
                     game.gameOver = true;
                 }
-                this.Controllers.push(new Alarm(3000, setGameOver));
+                this.Controllers.push(new Alarm(120, setGameOver));
             }
             
         }
