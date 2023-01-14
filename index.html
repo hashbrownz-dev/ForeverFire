@@ -7,7 +7,7 @@
     <title>1942 V</title>
     <link rel="stylesheet" href="./styles/style.css">
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel"> -->
-    <script>
+    <!-- <script>
         const fontTitle = `Garamond`,
             fontHud = `Roboto`;
         const _Title = new FontFace(fontTitle, 'url(./fonts/EBGaramond-VariableFont_wght.ttf)')
@@ -18,7 +18,7 @@
         _Hud.load().then( () => {
             document.fonts.add(_Hud);
         });
-    </script>
+    </script> -->
     <script src="./scripts/ColorPalette.js" defer></script>
     <script src="./scripts/View.js" defer></script>
     <script src="./scripts/Input.js" defer></script>
@@ -37,12 +37,19 @@
     <div id="game">
         <div id="hud">
             <div id="top-bar">
-                <p>Health</p>
-                <div id="health-bar"></div>
-                <p>Hi-Score</p>
-                <p>Score</p>
+                <p id="score-label">Score</p>
+                <div class="position-relative">
+                    <p id="health-bar-label">Player</p>
+                    <div id="health-bar-container">
+                        <div id="health-bar"></div>
+                    </div>
+                </div>
+                <p id="hi-score-label" class="align-right">Hi-Score</p>
                 <p id="score">000000</p>
-                <p id="hi-score">000000</p>
+                <div>
+                    
+                </div>
+                <p id="hi-score" class="align-right">000000</p>
             </div>
             <div id="lives"></div>
         </div>

@@ -8,6 +8,20 @@
     src: url('../fonts/RobotoSlab-VariableFont_wght.ttf');
 }
 
+:root {
+    --red : #f00;
+    --crimson : #600;
+    --scarlet : #c33;
+    --orange : #f90;
+    --gold : #fc0;
+    --yellow : #ff0;
+    --naples-yellow : #ff9;
+    --lime : #0f0;
+    --aqua : #0ff;
+    --purple : #60f;
+    --pink : #f3f;
+}
+
 html, body{
     margin:0;
     overflow-y: hidden;
@@ -15,11 +29,31 @@ html, body{
 
 #game{
     background: black;
-    border: 3px solid lime;
+    border: 3px solid var(--lime);
     margin: 0 auto;
     max-height: 600px;
     max-width: 800px;
     position: relative;
+}
+
+#health-bar-container{
+    border: 1px solid var(--lime);
+    bottom: 8px;
+    box-sizing: border-box;
+    height: 18px;
+    position: absolute;
+    right: 0;
+    width: 301px;
+}
+
+#health-bar{
+    background-color: var(--lime);
+    height: 100%;
+    width: 100%;
+}
+
+#health-bar-label{
+    font-weight: 300;
 }
 
 #hud{
@@ -34,5 +68,17 @@ html, body{
 
 #top-bar{
     display: grid;
-    grid-template-columns: 15% 70% 15%;
+    grid-template-columns: 25% 50% 25%;
+}
+
+.align-right{
+    text-align: right;
+}
+
+.position-relative{
+    position: relative;
+}
+
+p{
+    margin: 4px;
 }
