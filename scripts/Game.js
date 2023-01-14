@@ -1,6 +1,7 @@
 class Game{
     constructor(){
         this.Score = 0;
+        this.hiScore = 1000;
         this.Timer;
         this.Lives = 0;
         this.Player = new Player();
@@ -91,6 +92,7 @@ class Game{
 
     updateScore(points){
         this.Score+=points;
+        if(this.Score > this.hiScore) this.hiScore = this.Score;
     }
 
     updateTimer(time){

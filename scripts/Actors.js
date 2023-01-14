@@ -342,7 +342,7 @@ class EnemyShot extends Actor {
         this.sprite = sprite;
         this.x = x;
         this.y = y;
-        this.power = 36;
+        this.power = 25;
         this.dir = dir ? dir : 0;
         this.speed = speed ? speed : 2;
         this.type = 'enemy';

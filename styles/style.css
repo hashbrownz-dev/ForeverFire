@@ -49,6 +49,7 @@ html, body{
 #health-bar{
     background-color: var(--lime);
     height: 100%;
+    /* transition: width 250ms; */
     width: 100%;
 }
 
