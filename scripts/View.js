@@ -50,13 +50,9 @@ class View{
             emitter.particles.forEach( particle => particle.draw())
         })
 
-        // Draw GUI
+        // Draw HUD
 
-        // Draw High Score
-
-        // Draw Score
-
-        // Draw Health
+        drawHUD(Game);
 
         let pHealth = Player ? Player.health : 0;
 

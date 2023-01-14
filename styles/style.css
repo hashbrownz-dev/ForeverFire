@@ -38,7 +38,7 @@ html, body{
 
 #health-bar-container{
     border: 1px solid var(--lime);
-    bottom: 8px;
+    bottom: 8.2px;
     box-sizing: border-box;
     height: 18px;
     position: absolute;
@@ -69,6 +69,8 @@ html, body{
 #top-bar{
     display: grid;
     grid-template-columns: 25% 50% 25%;
+    margin: 0 auto;
+    width: 780px;
 }
 
 .align-right{
