@@ -1,4 +1,4 @@
-const trackKeys = (keys = ['w','a','s','d','z','ArrowLeft','ArrowUp','ArrowRight','ArrowDown',` `]) => {
+const trackKeys = (keys = ['w','a','s','d','z','ArrowLeft','ArrowUp','ArrowRight','ArrowDown',` `, 'x', 'c']) => {
     let down = Object.create(null);
     const track = (event) => {
         if(keys.includes(event.key)){

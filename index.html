@@ -6,12 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1942 V</title>
     <link rel="stylesheet" href="./styles/style.css">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel"> -->
+    <script>
+        const fontTitle = `Garamond`,
+            fontHud = `Roboto`;
+        const _Title = new FontFace(fontTitle, 'url(./fonts/EBGaramond-VariableFont_wght.ttf)')
+        _Title.load().then( () => {
+            document.fonts.add(_Title);
+        });
+        const _Hud = new FontFace(fontHud, 'url(./fonts/RobotoSlab-VariableFont_wght.tff)');
+        _Hud.load().then( () => {
+            document.fonts.add(_Hud);
+        });
+    </script>
     <script src="./scripts/ColorPalette.js" defer></script>
     <script src="./scripts/View.js" defer></script>
-    <script src="./scripts/Movement.js" defer></script>
-    <script src="./scripts//Particles.js" defer></script>
     <script src="./scripts/Input.js" defer></script>
+    <script src="./scripts/TitleMenu.js" defer></script>
+    <script src="./scripts/Movement.js" defer></script>
     <script src="./scripts/Timers.js" defer></script>
+    <script src="./scripts//Particles.js" defer></script>
     <script src="./scripts/Shooting.js" defer></script>
     <script src="./scripts/Actors.js" defer></script>
     <script src="./scripts/Player.js" defer></script>
@@ -20,24 +34,19 @@
     <script src="./scripts/App.js" defer></script>
 </head>
 <body>
-    <div id="game-container">
-        <div id="panel-left" class="panel">
-            <div id="debug" style="visibility:hidden">
-                <p id = 'keylog'>KeyLog</p>
-                <p id = 'proj'>Projectiles</p>
-                <p id = 'actors'>Actors</p>
-                <p id = 'controllers'>Controllers</p>
-                <p id = 'timer'>Game Time</p>
-                <p id = 'player'>Player</p>
+    <div id="game">
+        <div id="hud">
+            <div id="top-bar">
+                <p>Health</p>
+                <div id="health-bar"></div>
+                <p>Hi-Score</p>
+                <p>Score</p>
+                <p id="score">000000</p>
+                <p id="hi-score">000000</p>
             </div>
+            <div id="lives"></div>
         </div>
-        <canvas height="720" width="540" id="viewport"></canvas>
-        <div id="panel-right" class="panel">
-            <!--<p id="hi-score">Hi-Score</p>-->
-            <p id="score">Score</p>
-            <p id="health">Health</p>
-            <p id="lives">Lives</p>
-        </div>
+        <canvas height="600" width="800" id="viewport"></canvas>
     </div>
     <!-- LOAD IMAGE DATA-->
     <!-- <script src="./images/VectorData.js"></script> -->

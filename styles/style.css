@@ -1,19 +1,38 @@
+@font-face {
+    font-family: 'Garamond';
+    src: url('../fonts/EBGaramond-VariableFont_wght.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/RobotoSlab-VariableFont_wght.ttf');
+}
+
 html, body{
     margin:0;
     overflow-y: hidden;
 }
 
-#game-container{
-    display: flex;
-    justify-content: center;
+#game{
+    background: black;
+    border: 3px solid lime;
+    margin: 0 auto;
+    max-height: 600px;
+    max-width: 800px;
+    position: relative;
 }
 
-#debug{
+#hud{
+    color: white;
+    font-family: 'Roboto', monospace;
+    font-size: 20px;
+    font-weight: 700;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    text-transform: uppercase;
+    width: 100%;
 }
 
-.panel{
-    width: 50%;
+#top-bar{
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
 }

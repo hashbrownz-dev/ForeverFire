@@ -56,19 +56,13 @@ class View{
 
         // Draw Score
 
-        document.getElementById('score').innerHTML = `SCORE: ${Score}`
-
         // Draw Health
 
         let pHealth = Player ? Player.health : 0;
-        document.getElementById('health').innerHTML = `HP: ${pHealth} / 100`
 
         // Draw Lives
 
-        document.getElementById('lives').innerHTML = `LIVES: ${Lives}`
-
         // DEBUG
-        // drawDebug(Game, userInput);
     }
 
     // Draw Actor

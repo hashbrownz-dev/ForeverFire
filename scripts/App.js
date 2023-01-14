@@ -1,3 +1,4 @@
+let _Menu;
 let _Game;
 const _UserInput = trackKeys();
 
