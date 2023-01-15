@@ -8,6 +8,11 @@
     src: url('../fonts/RobotoSlab-VariableFont_wght.ttf');
 }
 
+@font-face {
+    font-family: 'Cinzel';
+    src: url('../fonts/Cinzel-VariableFont_wght.ttf');
+}
+
 :root {
     --red : #f00;
     --crimson : #600;
@@ -74,8 +79,23 @@ html, body{
     width: 780px;
 }
 
+#title{
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 64px;
+    font-weight: 400;
+    margin-top: 150px;
+    /* position: relative; */
+    text-align: center;
+    /* top: 100px; */
+}
+
 .align-right{
     text-align: right;
+}
+
+.hidden{
+    display: none;
 }
 
 .position-relative{

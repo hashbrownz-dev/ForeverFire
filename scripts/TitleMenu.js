@@ -113,8 +113,7 @@ const renderMenu = (menu) => {
     // I want our... render methodology to be pretty... consistent...
     // Because I want to avoid spending a lot of time doing custom formatting / styling
     // So we'll use regular HTML elements to render our entire view...
-    // A few things will need to do first: 
-    // Restructure our core HTML element
+    
 }
 
 // static drawTitle(){
