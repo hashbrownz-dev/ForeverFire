@@ -5,13 +5,13 @@
 // INSTRUCTIONS
 
 class Menu {
-    constructor(options=[], id, parent){
+    constructor(options=[], id){
         this.options = options;
         this.optionNodes;
         this.selection = 0;
         this.delay = 0;
         this.id = id;
-        this.parent = parent;
+        this.parent = document.getElementById('menu');
         this.state = {};
         this.currentState = {};
     }
@@ -24,10 +24,6 @@ class Menu {
                 this.delay = 10;
             }
         }
-        // load previous State
-        // compare previous State to current State
-        // if there are changes between both states, update the menu
-        // check the selection, and update the classList of the appropriate node
     }
 
     // Get Input
@@ -143,6 +139,14 @@ class Menu {
     updateSelection(){
         this.optionNodes.forEach( e => { e.classList.remove('selected')});
         this.optionNodes[this.selection].classList.add('selected');
+    }
+
+    // Clear Menu
+    clear(){
+        while(this.parent.firstChild){
+            this.parent.removeChild(this.parent.firstChild);
+        }
+        return undefined;
     }
 }
 

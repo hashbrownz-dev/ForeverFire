@@ -1,5 +1,10 @@
 const startGame = () => {
-    console.log('Start a New Game!');
+    // clear the current menu
+    _Menu = _Menu.clear();
+    // show the HUD
+    showHUD();
+    // create a new game
+    _Game = new Game();
 }
 
 const showScores = () => {
@@ -9,12 +14,6 @@ const showScores = () => {
 const showInstructions = () => {
     console.log('Open a new menu for displaying game instructions');
 }
-
-const titleOptions = [
-    new Selection('Start', startGame),
-    new Selection('Scores', showScores),
-    new Selection('How to Play', showInstructions)
-];
 
 const renderTitleMenu = () => {
     // Get the Containing Element
@@ -28,6 +27,12 @@ const renderTitleMenu = () => {
     container.appendChild(title);
 
     // Draw the menu
+    const titleOptions = [
+        new Selection('Start', startGame),
+        new Selection('Scores', showScores),
+        new Selection('How to Play', showInstructions)
+    ];
+
     const titleMenu = new Menu(titleOptions, 'title-options-container');
     titleMenu.render();
 
@@ -40,13 +45,3 @@ const renderTitleMenu = () => {
     // Return the Menu Object
     return titleMenu;
 }
-
-/* <h1 id="title">Forever Fire</h1>
-    <div id="title-options-container" class="menu">
-        <ul>
-            <li class="selected">start</li>
-            <li>scores</li>
-            <li>how to play</li>
-        </ul>
-    </div>
-<p class="menu-instructions">Move cursor with the Arrow Keys | Press 'Z' to confirm your selection</p> */
