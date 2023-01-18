@@ -4,7 +4,8 @@ const _UserInput = trackKeys();
 
 const main = () => {
     let previousTime;
-
+    _Menu = renderTitleMenu();
+    hideHUD();
     const update = (timeStamp) => {
         // Determine the time between refreshes
 
@@ -13,6 +14,10 @@ const main = () => {
         previousTime = timeStamp;
 
         // Title
+
+        if(_Menu){
+            _Menu.update(_UserInput);
+        }
 
         // Game
 
@@ -28,8 +33,6 @@ const main = () => {
             // Draw
 
             View.renderGame(_Game, _UserInput);
-        } else {
-            if(_UserInput['z']) _Game = new Game();
         }
 
         // Game Over

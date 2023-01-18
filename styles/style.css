@@ -84,10 +84,26 @@ html, body{
     font-family: 'Cinzel', serif;
     font-size: 64px;
     font-weight: 400;
+    margin-bottom: 75px;
     margin-top: 150px;
     /* position: relative; */
     text-align: center;
     /* top: 100px; */
+}
+
+#menu {
+    color: white;
+    font-family: 'Roboto', monospace;
+}
+
+.menu-instructions {
+    text-align: center;
+}
+
+#title-options-container{
+    border: 2px solid white;
+    margin: 40px auto;
+    width: 360px;
 }
 
 .align-right{
@@ -98,8 +114,21 @@ html, body{
     display: none;
 }
 
+.menu > ul {
+    color: white;
+    font-family: 'Roboto', monospace;
+    font-size: 26px;
+    list-style-type: none;
+    padding-left: 80px;
+    text-transform: capitalize;
+}
+
 .position-relative{
     position: relative;
+}
+
+.selected{
+    list-style-type: disc;
 }
 
 p{
