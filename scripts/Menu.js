@@ -142,11 +142,17 @@ class Menu {
     }
 
     // Clear Menu
-    clear(){
-        while(this.parent.firstChild){
-            this.parent.removeChild(this.parent.firstChild);
+    static clear(){
+        const menu = document.getElementById('menu');
+        while(menu.firstChild){
+            menu.removeChild(menu.firstChild);
         }
-        return undefined;
+    }
+
+    // Check to see if a current menu is loaded
+    static isActive(){
+        const menu = document.getElementById('menu');
+        return menu.firstChild;
     }
 }
 

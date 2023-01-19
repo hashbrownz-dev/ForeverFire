@@ -1,12 +1,3 @@
-const startGame = () => {
-    // clear the current menu
-    _Menu = _Menu.clear();
-    // show the HUD
-    showHUD();
-    // create a new game
-    _Game = new Game();
-}
-
 const showScores = () => {
     console.log('Open a new menu for displaying high scores');
 }
@@ -26,7 +17,18 @@ const renderTitleMenu = () => {
     title.innerText = 'Forever Fire';
     container.appendChild(title);
 
-    // Draw the menu
+    // DRAW THE MENU
+    // MENU FUNCTIONS
+
+    const startGame = () => {
+        // clear the current menu
+        Menu.clear();
+        // show the HUD
+        showHUD();
+        // create a new game
+        _Game = new Game();
+    }
+
     const titleOptions = [
         new Selection('Start', startGame),
         new Selection('Scores', showScores),
