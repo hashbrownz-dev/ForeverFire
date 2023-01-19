@@ -9,7 +9,7 @@ class Menu {
         this.options = options;
         this.optionNodes;
         this.selection = 0;
-        this.delay = 0;
+        this.delay = 10;
         this.id = id;
         this.parent = document.getElementById('menu');
         this.state = {};
@@ -110,7 +110,8 @@ class Menu {
     // Render Menu
     render(){
         // Get the Parent Element
-        const parentContainer = document.getElementById('menu');
+        const parentContainer = Menu.container;
+        parentContainer.classList.remove('hidden');
 
         // Create the Containing Element
         const optionsContainer = document.createElement('div');
@@ -141,18 +142,24 @@ class Menu {
         this.optionNodes[this.selection].classList.add('selected');
     }
 
+    // Container
+    static get container(){
+        return document.getElementById('menu');
+    }
+
     // Clear Menu
     static clear(){
-        const menu = document.getElementById('menu');
+        const menu = Menu.container;
         while(menu.firstChild){
             menu.removeChild(menu.firstChild);
         }
+        menu.classList.add('hidden');
+        _Menu = undefined;
     }
 
     // Check to see if a current menu is loaded
-    static isActive(){
-        const menu = document.getElementById('menu');
-        return menu.firstChild;
+    static get isActive(){
+        return Menu.container.firstChild;
     }
 }
 

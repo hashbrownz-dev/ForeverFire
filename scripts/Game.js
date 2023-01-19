@@ -20,6 +20,11 @@ class Game{
         this.Controllers.push(demoInterval)
     }
 
+    static start(){
+        Menu.clear();
+        return new Game();
+    }
+
     update(input, elapsed){
         // Update Timer
         // this.updateTimer(elapsed);

@@ -1,15 +1,6 @@
-const showScores = () => {
-    console.log('Open a new menu for displaying high scores');
-}
-
-const showInstructions = () => {
-    console.log('Open a new menu for displaying game instructions');
-}
-
 const renderTitleMenu = () => {
     // Get the Containing Element
-    const container = document.getElementById('menu');
-    container.classList.remove('hidden');
+    const container = Menu.container;
 
     // Draw the title
     const title = document.createElement('h1');
@@ -25,8 +16,14 @@ const renderTitleMenu = () => {
         Menu.clear();
         // show the HUD
         showHUD();
-        // create a new game
-        _Game = new Game();
+    }
+
+    const showScores = () => {
+        console.log('Open a new menu for displaying high scores');
+    }
+    
+    const showInstructions = () => {
+        console.log('Open a new menu for displaying game instructions');
     }
 
     const titleOptions = [

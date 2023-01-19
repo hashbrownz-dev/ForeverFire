@@ -1,9 +1,9 @@
 // let _Menu;
 const _UserInput = trackKeys();
+let _Menu;
 
 const main = () => {
     let previousTime;
-    let _Menu;
     let _Game;
     _Menu = renderTitleMenu();
     hideHUD();
@@ -14,24 +14,27 @@ const main = () => {
         const elapsed = timeStamp - previousTime;
         previousTime = timeStamp;
 
-        if(Menu.isActive()){
+        if(_Menu){
             _Menu.update(_UserInput);
         } else if (_Game){
             // Execute Game Logic
 
-            if(!_Game.gameOver)_Game.update(_UserInput, elapsed);
-
+            if(!_Game.gameOver){
+                _Game.update(_UserInput, elapsed);
+            } else {
+                if(!Menu.isActive){
+                    _Menu = renderGameOver();
+                    _Game = undefined;
+                    requestAnimationFrame(update);
+                    return;
+                }
+            }
             // Draw
 
             View.renderGame(_Game, _UserInput);
         } else {
-            _Game = new Game();
+            _Game = Game.start();
         }
-
-        // Restart the Game
-
-        // if(_Game.gameOver && _UserInput['z']) _Game = new Game();      
-
         // Game Over
 
         // Loop
