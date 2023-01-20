@@ -2,6 +2,11 @@ class Game{
     constructor(){
         this.Score = 0;
         this.hiScore = 1000;
+        this.frames = 0;
+        this.wave = 0;
+        this.enemiesSpawned = 0;
+        this.enemiesSlain = 0;
+        this.powerUpsCollected = 0;
         this.Timer;
         this.Lives = 0;
         this.Player = new Player();
@@ -14,9 +19,6 @@ class Game{
         this.DBR = true;
 
         // START GAME
-        // this.Wave = 0;
-        // this.Waves = [];
-        // this.Waves.push(demoTimeline);
         this.Controllers.push(demoInterval)
     }
 
@@ -25,9 +27,42 @@ class Game{
         return new Game();
     }
 
+    spawnEnemy(enemy){
+        this.Actors.push(enemy);
+        this.enemiesSpawned++;
+    }
+
+    get killPercentage(){
+        return this.enemiesSlain / this.enemiesSpawned;
+    }
+
+    filterCleared(){
+        this.Actors = this.Actors.filter( actor => !actor.clear);
+        this.Projectiles = this.Projectiles.filter( proj => !proj.clear);
+        this.EFX = this.EFX.filter( effect => !effect.clear);
+        this.Controllers = this.Controllers.filter( controller => !controller.clear);
+    }
+
+    updateScore(points){
+        this.Score+=points;
+        if(this.Score > this.hiScore) this.hiScore = this.Score;
+    }
+
+    updateTimer(time){
+        !this.Timer ? this.Timer=time : this.Timer += time;
+    }
+
+    get TimeMS(){
+        return (Math.floor(this.Timer));
+    }
+    
+    get Time(){
+        return (Math.floor(this.Timer / 1000))
+    }
+
     update(input, elapsed){
-        // Update Timer
-        // this.updateTimer(elapsed);
+        // Update Frame
+        this.frames++;
         // Update Controllers
         this.Controllers.forEach( controller => controller.update(this));
 
@@ -70,47 +105,8 @@ class Game{
 
         // Filter CLEARED Items
         this.filterCleared();
-
-        // Check game state
-        if(!this.Controllers.length){
-            this.gameOver = true;
-            console.log('You Win');
-            // if all controllers have been cleared... and the player is still alive. we look at actors + proj
-            // if(!this.Actors.length && !this.Projectiles.length){
-            //     this.Wave++;
-            //     if(this.Wave < this.Waves.length){
-            //         this.Controllers.push(this.Waves[this.Wave]);
-            //     } else {
-            //         this.gameOver = true;
-            //         console.log('You Win');
-            //     }
-            // }
-        }
     }
 
-    filterCleared(){
-        this.Actors = this.Actors.filter( actor => !actor.clear);
-        this.Projectiles = this.Projectiles.filter( proj => !proj.clear);
-        this.EFX = this.EFX.filter( effect => !effect.clear);
-        this.Controllers = this.Controllers.filter( controller => !controller.clear);
-    }
-
-    updateScore(points){
-        this.Score+=points;
-        if(this.Score > this.hiScore) this.hiScore = this.Score;
-    }
-
-    updateTimer(time){
-        !this.Timer ? this.Timer=time : this.Timer += time;
-    }
-
-    get TimeMS(){
-        return (Math.floor(this.Timer));
-    }
-    
-    get Time(){
-        return (Math.floor(this.Timer / 1000))
-    }
     checkForCollisions(){
         // ACTOR x PROJECTILE
         for(const actor of this.Actors){
@@ -120,33 +116,38 @@ class Game{
                         // CYLCE THROUGH HITBOXES
                         for(const hitbox of actor.getHitBoxes()){
                             if(overlap(hitbox,proj.getHitBox(0)) || overlap(proj.getHitBox(0),hitbox)){
-                            // Apply Damage
-                            actor.health -= proj.power;
+                                // Apply Damage
+                                actor.health -= proj.power;
 
-                            // Remove Projectile
-                            proj.health = 0;
-    
-                            // Generate Effects
-                            // Generate Bullet Impact
-                            this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));
-                            this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
-                            // Generate Explosion
-                            if(actor.clear){
-                                this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
-                                this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
-                            }
-                            // Generate Burn Trail
-                            if(actor.hasOwnProperty('emitters')){
-                                // if actor's health is at 70% or 30%
-                                const percent = Math.floor(actor.health / actor.maxHealth * 10);
-                                if((percent === 7 && !actor.emitters.length) || (percent === 3 && actor.emitters.length === 1)){
-                                    actor.emitters.push([proj.x - actor.x , proj.drawY - actor.y])
+                                // Remove Projectile
+                                proj.health = 0;
+        
+                                // Generate Effects
+                                // Generate Bullet Impact
+                                this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));
+                                this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
+                                // Generate Explosion
+                                if(actor.clear){
+                                    this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
+                                    this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
                                 }
-                            }
+                                // Generate Burn Trail
+                                if(actor.hasOwnProperty('emitters')){
+                                    // if actor's health is at 70% or 30%
+                                    const percent = Math.floor(actor.health / actor.maxHealth * 10);
+                                    if((percent === 7 && !actor.emitters.length) || (percent === 3 && actor.emitters.length === 1)){
+                                        actor.emitters.push([proj.x - actor.x , proj.drawY - actor.y])
+                                    }
+                                }
 
-                            // Update Score
-                            this.updateScore(1);
-                            if(actor.clear) this.updateScore(actor.points);
+                                // Update Score
+                                // Add 1 point for each bullet that hits an enemy
+                                this.updateScore(1);
+                                // If the enemies is defeated:
+                                if(actor.clear) {
+                                    this.updateScore(actor.points);
+                                    this.enemiesSlain++;
+                                }
                             }
                         }  
                     }

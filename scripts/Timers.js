@@ -82,6 +82,6 @@ const demoInterval = new Interval(60, (game) => {
     const i = Math.floor(Math.random() * 6 + 1);
     const invert = Math.round(Math.random()) ? true : false;
     // game.Actors.push(spawnPotShotPacifist(0, invert, i));
-    game.Actors.push(spawnPotShotCover(0, invert, 3, i));
+    game.spawnEnemy(spawnPotShotCover(0, invert, 3, i));
     // game.Actors.push(spawnKamikazePacifist(0, invert, i));
 })
