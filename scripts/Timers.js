@@ -46,6 +46,7 @@ class Interval{
 class Timeline{
     constructor(alarms){
         this.alarms = alarms;
+        this.index = 0;
         this.current = this.alarms.shift();
     }
 
@@ -59,6 +60,10 @@ class Timeline{
     get clear(){
         return (this.alarms.length === 0 && this.current.clear)
     }
+
+    // get current(){
+    //     return this.alarms[this.index];
+    // }
 }
 
 // HELPER FUNCTIONS
@@ -76,12 +81,18 @@ for(let i = 1000; i > 0; i--){
         game.Actors.push(e);
     })
 }
+
 const demoTimeline = new Timeline(alarms);
 
-const demoInterval = new Interval(60, (game) => {
-    const i = Math.floor(Math.random() * 6 + 1);
-    const invert = Math.round(Math.random()) ? true : false;
-    // game.Actors.push(spawnPotShotPacifist(0, invert, i));
-    game.spawnEnemy(spawnPotShotCover(0, invert, 3, i));
-    // game.Actors.push(spawnKamikazePacifist(0, invert, i));
-})
+const demoInterval = () => {
+    return new Interval(60, (game) => {
+        const i = Math.floor(Math.random() * 6 + 1);
+        const invert = Math.round(Math.random()) ? true : false;
+        game.Actors.push(spawnPotShotPacifist(0, false, i));
+        // game.spawnEnemy(spawnPotShotCover(0, invert, 3, i));
+        // game.Actors.push(spawnKamikazePacifist(0, invert, i));
+    }, 60 * 15)
+} 
+
+const demoWave1 = new Timeline([demoInterval()]);
+const demoWave2 = new Timeline([demoInterval()]);

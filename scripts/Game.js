@@ -1,9 +1,10 @@
 class Game{
     constructor(){
         this.Score = 0;
-        this.hiScore = 1000;
+        this.hiScore = getHiScore().score;
         this.frames = 0;
-        this.wave = 0;
+        this.Wave = 0;
+        this.Waves = [demoWave1, demoWave2];
         this.enemiesSpawned = 0;
         this.enemiesSlain = 0;
         this.powerUpsCollected = 0;
@@ -19,7 +20,8 @@ class Game{
         this.DBR = true;
 
         // START GAME
-        this.Controllers.push(demoInterval)
+        this.Controllers.push(this.Waves[this.Wave])
+        console.log(this.currentWave);
     }
 
     static start(){
@@ -32,8 +34,13 @@ class Game{
         this.enemiesSpawned++;
     }
 
-    get killPercentage(){
-        return this.enemiesSlain / this.enemiesSpawned;
+    get currentWave(){
+        return this.Wave + 1;
+    }
+
+    get enemyCount(){
+        const enemyProjectiles = this.Projectiles.filter( projectile => projectile.type === 'enemy');
+        return enemyProjectiles.length + this.Actors.length;
     }
 
     filterCleared(){
@@ -41,6 +48,19 @@ class Game{
         this.Projectiles = this.Projectiles.filter( proj => !proj.clear);
         this.EFX = this.EFX.filter( effect => !effect.clear);
         this.Controllers = this.Controllers.filter( controller => !controller.clear);
+    }
+
+    loadNextWave(){
+        this.Wave++;
+        let current = this.Wave;
+        if(current >= this.Waves.length){
+            current = current % this.Waves.length;
+        }
+        this.Controllers.push(this.Waves[current]);
+    }
+
+    get killPercentage(){
+        return this.enemiesSlain / this.enemiesSpawned;
     }
 
     updateScore(points){
@@ -105,6 +125,12 @@ class Game{
 
         // Filter CLEARED Items
         this.filterCleared();
+
+        // Load Next Wave
+        if(!this.Controllers.length && !this.enemyCount){
+            this.loadNextWave();
+            console.log(this.currentWave);
+        }
     }
 
     checkForCollisions(){
