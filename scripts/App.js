@@ -5,7 +5,7 @@ let _Menu;
 const main = () => {
     let previousTime;
     let _Game;
-    _Menu = renderTitleMenu();
+    _Menu = renderScoreMenu();
     hideHUD();
     const update = (timeStamp) => {
         // Determine the time between refreshes

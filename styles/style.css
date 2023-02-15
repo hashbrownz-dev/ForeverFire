@@ -149,3 +149,15 @@ html, body{
 p{
     margin: 4px;
 }
+
+/* SCORE TABLE */
+
+table {
+    /* border-collapse: collapse; */
+    margin: 0 auto;
+    width: 520px;
+}
+
+th, td {
+    /* border: 1px solid white; */
+}

@@ -65,13 +65,13 @@ const seedScores = () => {
 
 const sortScores = (scores) => {
     const compareScore = (a, b) => {
-        return a.score - b.score;
+        return b.score - a.score;
     }
     const compareDate = (a, b) => {
-        return a.date - b.date;
+        return b.date - a.date;
     }
     const compareWave = (a, b) => {
-        return a.wave - b.wave;
+        return b.wave - a.wave;
     }
     scores.sort(compareDate);
     scores.sort(compareWave);
@@ -81,7 +81,7 @@ const sortScores = (scores) => {
 
 const getHiScore = () => {
     const scores = sortScores(getScores());
-    return scores[scores.length - 1];
+    return scores[0];
 }
 
 const updateScores = (score) => {
@@ -92,7 +92,7 @@ const updateScores = (score) => {
     // Sort them
     sortScores(scores);
     // remove the lowest value
-    scores.shift();
+    scores.pop();
     // save these scores to localStorage
     localStorage.setItem(lsKey, JSON.stringify(scores));
     return scores;
