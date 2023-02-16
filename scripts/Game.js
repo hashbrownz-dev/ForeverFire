@@ -54,7 +54,9 @@ class Game{
         this.Wave++;
         let current = this.Wave;
         if(current >= this.Waves.length){
-            current = current % this.Waves.length;
+            // current = current % this.Waves.length;
+            this.gameOver = true;
+            return
         }
         this.Controllers.push(this.Waves[current]);
     }
@@ -129,7 +131,6 @@ class Game{
         // Load Next Wave
         if(!this.Controllers.length && !this.enemyCount){
             this.loadNextWave();
-            console.log(this.currentWave);
         }
     }
 
