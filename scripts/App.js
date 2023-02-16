@@ -29,9 +29,12 @@ const main = () => {
                     case 'pause':
                         break;
                     case 'game over':
-                        _Menu = renderGameOver();
+                        _Menu = renderGameOver(_Game);
                         _Game = undefined;
                         break;
+                    case 'victory':
+                        _Menu = renderVictory(_Game);
+                        _Game = undefined;
                 }
             } else {
                 Menu.clear();
@@ -53,7 +56,7 @@ const main = () => {
                     wave : _Game.currentWave,
                     score : _Game.Score
                 });
-                _State = 'game over'
+                _State = _Game.Player ? 'victory' : 'game over';
                 requestAnimationFrame(update);
                 return;
             }

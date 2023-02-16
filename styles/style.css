@@ -150,6 +150,20 @@ p{
     margin: 4px;
 }
 
+/* GAME OVER && VICTORY */
+
+.final-score{
+    bottom: 30px;
+    font-size: 30px;
+    font-weight: 300;
+    position: relative;
+    text-align: center;
+}
+
+strong{
+    color:var(--lime);
+}
+
 /* SCORE TABLE */
 
 table {

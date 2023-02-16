@@ -1,17 +1,10 @@
-/*
-<!-- PARENT -->
-<div id="menu">
-    <h1>Game Over</h1>
-</div>
-*/
-
-const renderGameOver = (game) => {
+const renderVictory = (game) => {
     const { Score } = game;
     const container = Menu.container;
-    
+
     const title = document.createElement('h1');
     title.id='title';
-    title.innerText = 'Game Over';
+    title.innerText = 'Mission Complete';
     container.appendChild(title);
 
     const score = document.createElement('p');
@@ -20,8 +13,8 @@ const renderGameOver = (game) => {
     container.appendChild(score);
 
     const options = [
-        new Selection('Try Again', () => 'play'),
-        new Selection('End', () => {
+        new Selection('Play Again', () => 'play'),
+        new Selection('Return to Title', () => {
             View.clear();
             hideHUD();
             return 'title'
