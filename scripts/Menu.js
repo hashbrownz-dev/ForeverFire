@@ -11,18 +11,23 @@ class Menu {
         this.selection = 0;
         this.delay = 10;
         this.id = id;
-        this.parent = document.getElementById('menu');
         this.state = {};
         this.currentState = {};
     }
 
     update(input){
-        this.delay --;
-        if(this.delay < 0) this.delay = 0;
-        if(!this.delay){
-            if(!this.getInput(input)){
-                this.delay = 10;
-            }
+        // let change;
+        // this.delay --;
+        // if(this.delay < 0) this.delay = 0;
+        // if(!this.delay){
+        //     if(!this.getInput(input)){
+        //         this.delay = 10;
+        //     }
+        // }
+        this.delay--;
+        if( this.delay < 0 ) this.delay = 0;
+        if( !this.delay ){
+            return this.getInput(input);
         }
     }
 
@@ -32,37 +37,35 @@ class Menu {
 
         // Change Selection
         if(ArrowUp) {
-            this.changeSelection(-1);
-            return
+            this.delay = 10;
+            return this.changeSelection(-1);
         }
         if(ArrowDown) {
-            this.changeSelection(1)
-            return
+            this.delay = 10;
+            return this.changeSelection(1)
         }
 
         // Change Parameter
         if(ArrowLeft) {
-            this.changeParameter(-1)
-            return
+            this.delay = 10;
+            return this.changeParameter(-1)
         }
         if(ArrowRight) {
-            this.changeParameter(1)
-            return
+            this.delay = 10;
+            return this.changeParameter(1)
         }
 
         // Choose Selection
         if(z) {
-            this.chooseSelection()
-            return
+            this.delay = 10;
+            return this.chooseSelection()
         }
 
         // Previous Menu
         if(x) {
-            Menu.loadParent()
-            return
+            this.delay = 10;
+            return 'title'
         }
-
-        return true;
     }
 
     // Get Selection
@@ -86,7 +89,7 @@ class Menu {
 
     // Choose Selection
     chooseSelection(){
-        this.getSelection.load();
+        return this.getSelection.load();
     }
 
     // Change Parameter
@@ -104,7 +107,7 @@ class Menu {
 
     // Load Parent
     static loadParent(){
-        console.log(this.parent);
+        console.log(this);
     }
 
     // Render Menu
@@ -154,7 +157,6 @@ class Menu {
             menu.removeChild(menu.firstChild);
         }
         menu.classList.add('hidden');
-        _Menu = undefined;
     }
 
     // Check to see if a current menu is loaded

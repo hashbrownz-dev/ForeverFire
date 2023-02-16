@@ -11,25 +11,10 @@ const renderTitleMenu = () => {
     // DRAW THE MENU
     // MENU FUNCTIONS
 
-    const startGame = () => {
-        // clear the current menu
-        Menu.clear();
-        // show the HUD
-        showHUD();
-    }
-
-    const showScores = () => {
-        console.log('Open a new menu for displaying high scores');
-    }
-    
-    const showInstructions = () => {
-        console.log('Open a new menu for displaying game instructions');
-    }
-
     const titleOptions = [
-        new Selection('Start', startGame),
-        new Selection('Scores', showScores),
-        new Selection('How to Play', showInstructions)
+        new Selection('Start', ()=>'play'),
+        new Selection('Scores', ()=>'score'),
+        new Selection('How to Play', ()=>'score')
     ];
 
     const titleMenu = new Menu(titleOptions, 'title-options-container');

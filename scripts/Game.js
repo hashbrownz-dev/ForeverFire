@@ -80,7 +80,7 @@ class Game{
         return (Math.floor(this.Timer / 1000))
     }
 
-    update(input, elapsed){
+    update(input){
         // Update Frame
         this.frames++;
         // Update Controllers

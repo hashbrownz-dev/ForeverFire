@@ -47,11 +47,8 @@ const renderScoreMenu = () => {
     // DRAW THE MENU
     // MENU FUNCTIONS
 
-    const returnToMain = () => {
-        console.log('return to main menu');
-    }
     const scoreOptions = [
-        new Selection('Back', returnToMain)
+        new Selection('Back', ()=>'title')
     ]
 
     const scoreMenu = new Menu(scoreOptions, 'score-options-container');
