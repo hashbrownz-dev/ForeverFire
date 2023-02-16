@@ -92,7 +92,9 @@ const demoInterval = () => {
         // game.spawnEnemy(spawnPotShotCover(0, invert, 3, i));
         // game.Actors.push(spawnKamikazePacifist(0, invert, i));
     }, 60 * 15)
-} 
+}
 
-const demoWave1 = new Timeline([demoInterval()]);
-const demoWave2 = new Timeline([demoInterval()]);
+const demoWave1 = ()=> new Timeline([demoInterval()]);
+const demoWave2 = () => new Timeline([demoInterval()]);
+
+// const demoWave1 = new Timeline([demoInterval()]);

@@ -1,10 +1,9 @@
 // let _Menu;
 const _UserInput = trackKeys();
-let _Menu;
 
 const main = () => {
     // let previousTime;
-    let _Game, _PrevState, _State = 'title';
+    let _Game, _Menu, _PrevState, _State = 'title';
 
     hideHUD();
     const update = (timeStamp) => {

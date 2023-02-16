@@ -4,7 +4,7 @@ class Game{
         this.hiScore = getHiScore().score;
         this.frames = 0;
         this.Wave = 0;
-        this.Waves = [demoWave1, demoWave2];
+        this.Waves = [demoWave1(), demoWave2()];
         this.enemiesSpawned = 0;
         this.enemiesSlain = 0;
         this.powerUpsCollected = 0;
