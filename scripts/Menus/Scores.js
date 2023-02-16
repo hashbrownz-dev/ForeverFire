@@ -4,12 +4,14 @@ const renderScoreMenu = () => {
 
     // DRAW THE CONTENT
     const title = document.createElement('h1');
-    title.innerText = 'Hi Scores';
+    title.innerText = 'Hi-Scores';
+    title.id = 'score-title';
     container.appendChild(title);
 
     const createHeading = (name) => {
         const th = document.createElement('th');
         th.innerText = name;
+        th.className = `${name.toLowerCase()}-heading`;
         return th;
     }
 
@@ -35,7 +37,10 @@ const renderScoreMenu = () => {
         const date = document.createElement('td');
         const score = document.createElement('td');
         const wave = document.createElement('td');
-        // date.innerText = String(scoreObject.date);
+        rank.className = 'rank data';
+        date.className = 'date data';
+        score.className = 'score data';
+        wave.className = 'wave data';
         rank.innerText = String(scores.indexOf(scoreObject) + 1);
         date.innerText = new Date(scoreObject.date).toLocaleDateString();
         score.innerText = String(scoreObject.score);

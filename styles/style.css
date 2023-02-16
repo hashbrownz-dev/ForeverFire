@@ -166,12 +166,38 @@ strong{
 
 /* SCORE TABLE */
 
+#score-title{
+    font-family: 'Cinzel', serif;
+    font-size: 40px;
+    font-weight: 300;
+    margin: 48px;
+    text-align: center;
+}
+
+#score-options-container{
+    border: none;
+}
+
+.data{
+    padding: 4px;
+    text-align: center;
+}
+
+.rank-heading, .wave-heading {
+    width: 15%;
+}
+
+.score-heading, .date-heading {
+    width: 30%;
+}
+
 table {
-    /* border-collapse: collapse; */
+    border: 2px solid white;
+    border-collapse: collapse;
     margin: 0 auto;
     width: 520px;
 }
 
 th, td {
-    /* border: 1px solid white; */
+    border: 1px solid white;
 }
