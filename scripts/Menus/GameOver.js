@@ -14,12 +14,11 @@ const renderGameOver = () => {
     container.appendChild(title);
 
     const options = [
-        new Selection('Try Again', () => { Menu.clear() }),
+        new Selection('Try Again', () => 'play'),
         new Selection('End', () => {
             View.clear();
-            Menu.clear();
-            _Menu = renderTitleMenu();
-            console.log('ook')
+            hideHUD();
+            return 'title'
         })
     ]
 

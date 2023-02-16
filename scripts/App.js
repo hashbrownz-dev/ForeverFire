@@ -48,6 +48,12 @@ const main = () => {
             if(!_Game.gameOver){
                 _Game.update(_UserInput);
             } else {
+                // Update Score
+                updateScores({
+                    date : Date.now(),
+                    wave : _Game.currentWave,
+                    score : _Game.Score
+                });
                 _State = 'game over'
                 requestAnimationFrame(update);
                 return;

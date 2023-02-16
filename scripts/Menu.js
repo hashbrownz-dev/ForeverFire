@@ -1,9 +1,3 @@
-// With our menu, I want to display the title screen, along with some options...
-// Let's start with TITLE
-// START
-// OPTIONS
-// INSTRUCTIONS
-
 class Menu {
     constructor(options=[], id){
         this.options = options;
@@ -16,14 +10,6 @@ class Menu {
     }
 
     update(input){
-        // let change;
-        // this.delay --;
-        // if(this.delay < 0) this.delay = 0;
-        // if(!this.delay){
-        //     if(!this.getInput(input)){
-        //         this.delay = 10;
-        //     }
-        // }
         this.delay--;
         if( this.delay < 0 ) this.delay = 0;
         if( !this.delay ){
