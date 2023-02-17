@@ -17,7 +17,7 @@ class Game{
         this.EFX = [];
         this.Background = new RasterBackground();
         this.gameOver = false;
-        this.DBR = true;
+        this.DBR = false;
 
         // START GAME
         this.Controllers.push(this.Waves[this.Wave])
