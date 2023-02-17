@@ -77,6 +77,51 @@ class View{
     }
 }
 
+class RasterBackground{
+    constructor(){
+        this.speed = 1;
+        this.images = [testBG];
+        this.tiles = [
+            {
+                image : testBG,
+                yPos : 0
+            },
+            {
+                image : testBG,
+                yPos : -600
+            }
+        ];
+        this.yPos = -600;
+    }
+    update(){
+        // MOVE THE CONVEYOR BELT
+        for(const tile of this.tiles){
+            tile.yPos += this.speed;
+        }
+        // WHEN THE FIRST TILE (this.tiles[0]) YPOS IS GREATER THAN THE VIEWPORT HEIGHT, REMOVE IT FROM TILES
+        if(this.tiles[0].yPos > viewport.height){
+            this.tiles.shift();
+        }
+        // WHEN THE LAST TILE (this.tiles[this.tiles.length - 1]) YPOS IS GREATER THAN OR EQUAL TO -15 LOAD THE NEXT IMAGE AT THE END OF THE ARRAY
+        if(this.tiles[this.tiles.length -1].yPos >= -15){
+            const nextImage = this.images[0];
+            this.tiles.push(
+                {
+                    image : nextImage,
+                    yPos : this.tiles[this.tiles.length - 1].yPos - nextImage.height
+                }
+            );
+        }
+    }
+    draw(){
+        this.update();
+        for( const tile of this.tiles ){
+            const { image, yPos } = tile;
+            ctx.drawImage(image, 0, yPos);
+        }
+    }
+}
+
 class Background{
     constructor(vSpacing = 80, scrollRate = 1){
         this.vSpacing = vSpacing;
@@ -150,7 +195,7 @@ const renderSprite = (sprite, x, y, options = {}) => {
     ctx.translate(x,y);
 
     // OVERRIDE STYLES
-    // Create a copy of sprite.styles
+
     const styles = JSON.parse(JSON.stringify(sprite.styles));
 
     if(options.styles){

@@ -15,7 +15,7 @@ class Game{
         this.Projectiles = [];
         this.Controllers = [];
         this.EFX = [];
-        this.Background = new Background();
+        this.Background = new RasterBackground();
         this.gameOver = false;
         this.DBR = true;
 

@@ -7,9 +7,11 @@ class Menu {
         this.id = id;
         this.state = {};
         this.currentState = {};
+        this.zLock = true;
     }
 
     update(input){
+        if(this.zLock && !input.z) this.zLock = false;
         this.delay--;
         if( this.delay < 0 ) this.delay = 0;
         if( !this.delay ){
@@ -42,7 +44,7 @@ class Menu {
         }
 
         // Choose Selection
-        if(z) {
+        if(z && !this.zLock) {
             this.delay = 10;
             return this.chooseSelection()
         }
