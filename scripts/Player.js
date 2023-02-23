@@ -10,10 +10,10 @@ class Player extends Actor {
         this.x = viewport.width / 2;
         this.y = viewport.height - (48 * 2);
         this.health = 100;
-        this.shotType = 'm';
+        this.shotType = 's';
         this.shotLevel = {
             m : 3,
-            s : 1,
+            s : 3,
             f : 1
         }
         this.shotCooldown = 0;
@@ -30,10 +30,10 @@ class Player extends Actor {
     }
     shoot(game){
         const { m, s, f } = this.shotLevel;
+        const yPos = this.y - (this.drawH/2);
         switch(this.shotType){
             case 'm':
                 const margin = 12;
-                const yPos = this.y - (this.drawH/2);
                 // 1 - Create One Bullet
                 if(m === 1){
                     game.Projectiles.push(new PlayerShotM(this.x, yPos))
@@ -51,9 +51,26 @@ class Player extends Actor {
                 this.shotCooldown = 8;
                 break;
             case 's':
+                let dur;
                 // 1
+                if(s === 1){
+                    dur = 25;
+                    this.shotCooldown = 30;
+                }
                 // 2
+                if(s === 2){
+                    dur = 30;
+                    this.shotCooldown = 24;
+                }
                 // 3
+                if(s === 3){
+                    dur = 40;
+                    this.shotCooldown = 16;
+                }
+                const dirs = [210, 240, 270, 300, 330]
+                for(let i = 0; i < 5; i++){
+                    game.Projectiles.push(new PlayerShotS(this.x, yPos, dirs[i], dur));
+                }
                 break;
             case 'f':
                 // 1
@@ -104,7 +121,7 @@ class PlayerShotM extends Actor {
 }
 
 class PlayerShotS extends Actor {
-    constructor(x,y,dir){
+    constructor(x,y,dir,dur){
         const sprite = [
             sprPSS,
         ]
@@ -112,14 +129,16 @@ class PlayerShotS extends Actor {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.speed = 16;
+        this.dur = dur;
+        this.speed = 12;
         this.power = 1;
         this.type = 'player'
         this.sprite = sprite
     }
     update(){
-        this.y-=this.speed;
-        if(this.y < -32) this.health = 0;
+        this.dur--;
+        moveActor(this);
+        if(this.isOutOfBounds || this.dur <= 0) this.health = 0;
     }
 }
 
