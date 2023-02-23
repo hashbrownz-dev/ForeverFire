@@ -139,48 +139,50 @@ class Game{
             if(actor.type === 'enemy'){
                 for(const proj of this.Projectiles){
                     if(proj.type === 'player'){
-                        // CYLCE THROUGH HITBOXES
-                        for(const hitbox of actor.getHitBoxes()){
-                            if(overlap(hitbox,proj.getHitBox(0)) || overlap(proj.getHitBox(0),hitbox)){
-                                // Apply Damage
-                                actor.health -= proj.power;
+                        if(!actor.clear){
+                            // CYLCE THROUGH HITBOXES
+                            for(const hitbox of actor.getHitBoxes()){
+                                if(overlap(hitbox,proj.getHitBox(0)) || overlap(proj.getHitBox(0),hitbox)){
+                                    // Apply Damage
+                                    actor.health -= proj.power;
 
-                                // Remove Projectile
-                                proj.health = 0;
-        
-                                // Generate Effects
-                                // Generate Bullet Impact
-                                this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));
-                                this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
-                                // Generate Explosion
-                                if(actor.clear){
-                                    this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
-                                    this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
-                                }
-                                // Generate Burn Trail
-                                if(actor.hasOwnProperty('emitters')){
-                                    // if actor's health is at 70% or 30%
-                                    const percent = Math.floor(actor.health / actor.maxHealth * 10);
-                                    if((percent === 7 && !actor.emitters.length) || (percent === 3 && actor.emitters.length === 1)){
-                                        actor.emitters.push([proj.x - actor.x , proj.drawY - actor.y])
+                                    // Remove Projectile
+                                    proj.health = 0;
+
+                                    // Generate Effects
+                                    // Generate Bullet Impact
+                                    this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));
+                                    this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
+                                    // Generate Explosion
+                                    if(actor.clear){
+                                        this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
+                                        this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
+                                    }
+                                    // Generate Burn Trail
+                                    if(actor.hasOwnProperty('emitters')){
+                                        // if actor's health is at 70% or 30%
+                                        const percent = Math.floor(actor.health / actor.maxHealth * 10);
+                                        if((percent === 7 && !actor.emitters.length) || (percent === 3 && actor.emitters.length === 1)){
+                                            actor.emitters.push([proj.x - actor.x , proj.drawY - actor.y])
+                                        }
+                                    }
+
+                                    // Update Score
+                                    // Add 1 point for each bullet that hits an enemy
+                                    this.updateScore(1);
+                                    // If the enemies is defeated:
+                                    if(actor.clear) {
+                                        this.updateScore(actor.points);
+                                        this.enemiesSlain++;
+                                        // SPAWN POWER UP
+                                        const drop = actor.drop;
+                                        if(drop){
+                                            this.Actors.push(drop);
+                                        }
                                     }
                                 }
-
-                                // Update Score
-                                // Add 1 point for each bullet that hits an enemy
-                                this.updateScore(1);
-                                // If the enemies is defeated:
-                                if(actor.clear) {
-                                    this.updateScore(actor.points);
-                                    this.enemiesSlain++;
-                                    // SPAWN POWER UP
-                                    const drop = actor.drop;
-                                    if(drop){
-                                        this.Actors.push(drop);
-                                    }
-                                }
-                            }
-                        }  
+                            } 
+                        } 
                     }
                 }
             }
