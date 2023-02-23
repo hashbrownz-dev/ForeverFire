@@ -104,13 +104,14 @@ class PlayerShotM extends Actor {
 }
 
 class PlayerShotS extends Actor {
-    constructor(x,y){
+    constructor(x,y,dir){
         const sprite = [
-            spriteData['PlayerBullet-01'],
+            sprPSS,
         ]
         super(sprite[0]);
         this.x = x;
         this.y = y;
+        this.dir = dir;
         this.speed = 16;
         this.power = 1;
         this.type = 'player'
@@ -125,7 +126,7 @@ class PlayerShotS extends Actor {
 class PlayerShotF extends Actor {
     constructor(x,y){
         const sprite = [
-            spriteData['PlayerBullet-01'],
+            sprPSF,
         ]
         super(sprite[0]);
         this.x = x;
