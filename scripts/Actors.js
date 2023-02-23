@@ -211,6 +211,10 @@ class PotShot extends EnemyPlane{
         }
     }
 
+    get drop(){
+        return PowerUp.Medal(this.x, this.y, 1);
+    }
+
     static spawn(invert = false){
         // x, invert, toShoot, shootFunc
         const { drawW } = spriteData['PotShot-01']['dimensions'];

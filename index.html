@@ -35,6 +35,7 @@
     <script src="./scripts//Particles.js" defer></script>
     <script src="./scripts/Shooting.js" defer></script>
     <script src="./scripts/Actors.js" defer></script>
+    <script src="./scripts/PowerUps.js" defer></script>
     <script src="./scripts/Player.js" defer></script>
     <script src="./scripts/Spawners.js" defer></script>
     <script src="./scripts/Game.js" defer></script>
@@ -81,5 +82,25 @@
         testBG.src='./images/backgrounds/Background Test-01.png';
     </script>
     <script src="./images/spriteData.js"></script>
+    <script src="./images/pupSpriteData.js"></script>
+    <!-- DESTRUCTURE SPRITE DATA -->
+    <script>
+        const { 
+            BFG: sprBFG,
+            ExtraLife : sprExtraLife,
+            HealthLarge : sprHealthLarge,
+            HealthSmall : sprHealthSmall,
+            Invincibility : sprInvincibility,
+            MachineGun : sprMachineGun,
+            SpeedDown : sprSpeedDown,
+            SpeedUp : sprSpeedUp,
+            Spread : sprSpread,
+            'Medals-01' : sprMedalOne,
+            'Medals-02' : sprMedalTwo,
+            'Medals-03' : sprMedalThree,
+            'Medals-04' : sprMedalFour,
+            'Medals-05' : sprMedalFive
+        } = pupSpriteData;
+    </script>
 </body>
 </html>

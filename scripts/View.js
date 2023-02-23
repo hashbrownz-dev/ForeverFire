@@ -287,9 +287,9 @@ const renderShape = (style, path) => {
         }
         return;
     }
-    // every style has a fill...
+    // if a shape DOESN'T have a fill property, it should be filled with black
     if(style.fill !== "none"){
-        ctx.fillStyle = style.fill;
+        ctx.fillStyle = style.fill ? style.fill : '#000000';
         ctx.fill(path);
     }
     // only SOME have a stroke...

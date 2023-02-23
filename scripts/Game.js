@@ -21,7 +21,6 @@ class Game{
 
         // START GAME
         this.Controllers.push(this.Waves[this.Wave])
-        console.log(this.currentWave);
     }
 
     static start(){
@@ -174,6 +173,11 @@ class Game{
                                 if(actor.clear) {
                                     this.updateScore(actor.points);
                                     this.enemiesSlain++;
+                                    // SPAWN POWER UP
+                                    const drop = actor.drop;
+                                    if(drop){
+                                        this.Actors.push(drop);
+                                    }
                                 }
                             }
                         }  
@@ -212,6 +216,9 @@ class Game{
         // ACTOR x PLAYER
         if(this.Player){
             for(const actor of this.Actors){
+
+                // ENEMIES
+
                 if(actor.type === 'enemy' && !actor.clear && !this.Player.clear){
                     // CYCLE ACTOR HITBOXES
                     for(const actorHitBox of actor.getHitBoxes()){
@@ -233,6 +240,27 @@ class Game{
                                 }
                             }
                         }
+                    }
+                }
+
+                // POWER UPS
+                if(actor.type === 'power' && !actor.clear && !this.Player.clear){
+                    // GET ACTOR HITBOX
+                    const actorBox = actor.getHitBox(0);
+                    // GET PLAYER HITBOX
+                    const playerBox = {
+                        x:this.Player.drawX,
+                        y:this.Player.drawY,
+                        w:this.Player.drawW,
+                        h:this.Player.drawH
+                    }
+                    if(overlap(actorBox, playerBox) || overlap(playerBox, actorBox)){
+                        // APPLY EFFECT
+                        const { score, fuck } = actor.action;
+                        if(score) this.Score += score;
+                        if(fuck) console.log(fuck);
+                        // CLEAR THE ACTOR
+                        actor.health = -1;
                     }
                 }
             }
