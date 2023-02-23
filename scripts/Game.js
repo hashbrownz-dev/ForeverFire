@@ -149,6 +149,9 @@ class Game{
                                     // Remove Projectile
                                     proj.health = 0;
 
+                                    // Generate Blast
+                                    if(proj.isFlame) this.Actors.push(new Blast(proj.x,proj.y));
+
                                     // Generate Effects
                                     // Generate Bullet Impact
                                     this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));

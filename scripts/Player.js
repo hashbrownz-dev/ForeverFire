@@ -10,10 +10,10 @@ class Player extends Actor {
         this.x = viewport.width / 2;
         this.y = viewport.height - (48 * 2);
         this.health = 100;
-        this.shotType = 's';
+        this.shotType = 'f';
         this.shotLevel = {
-            m : 3,
-            s : 3,
+            m : 1,
+            s : 1,
             f : 1
         }
         this.shotCooldown = 0;
@@ -31,6 +31,7 @@ class Player extends Actor {
     shoot(game){
         const { m, s, f } = this.shotLevel;
         const yPos = this.y - (this.drawH/2);
+        let dur;
         switch(this.shotType){
             case 'm':
                 const margin = 12;
@@ -51,7 +52,6 @@ class Player extends Actor {
                 this.shotCooldown = 8;
                 break;
             case 's':
-                let dur;
                 // 1
                 if(s === 1){
                     dur = 25;
@@ -74,8 +74,21 @@ class Player extends Actor {
                 break;
             case 'f':
                 // 1
+                if(s === 1){
+                    dur = 25;
+                    this.shotCooldown = 45;
+                }
                 // 2
+                if(s === 2){
+                    dur = 30;
+                    this.shotCooldown = 24;
+                }
                 // 3
+                if(s === 3){
+                    dur = 40;
+                    this.shotCooldown = 16;
+                }
+                game.Projectiles.push(new PlayerShotF(this.x, yPos, 270));
                 break;
         }
     }
@@ -143,20 +156,46 @@ class PlayerShotS extends Actor {
 }
 
 class PlayerShotF extends Actor {
-    constructor(x,y){
+    constructor(x,y,dir){
         const sprite = [
             sprPSF,
         ]
         super(sprite[0]);
         this.x = x;
         this.y = y;
+        this.dir = dir;
         this.speed = 16;
         this.power = 1;
-        this.type = 'player'
+        this.type = 'player';
+        this.isFlame = true;
         this.sprite = sprite
+        this.xScale = 1.5;
+        this.yScale = 1.5;
     }
     update(){
-        this.y-=this.speed;
-        if(this.y < -32) this.health = 0;
+        this.dur --;
+        moveActor(this);
+        if(this.isOutOfBounds) this.health = 0;
+    }
+}
+
+class Blast {
+    constructor(x,y){
+        this.x = x;
+        this.y = y;
+        this.dur = 10;
+        this.rad = 20;
+        this.clear = false;
+        this.type = 'blast';
+    }
+    update(){
+        this.dur--;
+        this.rad+=8;
+        if(this.dur <= 0) this.clear = true;
+    }
+    draw(){
+        ctx.fillStyle = 'red';
+        ctx.arc(this.x, this.y, this.rad, 0, 7);
+        ctx.fill();
     }
 }
