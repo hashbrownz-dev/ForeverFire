@@ -212,9 +212,10 @@ class PotShot extends EnemyPlane{
     }
 
     get drop(){
-        return PowerUp.Medal(this.x, this.y, 1);
+        // return PowerUp.Medal(this.x, this.y, 1);
         // return PowerUp.SmallHealth(this.x, this.y);
         // return PowerUp.LargeHealth(this.x, this.y);
+        return PowerUp.ExtraLife(this.x,this.y);
     }
 
     static spawn(invert = false){

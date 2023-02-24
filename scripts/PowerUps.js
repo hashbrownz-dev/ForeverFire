@@ -69,4 +69,8 @@ class PowerUp extends Actor{
     static LargeHealth(x,y){
         return new PowerUp(x,y,sprHealthLarge,{health:50});
     }
+    // EXTRA LIFE
+    static ExtraLife(x,y){
+        return new PowerUp(x,y,sprExtraLife,{lives:1});
+    }
 }

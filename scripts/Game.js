@@ -264,7 +264,7 @@ class Game{
                     }
                     if(overlap(actorBox, playerBox) || overlap(playerBox, actorBox)){
                         // APPLY EFFECT
-                        const { score, health } = actor.action;
+                        const { score, health, lives } = actor.action;
                         if(score) this.Score += score;
                         if(health){
                             if(this.Player.health === 100){
@@ -273,6 +273,9 @@ class Game{
                                 this.Player.health += health;
                                 if(this.Player.health > 100) this.Player.health = 100;
                             }
+                        }
+                        if(lives){
+                            this.Lives += lives;
                         }
                         // CLEAR THE ACTOR
                         actor.health = -1;
