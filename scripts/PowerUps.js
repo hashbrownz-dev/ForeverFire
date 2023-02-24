@@ -62,5 +62,11 @@ class PowerUp extends Actor{
         }
         return new PowerUp(x,y,sprite,{score:value});
     }
-    // BFG
+    // HEALTH
+    static SmallHealth(x,y){
+        return new PowerUp(x,y,sprHealthSmall,{health:5});
+    }
+    static LargeHealth(x,y){
+        return new PowerUp(x,y,sprHealthLarge,{health:50});
+    }
 }
