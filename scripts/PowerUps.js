@@ -80,4 +80,14 @@ class PowerUp extends Actor{
     static SpeedDown(x,y){
         return new PowerUp(x,y,sprSpeedDown,{score:100, speed:-1});
     }
+    // WEAPONS
+    static WeaponM(x,y){
+        return new PowerUp(x,y,sprWeaponM,{score:150, weapon:'m'});
+    }
+    static WeaponS(x,y){
+        return new PowerUp(x,y,sprWeaponS,{score:150, weapon:'s'});
+    }
+    static WeaponF(x,y){
+        return new PowerUp(x,y,sprWeaponF,{score:150, weapon:'f'});
+    }
 }

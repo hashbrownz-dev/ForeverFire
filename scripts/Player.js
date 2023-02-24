@@ -10,11 +10,11 @@ class Player extends Actor {
         this.x = viewport.width / 2;
         this.y = viewport.height - (48 * 2);
         this.health = 100;
-        this.shotType = 'f';
+        this.shotType = 'm';
         this.shotLevel = {
             m : 1,
             s : 1,
-            f : 3
+            f : 1
         }
         this.shotCooldown = 0;
         this.speed = 3;
@@ -45,7 +45,7 @@ class Player extends Actor {
                     game.Projectiles.push(new PlayerShotM(this.x + margin, yPos));
                 }
                 // 3 - Create Three Bullets
-                if(m === 3){
+                if(m >= 3){
                     game.Projectiles.push(new PlayerShotM(this.x - (margin * 2), yPos));
                     game.Projectiles.push(new PlayerShotM(this.x + (margin * 2), yPos));
                 }
@@ -63,7 +63,7 @@ class Player extends Actor {
                     this.shotCooldown = 24;
                 }
                 // 3
-                if(s === 3){
+                if(s >= 3){
                     dur = 40;
                     this.shotCooldown = 16;
                 }
@@ -87,7 +87,7 @@ class Player extends Actor {
                     this.shotCooldown = 40;
                 }
                 // 3
-                if(f === 3){
+                if(f >= 3){
                     bDur = 60;
                     bRad = 120;
                     this.shotCooldown = 35;

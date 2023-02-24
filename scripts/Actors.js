@@ -217,7 +217,10 @@ class PotShot extends EnemyPlane{
         // return PowerUp.LargeHealth(this.x, this.y);
         // return PowerUp.ExtraLife(this.x,this.y);
         // return PowerUp.SpeedUp(this.x,this.y);
-        return PowerUp.SpeedDown(this.x,this.y);
+        // return PowerUp.SpeedDown(this.x,this.y);
+        // return PowerUp.WeaponM(this.x, this.y);
+        // return PowerUp.WeaponS(this.x, this.y);
+        return PowerUp.WeaponF(this.x, this.y);
     }
 
     static spawn(invert = false){

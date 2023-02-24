@@ -264,7 +264,7 @@ class Game{
                     }
                     if(overlap(actorBox, playerBox) || overlap(playerBox, actorBox)){
                         // APPLY EFFECT
-                        const { score, health, lives, speed } = actor.action;
+                        const { score, health, lives, speed, weapon, temp } = actor.action;
                         if(score) this.Score += score;
                         if(health){
                             if(this.Player.health === 100){
@@ -281,6 +281,14 @@ class Game{
                             this.Player.speed += speed;
                             if(this.Player.speed > 8) this.Player.speed = 8;
                             if(this.Player.speed < 1) this.Player.speed = 1;
+                        }
+                        if(weapon){
+                            const { shotType } = this.Player;
+                            if(shotType === weapon){
+                                this.Player.shotLevel[shotType] += 1;
+                            }else{
+                                this.Player.shotType = weapon;
+                            }
                         }
                         // CLEAR THE ACTOR
                         actor.health = -1;
