@@ -73,4 +73,11 @@ class PowerUp extends Actor{
     static ExtraLife(x,y){
         return new PowerUp(x,y,sprExtraLife,{lives:1});
     }
+    // SPEED
+    static SpeedUp(x,y){
+        return new PowerUp(x,y,sprSpeedUp,{score:100, speed:1});
+    }
+    static SpeedDown(x,y){
+        return new PowerUp(x,y,sprSpeedDown,{score:100, speed:-1});
+    }
 }
