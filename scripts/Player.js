@@ -16,6 +16,8 @@ class Player extends Actor {
             s : 1,
             f : 1
         }
+        this.BFG = 0;
+        this.inv = 0;
         this.shotCooldown = 0;
         this.speed = 3;
         this.type = 'player';
@@ -29,8 +31,16 @@ class Player extends Actor {
         if(this.y > (viewport.height - (this.drawH / 2)) - 8) this.y = (viewport.height - ( this.drawH/2 )) - 8;
     }
     shoot(game){
-        const { m, s, f } = this.shotLevel;
         const yPos = this.y - (this.drawH/2);
+        if(this.BFG){
+            const dirs = [210, 240, 270, 300, 330]
+            for(let i = 0; i < 5; i++){
+                game.Projectiles.push(new PlayerShotF(this.x, yPos, dirs[i], 30, 80));
+            }
+            this.shotCooldown = 24;
+            return;
+        }
+        const { m, s, f } = this.shotLevel;
         let dur;
         switch(this.shotType){
             case 'm':
@@ -102,6 +112,8 @@ class Player extends Actor {
 
         // Handle Shooting
         this.shotCooldown--;
+        if(this.BFG) this.BFG--;
+        if(this.inv) this.inv--;
 
         const { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, z } = inputs;
         if(ArrowUp) this.y -= this.speed;

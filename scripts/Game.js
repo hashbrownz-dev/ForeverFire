@@ -195,7 +195,7 @@ class Game{
         }
 
         // PLAYER x PROJECTILE
-        if(this.Player){
+        if(this.Player && !this.Player.inv){
             for(const proj of this.Projectiles){
                 if(proj.type === 'enemy' && !proj.clear){
                     //CYCLE through PLAYER hitBoxes
@@ -227,7 +227,7 @@ class Game{
 
                 // ENEMIES
 
-                if(actor.type === 'enemy' && !actor.clear && !this.Player.clear){
+                if(actor.type === 'enemy' && !actor.clear && !this.Player.clear && !this.Player.inv){
                     // CYCLE ACTOR HITBOXES
                     for(const actorHitBox of actor.getHitBoxes()){
                         // CYCLE PLAYER HITBOXES
@@ -288,6 +288,16 @@ class Game{
                                 this.Player.shotLevel[shotType] += 1;
                             }else{
                                 this.Player.shotType = weapon;
+                            }
+                        }
+                        if(temp){
+                            switch(temp){
+                                case 'bfg':
+                                    this.Player.BFG = 500;
+                                    break;
+                                case 'inv':
+                                    this.Player.inv = 500;
+                                    break;
                             }
                         }
                         // CLEAR THE ACTOR

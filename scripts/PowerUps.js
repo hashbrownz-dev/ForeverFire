@@ -90,4 +90,11 @@ class PowerUp extends Actor{
     static WeaponF(x,y){
         return new PowerUp(x,y,sprWeaponF,{score:150, weapon:'f'});
     }
+    // TEMP
+    static BFG(x,y){
+        return new PowerUp(x,y,sprBFG,{temp:'bfg'})
+    }
+    static Invincibility(x,y){
+        return new PowerUp(x,y,sprInvincibility,{temp:'inv'});
+    }
 }
