@@ -157,6 +157,10 @@ const setEffectTrailKamikaze = (x,y) => {
     return new Emitter(x,y,-1, [new Fade(x,y,15,5,0)])
 }
 
+const setEffectTrailFS = (x,y) => {
+    return new Emitter(x,y,-1, [new Spark(x, y - 5, getRandom(180, 0), 2, 20), new Fade(x,y,15,10,0)])
+}
+
 const setEffectTrailBurn = (x,y) => {
     return new Emitter(x,y,-1, [new Fade(x,y,20,6,3)])
 }

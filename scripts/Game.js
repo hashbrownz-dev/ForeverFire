@@ -150,7 +150,10 @@ class Game{
                                     proj.health = 0;
 
                                     // Generate Blast
-                                    if(proj.isFlame) this.Actors.push(new Blast(proj.x,proj.y));
+                                    if(proj.isFlame){
+                                        const { blastDuration, blastRadius } = proj;
+                                        this.Projectiles.push(new Blast(proj.x,proj.y,blastDuration,blastRadius));
+                                    };
 
                                     // Generate Effects
                                     // Generate Bullet Impact

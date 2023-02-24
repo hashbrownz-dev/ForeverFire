@@ -14,7 +14,7 @@ class Player extends Actor {
         this.shotLevel = {
             m : 1,
             s : 1,
-            f : 1
+            f : 3
         }
         this.shotCooldown = 0;
         this.speed = 3;
@@ -73,22 +73,26 @@ class Player extends Actor {
                 }
                 break;
             case 'f':
+                let bDur, bRad;
                 // 1
-                if(s === 1){
-                    dur = 25;
+                if(f === 1){
+                    bDur = 30;
+                    bRad = 80;
                     this.shotCooldown = 45;
                 }
                 // 2
-                if(s === 2){
-                    dur = 30;
-                    this.shotCooldown = 24;
+                if(f === 2){
+                    bDur = 45;
+                    bRad = 100;
+                    this.shotCooldown = 40;
                 }
                 // 3
-                if(s === 3){
-                    dur = 40;
-                    this.shotCooldown = 16;
+                if(f === 3){
+                    bDur = 60;
+                    bRad = 120;
+                    this.shotCooldown = 35;
                 }
-                game.Projectiles.push(new PlayerShotF(this.x, yPos, 270));
+                game.Projectiles.push(new PlayerShotF(this.x, yPos, 270, bDur, bRad));
                 break;
         }
     }
@@ -156,7 +160,7 @@ class PlayerShotS extends Actor {
 }
 
 class PlayerShotF extends Actor {
-    constructor(x,y,dir){
+    constructor(x,y,dir,blastDuration,blastRadius){
         const sprite = [
             sprPSF,
         ]
@@ -164,38 +168,73 @@ class PlayerShotF extends Actor {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.speed = 16;
+        this.speed = 8;
         this.power = 1;
         this.type = 'player';
         this.isFlame = true;
         this.sprite = sprite
         this.xScale = 1.5;
         this.yScale = 1.5;
+        this.blastDuration = blastDuration;
+        this.blastRadius = blastRadius;
     }
-    update(){
+    update(game){
         this.dur --;
         moveActor(this);
         if(this.isOutOfBounds) this.health = 0;
+        game.EFX.push(setEffectTrailFS(this.x + this.drawW / 4,this.y));
     }
 }
 
 class Blast {
-    constructor(x,y){
+    constructor(x,y, dur, maxRad){
         this.x = x;
         this.y = y;
-        this.dur = 10;
+        this.dur = dur;
         this.rad = 20;
+        this.maxRad = maxRad;
+        this.step = (this.maxRad - this.rad) / (this.dur / 2);
+        this.innerD = 0;
+        this.power = 1;
         this.clear = false;
-        this.type = 'blast';
+        this.type = 'player';
     }
-    update(){
+    getHitBox(){
+        return {
+            x : this.x - this.rad,
+            y : this.y - this.rad,
+            w : this.rad * 2,
+            h : this.rad * 2
+        }
+    }
+    update(game){
         this.dur--;
-        this.rad+=8;
+        this.rad += this.step;
+        if(this.rad >= this.maxRad){
+            this.rad = this.maxRad;
+            if(!this.innerD){
+                this.innerD = 20;
+            }
+            this.innerD += this.step;
+        } 
         if(this.dur <= 0) this.clear = true;
+        // Draw a small explosion somewhere within the thingy...
+        const { x,y,w,h } = this.getHitBox();
+        const randX = getRandom(x+w, x);
+        const randY = getRandom(y+h, y);
+        game.EFX.push(setEffectCircleExplosion(randX,randY, 16));
     }
     draw(){
-        ctx.fillStyle = 'red';
+        const divisor = explosionPalette.length - 1;
+        let index = Math.floor(this.dur/divisor);
+        index = index >= explosionPalette.length ? explosionPalette.length - 1 : index;
+        ctx.fillStyle = explosionPalette[index];
+        ctx.beginPath();
         ctx.arc(this.x, this.y, this.rad, 0, 7);
-        ctx.fill();
+        // ctx.arc(this.x, this.y, this.rad * 0.9, 0, 7);
+        if(this.innerD){
+            ctx.arc(this.x, this.y, this.innerD, 0, 7);
+        }
+        ctx.fill('evenodd');
     }
 }
