@@ -112,8 +112,14 @@ class Player extends Actor {
 
         // Handle Shooting
         this.shotCooldown--;
-        if(this.BFG) this.BFG--;
-        if(this.inv) this.inv--;
+        if(this.BFG) {
+            this.BFG--;
+            if(!this.BFG) hideTimer();
+        }
+        if(this.inv) {
+            this.inv--;
+            if(!this.inv) hideTimer();
+        }
 
         const { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, z } = inputs;
         if(ArrowUp) this.y -= this.speed;
@@ -126,6 +132,20 @@ class Player extends Actor {
             if(this.shotCooldown <= 0){
                 this.shoot(game);
             }
+        }
+    }
+    draw(){
+        if(this.inv && this.inv % 2){
+            return;
+        } else {
+            renderSprite(this.sprite[this.frame], this.drawX, this.drawY, {
+                xScale : this.xScale,
+                yScale : this.yScale,
+                dir : this.dir,
+                mirrorX : this.mirrorX,
+                mirrorY : this.mirrorY,
+                styles : this.styles
+            });
         }
     }
 }

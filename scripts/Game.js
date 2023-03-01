@@ -291,6 +291,7 @@ class Game{
                             }
                         }
                         if(temp){
+                            showTimer(temp);
                             switch(temp){
                                 case 'bfg':
                                     this.Player.BFG = 500;

@@ -62,6 +62,40 @@ html, body{
     font-weight: 300;
 }
 
+#power-up{
+    position: relative;
+}
+
+#timer-label{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 25px;
+    text-transform: none;
+}
+
+#timer-container{
+    border: 1px solid;
+    color: white;
+    box-sizing: border-box;
+    height: 18px;
+    margin: 8px auto;
+    width: 301px;
+}
+
+#timer{
+    height: 100%;
+    width: 0%;
+}
+
+.bfg{
+    background-color: var(--gold);
+}
+
+.inv{
+    background-color: var(--purple);
+}
+
 #hud{
     color: white;
     font-family: 'Roboto', monospace;

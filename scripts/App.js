@@ -38,6 +38,7 @@ const main = () => {
                 }
             } else {
                 Menu.clear();
+                hideTimer();
                 showHUD();
             }
             _PrevState = _State;
