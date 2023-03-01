@@ -20,7 +20,11 @@ class Game{
         this.DBR = false;
 
         // START GAME
-        this.Controllers.push(this.Waves[this.Wave])
+        this.showMessage(`Wave ${this.currentWave}`)
+        this.Controllers.push(new Alarm(180, () => {
+            this.hideMessage();
+            this.startNextWave();
+        }))
     }
 
     static start(){
@@ -35,6 +39,16 @@ class Game{
 
     get currentWave(){
         return this.Wave + 1;
+    }
+
+    hideMessage(){
+        document.getElementById('message').classList.add('hidden');
+    }
+
+    showMessage(message){
+        const messageContainer = document.getElementById('message');
+        messageContainer.classList.remove('hidden');
+        messageContainer.innerText = message;
     }
 
     get enemyCount(){
@@ -57,7 +71,21 @@ class Game{
             this.gameOver = true;
             return
         }
-        this.Controllers.push(this.Waves[current]);
+        // Display Wave Complete
+        // Display Next Wave
+        // Begin Next Wave
+        this.showMessage(`Wave Complete`);
+        this.Controllers.push( new Alarm(120, ()=>{
+            this.showMessage(`Wave ${this.currentWave}`);
+            this.Controllers.push( new Alarm(120, ()=>{
+                this.hideMessage();
+                this.startNextWave();
+            }))
+        }))
+    }
+
+    startNextWave(){
+        this.Controllers.push(this.Waves[this.Wave])
     }
 
     get killPercentage(){
