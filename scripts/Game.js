@@ -9,7 +9,7 @@ class Game{
         this.enemiesSlain = 0;
         this.powerUpsCollected = 0;
         this.Timer;
-        this.Lives = 0;
+        this.Lives = 2;
         this.Player = new Player();
         this.Actors = [];
         this.Projectiles = [];
@@ -20,7 +20,10 @@ class Game{
         this.DBR = false;
 
         // START GAME
-        this.showMessage(`Wave ${this.currentWave}`)
+        drawScore(this.hiScore, 'hi-score');
+        drawLives(this.Lives);
+        this.showMessage(`Wave ${this.currentWave}`);
+        drawWave(this.currentWave);
         this.Controllers.push(new Alarm(180, () => {
             this.hideMessage();
             this.startNextWave();
@@ -76,6 +79,7 @@ class Game{
         // Begin Next Wave
         this.showMessage(`Wave Complete`);
         this.Controllers.push( new Alarm(120, ()=>{
+            drawWave(this.currentWave);
             this.showMessage(`Wave ${this.currentWave}`);
             this.Controllers.push( new Alarm(120, ()=>{
                 this.hideMessage();
@@ -92,9 +96,18 @@ class Game{
         return this.enemiesSlain / this.enemiesSpawned;
     }
 
+    updateLives(val){
+        this.Lives += val;
+        drawLives(this.Lives);
+    }
+
     updateScore(points){
         this.Score+=points;
-        if(this.Score > this.hiScore) this.hiScore = this.Score;
+        drawScore(this.Score, 'score');
+        if(this.Score > this.hiScore) {
+            this.hiScore = this.Score;
+            drawScore(this.Score, 'hi-score');
+        }
     }
 
     updateTimer(time){
@@ -135,7 +148,7 @@ class Game{
         // Check Player Status
         if(this.Player && this.Player.clear){
             this.Player = undefined;
-            this.Lives--;
+            this.updateLives(-1);
             // IF Lives >= 0, Respawn the Player
             if(this.Lives >= 0){
                 // Set player Respawn Timer
@@ -293,17 +306,17 @@ class Game{
                     if(overlap(actorBox, playerBox) || overlap(playerBox, actorBox)){
                         // APPLY EFFECT
                         const { score, health, lives, speed, weapon, temp } = actor.action;
-                        if(score) this.Score += score;
+                        if(score) this.updateScore(score);
                         if(health){
                             if(this.Player.health === 100){
-                                this.Score += health * 5;
+                                this.updateScore(health * 5);
                             } else {
                                 this.Player.health += health;
                                 if(this.Player.health > 100) this.Player.health = 100;
                             }
                         }
                         if(lives){
-                            this.Lives += lives;
+                            this.updateLives(lives);
                         }
                         if(speed){
                             this.Player.speed += speed;

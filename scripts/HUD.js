@@ -1,15 +1,7 @@
 const drawHUD = (game)=>{
-    const { Player, Score, hiScore, Lives, Wave } = game;
-    // Draw High Score
-    drawScore(hiScore, 'hi-score');
-    // Draw Score
-    drawScore(Score, 'score');
+    const { Player } = game;
     // Draw Health
     drawHealth(Player);
-    // Draw Wave
-    drawWave(Wave);
-    // Draw Lives
-    drawLives(Lives);
     // Draw Timer
     drawTimer(Player);
 }
@@ -72,8 +64,7 @@ const drawTimer = (Player) => {
 
 const drawWave = (wave) => {
     const waveElement = document.getElementById('wave');
-    let waveStr = String(wave+1);
-    waveElement.innerText = waveStr.padStart(2, '0');
+    waveElement.innerText = String(wave).padStart(2, '0');
 }
 
 const drawLives = (lives) => {

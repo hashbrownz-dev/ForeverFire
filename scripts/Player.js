@@ -17,7 +17,7 @@ class Player extends Actor {
             f : 1
         }
         this.BFG = 0;
-        this.inv = 0;
+        this.inv = 60;
         this.shotCooldown = 0;
         this.speed = 3;
         this.type = 'player';
