@@ -27,6 +27,7 @@ const main = () => {
                     case 'how to':
                         break;
                     case 'pause':
+                        _Menu = renderPauseMenu();
                         break;
                     case 'game over':
                         _Menu = renderGameOver(_Game);
@@ -49,6 +50,11 @@ const main = () => {
             if(!_Game) _Game = Game.start();
             // Execute Game Logic
             if(!_Game.gameOver){
+                if(_UserInput['p']){
+                    _State = 'pause';
+                    requestAnimationFrame(update);
+                    return;
+                }
                 _Game.update(_UserInput);
             } else {
                 // Update Score
