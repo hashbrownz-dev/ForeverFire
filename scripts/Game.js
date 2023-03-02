@@ -20,6 +20,7 @@ class Game{
         this.DBR = false;
 
         // START GAME
+        drawScore(this.Score, 'score');
         drawScore(this.hiScore, 'hi-score');
         drawLives(this.Lives);
         this.showMessage(`Wave ${this.currentWave}`);
