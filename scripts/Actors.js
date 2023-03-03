@@ -109,7 +109,7 @@ class Kamikaze extends EnemyPlane{
         this.x = x;
         this.y = invert ? viewport.height + this.drawH : -this.drawH;
         this.speed = 4;
-        this.points = 9;
+        this.points = 14;
         this.invert = invert;
         this.mirrorX = false;
         this.mirrorY = !invert;
@@ -165,6 +165,10 @@ class Kamikaze extends EnemyPlane{
         game.EFX.push(setEffectTrailKamikaze(emitX,emitY));
     }
 
+    get drop(){
+        return [PowerUp.Medal(this.x, this.y, 1)];
+    }
+
     static spawn(invert = false){
         const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
         return new Kamikaze(x, invert);
@@ -192,6 +196,8 @@ class PotShot extends EnemyPlane{
         this.y = !invert ? -this.drawH : viewport.height + this.drawH;
         this.invert = invert;
         this.mirrorY = invert;
+        this.points = 9;
+        this.speed = 4;
         this.fill = '#EC1C24';
         this.healer = false;
         // Invert HitBox

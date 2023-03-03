@@ -102,3 +102,70 @@ const Wave01 = () => new Timeline([
     w1p2(),
     w1p4()
 ]);
+
+/*=============/
+    WAVE 02
+==============*/
+
+const w2p1 = () => {
+    const spawn = (game) => {
+        const { Player } = game;
+        const enemy = new Kamikaze(0,false);
+        const enemy2 = new PotShot(0,false);
+        if(Player){
+            enemy2.x = getRandom(Player.x - 50, Player.x + 50);
+            if(Math.round(Math.random())){
+                // LEFT
+                enemy.x = getRandom(Player.x - 300, Player.x - 100);
+                if(enemy.x <= 0) enemy.x = enemy.drawW;
+            } else {
+                // RIGHT
+                enemy.x = getRandom(Player.x + 100, Player.x + 300);
+                if(enemy.x >= viewport.width) enemy.x = viewport.width - enemy.drawW;
+            }
+        } else {
+            enemy.x = getRandom(50, 550);
+            enemy2.x = getRandom(50, 550);
+        }
+        enemy.speed = getRandom(6,8);
+        enemy2.health = 3;
+        game.Actors.push(enemy, enemy2);
+    }
+    return new Interval(20, spawn, 360);
+}
+
+const w2p2 = () => {
+    // we can either
+    // create a dynamic list of alarms
+    // create another timeline and embed it?  (not sure if possible)
+    // a timeline is a series of alarms.
+    // an alarm basically performs an action after the alotted time...
+    // let's say that every 20 frames we want to create a kamikaze
+    // and every 40 frames we want to create a potshot
+    // and we want to do this for 360 frames...
+    const alarms = [];
+    let cdur = 0;
+    for(let i = 0; i <= 360; i++){
+        // on every 20th frame, create an alarm with a duration of 20 and a spawn kamikaze action
+        // on every 40th frame, create an alarm with a duration of 20 and a spawn potshot action
+        
+        if(!(i % 20)){
+            alarms.push(new Alarm(cdur, ()=>console.log(`Action: Kamikaze, Duration:${cdur}`)));
+            cdur = 0;
+        }
+        if(!(i % 40)){
+            alarms.push(new Alarm(cdur, ()=>console.log(`Action: PotShot, Duration:${cdur}`)));
+            cdur = 0;
+        }
+        cdur++;
+    }
+    return alarms;
+}
+
+const Wave02 = () => new Timeline([
+    w2p1()
+])
+
+const testWave = () => new Timeline([
+    ...w2p2()
+])
