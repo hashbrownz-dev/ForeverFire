@@ -180,7 +180,7 @@ class PlayerShotS extends Actor {
         this.dir = dir;
         this.dur = dur;
         this.speed = 12;
-        this.power = 1;
+        this.power = 3;
         this.type = 'player'
         this.sprite = sprite
     }

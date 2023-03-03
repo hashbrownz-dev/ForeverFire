@@ -193,6 +193,7 @@ class PotShot extends EnemyPlane{
         this.invert = invert;
         this.mirrorY = invert;
         this.fill = '#EC1C24';
+        this.healer = false;
         // Invert HitBox
         if(this.invert){
             const hb = this.hitboxes[0];
@@ -212,7 +213,7 @@ class PotShot extends EnemyPlane{
     }
 
     get drop(){
-        return PowerUp.Medal(this.x, this.y, 1);
+        return this.healer ? [PowerUp.SmallHealth(this.x,this.y)] : [PowerUp.Medal(this.x, this.y, 1)];
     }
 
     static spawn(invert = false){
@@ -297,7 +298,7 @@ class Ace extends EnemyPlane{
 // Gunner's can have variable health
 
 class Gunner extends EnemyPlane{
-    constructor(x, health = 10, toShoot = -1, shootingFunc){
+    constructor(x, invert, health = 10, toShoot = -1, shootingFunc){
         const sprite = [
             spriteData['MidPlane2-01'],
             spriteData['MidPlane2-02'],
@@ -305,18 +306,19 @@ class Gunner extends EnemyPlane{
             spriteData['MidPlane2-02']
         ]
         super(sprite, toShoot, shootingFunc);
-        this.speed = 1;
+        this.x = x;
+        this.speed = invert ? -0.5 : 0.5;
         this.health = health;
         this.maxHealth = this.health;
-        this.y = viewport.height + 8;
-        this.points = 50;
+        this.y = invert ? viewport.height + 8 : -8;
+        this.points = 80;
         this.toShoot = toShoot;
         this.emitters = [];
         this.fill = '#EC1E24';
     }
     move(game){
         this.updateFrame();
-        this.y -= this.speed;
+        this.y += this.speed;
         if(this.speed > 0 ){
             if( this.y < -this.drawH ) this.health = 0;
         } else {
@@ -330,6 +332,30 @@ class Gunner extends EnemyPlane{
             const emitY = this.y + emitter[1];
             game.EFX.push(setEffectTrailBurn(emitX,emitY));
         }
+    }
+
+    get drop(){
+        let p1;
+        if(!this.dropType){
+            p1 = PowerUp.Medal(this.x, this.y, 2);
+        } else {
+            switch(this.dropType){
+                case 'm':
+                    p1 = PowerUp.WeaponM(this.x, this.y);
+                    break;
+                case 'f':
+                    p1 = PowerUp.WeaponF(this.x,this.y);
+                    break;
+                case 's':
+                    p1 = PowerUp.WeaponS(this.x,this.y);
+                    break;
+            }
+        }
+        return [
+            p1,
+            PowerUp.Medal(this.x + (p1.drawW + 8), this.y, 1),
+            PowerUp.Medal(this.x - (p1.drawW + 8), this.y, 1)
+        ];
     }
 
     static spawn(x = 300){
