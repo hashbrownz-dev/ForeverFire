@@ -197,13 +197,39 @@ const w2p3 = () => {
     ]
 }
 
+const w2p4 = () => {
+    const spawn = (game) => {
+        const spawnX = getRandom(100,700);
+        const leader = new PotShot(spawnX, false, 60, shootAtPlayer(-1,4,90))
+        leader.health = 3;
+        leader.speed = 3;
+        leader.points = 20;
+        leader.rank = 2;
+        leader.styles = setColors(red, gold, leader);
+
+        const eL = new PotShot(spawnX - leader.drawW);
+        const eR = new PotShot(spawnX + leader.drawW);
+
+        eL.y = leader.y - leader.drawH;
+        eR.y = leader.y - leader.drawH;
+
+        eL.speed = 3;
+        eR.speed = 3;
+
+        game.Actors.push(leader,eL,eR);
+    }
+    return new Interval(60, spawn, 480);
+}
+
 const Wave02 = () => new Timeline([
     w2p1(),
     ...w2p2(),
     ...w2p3(),
+    w2p4(),
 ])
 
 const testWave = () => new Timeline([
+    w2p4(),
     ...w2p3(),
     w2p1(),
     ...w2p2()

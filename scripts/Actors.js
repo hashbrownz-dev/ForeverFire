@@ -200,6 +200,7 @@ class PotShot extends EnemyPlane{
         this.speed = 4;
         this.fill = '#EC1C24';
         this.healer = false;
+        this.rank = 1;
         // Invert HitBox
         if(this.invert){
             const hb = this.hitboxes[0];
@@ -219,7 +220,7 @@ class PotShot extends EnemyPlane{
     }
 
     get drop(){
-        return this.healer ? [PowerUp.SmallHealth(this.x,this.y)] : [PowerUp.Medal(this.x, this.y, 1)];
+        return this.healer ? [PowerUp.SmallHealth(this.x,this.y)] : [PowerUp.Medal(this.x, this.y, this.rank)];
     }
 
     static spawn(invert = false){
