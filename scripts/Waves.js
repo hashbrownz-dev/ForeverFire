@@ -109,7 +109,7 @@ const Wave01 = () => new Timeline([
 
 const w2p1 = () => {
     const spawn = (game) => {
-        const enemy = new Kamikaze(getRandom(150,350));
+        const enemy = new Kamikaze(getRandom(150,650));
         enemy.speed = getRandom(6,8);
         game.Actors.push(enemy);
     }
@@ -132,13 +132,13 @@ const w2p2 = () => {
         enemy.health = 3;
         enemy.points = 14;
         enemy.styles = setColors(yellow, aqua, enemy);
-        
+
         if(Player){
             enemy.x = getRandom(Player.x - 50, Player.x + 50);
             if(enemy.x < 50) enemy.x = 50;
             if(enemy.x > 550) enemy.x = 550;
         } else {
-            enemy.x = getRandom(50,550);
+            enemy.x = getRandom(100,700);
         }
         game.Actors.push(enemy);
     }
@@ -147,7 +147,7 @@ const w2p2 = () => {
         const enemy = new Kamikaze(0);
         enemy.speed = getRandom(6,8);
         if(!Player){
-            enemy.x = getRandom(50,550);
+            enemy.x = getRandom(100,700);
         } else {
             if(Math.round(Math.random())){
                 // LEFT
@@ -180,12 +180,31 @@ const w2p2 = () => {
     return alarms;
 }
 
+const w2p3 = () => {
+    const spawn = (game) => {
+        const eS = new Gunner(viewport.width/2 - 150, false, 20, 120, shootSpread(60,4,5,20,90));
+        const eF = new Gunner(viewport.width/2 + 150, false, 20, 120, shootSpread(60,4,5,20,90));
+        eS.dropType = 's';
+        eF.dropType = 'f';
+        eS.styles = setColors(red, gold, eS);
+        eF.styles = setColors(gold, red, eF);
+
+        game.Actors.push(eS,eF);
+    }
+    return [
+        new Alarm(0,spawn),
+        intermission(450)
+    ]
+}
+
 const Wave02 = () => new Timeline([
     w2p1(),
-    ...w2p2()
+    ...w2p2(),
+    ...w2p3(),
 ])
 
 const testWave = () => new Timeline([
+    ...w2p3(),
     w2p1(),
     ...w2p2()
 ])
