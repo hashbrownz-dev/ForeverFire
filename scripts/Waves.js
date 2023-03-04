@@ -109,27 +109,9 @@ const Wave01 = () => new Timeline([
 
 const w2p1 = () => {
     const spawn = (game) => {
-        const { Player } = game;
-        const enemy = new Kamikaze(0,false);
-        const enemy2 = new PotShot(0,false);
-        if(Player){
-            enemy2.x = getRandom(Player.x - 50, Player.x + 50);
-            if(Math.round(Math.random())){
-                // LEFT
-                enemy.x = getRandom(Player.x - 300, Player.x - 100);
-                if(enemy.x <= 0) enemy.x = enemy.drawW;
-            } else {
-                // RIGHT
-                enemy.x = getRandom(Player.x + 100, Player.x + 300);
-                if(enemy.x >= viewport.width) enemy.x = viewport.width - enemy.drawW;
-            }
-        } else {
-            enemy.x = getRandom(50, 550);
-            enemy2.x = getRandom(50, 550);
-        }
+        const enemy = new Kamikaze(getRandom(150,350));
         enemy.speed = getRandom(6,8);
-        enemy2.health = 3;
-        game.Actors.push(enemy, enemy2);
+        game.Actors.push(enemy);
     }
     return new Interval(20, spawn, 360);
 }
@@ -143,6 +125,42 @@ const w2p2 = () => {
     // let's say that every 20 frames we want to create a kamikaze
     // and every 40 frames we want to create a potshot
     // and we want to do this for 360 frames...
+    const spawnP = (game) => {
+        const {Player} = game;
+        const enemy = new PotShot(0,false,60,shootAtPlayer(-1,4,90));
+        enemy.speed = 3;
+        enemy.health = 3;
+        enemy.points = 14;
+        enemy.styles = setColors(yellow, aqua, enemy);
+        
+        if(Player){
+            enemy.x = getRandom(Player.x - 50, Player.x + 50);
+            if(enemy.x < 50) enemy.x = 50;
+            if(enemy.x > 550) enemy.x = 550;
+        } else {
+            enemy.x = getRandom(50,550);
+        }
+        game.Actors.push(enemy);
+    }
+    const spawnK = (game) => {
+        const {Player} = game;
+        const enemy = new Kamikaze(0);
+        enemy.speed = getRandom(6,8);
+        if(!Player){
+            enemy.x = getRandom(50,550);
+        } else {
+            if(Math.round(Math.random())){
+                // LEFT
+                enemy.x = getRandom(Player.x - 300, Player.x - 100);
+                if(enemy.x <= 0) enemy.x = enemy.drawW;
+            } else {
+                // RIGHT
+                enemy.x = getRandom(Player.x + 100, Player.x + 300);
+                if(enemy.x >= viewport.width) enemy.x = viewport.width - enemy.drawW;
+            }
+        }
+        game.Actors.push(enemy);
+    }
     const alarms = [];
     let cdur = 0;
     for(let i = 0; i <= 360; i++){
@@ -150,11 +168,11 @@ const w2p2 = () => {
         // on every 40th frame, create an alarm with a duration of 20 and a spawn potshot action
         
         if(!(i % 20)){
-            alarms.push(new Alarm(cdur, ()=>console.log(`Action: Kamikaze, Duration:${cdur}`)));
+            alarms.push(new Alarm(cdur, spawnK));
             cdur = 0;
         }
         if(!(i % 40)){
-            alarms.push(new Alarm(cdur, ()=>console.log(`Action: PotShot, Duration:${cdur}`)));
+            alarms.push(new Alarm(cdur, spawnP));
             cdur = 0;
         }
         cdur++;
@@ -163,9 +181,11 @@ const w2p2 = () => {
 }
 
 const Wave02 = () => new Timeline([
-    w2p1()
+    w2p1(),
+    ...w2p2()
 ])
 
 const testWave = () => new Timeline([
+    w2p1(),
     ...w2p2()
 ])
