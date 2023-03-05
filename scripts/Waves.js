@@ -274,10 +274,51 @@ const w3p1 = () => {
     ]
 }
 
+const w3p3 = () => {
+    const spawnGun = (game) => {
+        const enemy = new Gunner(400, false, 40, 90, shootArc(60, 4, 4, 40, 140));
+        enemy.rank = 2;
+        enemy.styles = setColors(aqua, pink, enemy);
+        
+        game.Actors.push(enemy);
+    }
+    const spawnKL = (game) => {
+        const enemy = new Kamikaze(250);
+        enemy.speed = 5;
+        enemy.styles = setColors(pink, aqua, enemy);
+
+        game.Actors.push(enemy);
+    }
+    const spawnKR = (game) => {
+        const enemy = new Kamikaze(550);
+        enemy.speed = 5;
+        enemy.styles = setColors(aqua, pink, enemy);
+
+        game.Actors.push(enemy);
+    }
+
+    const alarms = [new Alarm(0, spawnGun)];
+
+    let left = false;
+    for(let i = 0; i <= 450; i++){
+        if(!(i%15)){
+            left ? alarms.push(new Alarm(15, spawnKL)) : alarms.push(new Alarm(15, spawnKR));
+            left = !left;
+        }
+    }
+    return alarms;
+}
+
 const Wave03 = () => new Timeline([
     ...w3p1(),
+    ...w2p2(),
+    ...w3p3(),
 ])
 
 const testWave = () => new Timeline([
     ...w3p1(),
+    intermission(60),
+    ...w2p2(),
+    intermission(60),
+    ...w3p3(),
 ])

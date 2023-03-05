@@ -344,7 +344,7 @@ class Gunner extends EnemyPlane{
     get drop(){
         let p1;
         if(!this.dropType){
-            p1 = PowerUp.Medal(this.x, this.y, 2);
+            p1 = PowerUp.Medal(this.x, this.y, this.rank + 1);
         } else {
             switch(this.dropType){
                 case 'm':
@@ -360,8 +360,8 @@ class Gunner extends EnemyPlane{
         }
         return [
             p1,
-            PowerUp.Medal(this.x + (p1.drawW + 8), this.y, 1),
-            PowerUp.Medal(this.x - (p1.drawW + 8), this.y, 1)
+            PowerUp.Medal(this.x + (p1.drawW + 8), this.y, this.rank),
+            PowerUp.Medal(this.x - (p1.drawW + 8), this.y, this.rank)
         ];
     }
 
