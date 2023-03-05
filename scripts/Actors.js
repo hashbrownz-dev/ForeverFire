@@ -82,6 +82,7 @@ class EnemyPlane extends Actor{
         this.toShoot = toShoot;
         this.shootFunc = shootFunc ? shootFunc : ()=>{console.log('No Shooting Function')};
         this.type = 'enemy';
+        this.rank = 1;
         this.outline = '#FFFFFF';
     }
     update(game){
@@ -166,7 +167,7 @@ class Kamikaze extends EnemyPlane{
     }
 
     get drop(){
-        return [PowerUp.Medal(this.x, this.y, 1)];
+        return [PowerUp.Medal(this.x, this.y, this.rank)];
     }
 
     static spawn(invert = false){
@@ -200,7 +201,6 @@ class PotShot extends EnemyPlane{
         this.speed = 4;
         this.fill = '#EC1C24';
         this.healer = false;
-        this.rank = 1;
         // Invert HitBox
         if(this.invert){
             const hb = this.hitboxes[0];

@@ -221,14 +221,46 @@ const w2p4 = () => {
     return new Interval(60, spawn, 480);
 }
 
+const w2p5 = () => {
+    const spawn = (game) => {
+        const spawnX = getRandom(150,650);
+        const healer = new PotShot(spawnX, false, 90, shootArc(-1, 4, 8, 0, 359));
+        healer.y -= healer.drawH - 10;
+        healer.health = 5;
+        healer.speed = 3;
+        healer.points = 25;
+        healer.healer = true;
+        healer.styles = setColors(lime, red, healer);
+
+        const subs = [];
+        for(let i = 0; i < 4; i++){
+            const sub = new PotShot(spawnX);
+            sub.y = healer.y;
+            sub.speed = 3;
+            sub.rank = 2;
+            sub.styles = setColors(white, lime, sub);
+            subs.push(sub);
+        }
+        subs[0].x += healer.drawW + 10;
+        subs[1].x -= healer.drawW + 10;
+        subs[2].y -= healer.drawH + 10;
+        subs[3].y += healer.drawH + 10;
+
+        game.Actors.push(healer, ...subs);
+    }
+    return new Interval(90, spawn, 540);
+}
+
 const Wave02 = () => new Timeline([
     w2p1(),
     ...w2p2(),
     ...w2p3(),
     w2p4(),
+    w2p5(),
 ])
 
 const testWave = () => new Timeline([
+    w2p5(),
     w2p4(),
     ...w2p3(),
     w2p1(),
