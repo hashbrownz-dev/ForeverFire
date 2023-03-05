@@ -340,14 +340,54 @@ const Wave03 = () => new Timeline([
     ...w2p2(),
     ...w3p3(),
     w3p4()
+]);
+
+/*=============/
+    WAVE 04
+==============*/
+
+const w4p1 = () => {
+    const spawnP = (game) => {
+        const enemy = new PotShot(getRandom(50,750), false, getRandom(30,90), shootAtPlayer(-1, 6, 90));
+        enemy.health = 4;
+        enemy.speed = getRandom(2,4);
+        enemy.points = 14;
+        enemy.rank = 2;
+        enemy.styles = setColors(aqua, pink, enemy);
+        
+        game.Actors.push(enemy);
+    }
+
+    const spawnK = (game) => {
+        const enemy = new Kamikaze(getRandom(50,750), false, getRandom(30,60), shootAtPlayer(-1, 8, 90));
+        enemy.speed = getRandom(4,8);
+        enemy.points = 19;
+        enemy.rank = 3;
+        enemy.styles = setColors(pink, aqua, enemy);
+
+        game.Actors.push(enemy);
+    }
+
+    const alarms = [];
+    let dur = 0;
+    for(let i = 0; i <= 600; i++){
+        if(!(i % 30)){
+            alarms.push(new Alarm(dur, spawnK));
+            dur = 0;
+        }
+        if(!(i%45)){
+            alarms.push(new Alarm(dur, spawnP));
+            dur = 0;
+        }
+        dur++;
+    }
+    return alarms;
+}
+
+const Wave04 = () => new Timeline([
+    ...w4p1()
 ])
 
 const testWave = () => new Timeline([
-    w3p4(),
-    intermission(120),
-    ...w3p1(),
-    intermission(60),
-    ...w2p2(),
-    intermission(60),
-    ...w3p3(),
+    ...w4p1()
 ])

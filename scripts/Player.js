@@ -12,7 +12,7 @@ class Player extends Actor {
         this.health = 100;
         this.shotType = 'm';
         this.shotLevel = {
-            m : 1,
+            m : 3,
             s : 1,
             f : 1
         }
