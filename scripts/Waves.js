@@ -117,14 +117,6 @@ const w2p1 = () => {
 }
 
 const w2p2 = () => {
-    // we can either
-    // create a dynamic list of alarms
-    // create another timeline and embed it?  (not sure if possible)
-    // a timeline is a series of alarms.
-    // an alarm basically performs an action after the alotted time...
-    // let's say that every 20 frames we want to create a kamikaze
-    // and every 40 frames we want to create a potshot
-    // and we want to do this for 360 frames...
     const spawnP = (game) => {
         const {Player} = game;
         const enemy = new PotShot(0,false,60,shootAtPlayer(-1,4,90));
@@ -164,9 +156,6 @@ const w2p2 = () => {
     const alarms = [];
     let cdur = 0;
     for(let i = 0; i <= 360; i++){
-        // on every 20th frame, create an alarm with a duration of 20 and a spawn kamikaze action
-        // on every 40th frame, create an alarm with a duration of 20 and a spawn potshot action
-        
         if(!(i % 20)){
             alarms.push(new Alarm(cdur, spawnK));
             cdur = 0;
@@ -259,10 +248,36 @@ const Wave02 = () => new Timeline([
     w2p5(),
 ])
 
+/*=============/
+    WAVE 03
+==============*/
+
+const w3p1 = () => {
+    const spawn = (game) => {
+        const gunS = new Gunner(200, false, 40, 90, shootSpread(90, 3, 6, 15, 90));
+        const gunF = new Gunner(600, false, 40, 90, shootSpread(90, 3, 6, 15, 90));
+        const gunM = new Gunner(400, false, 40, 60, shootAtPlayer(30, 5, 90));
+
+        gunM.y -= gunM.drawH / 2;
+        gunS.dropType = 's';
+        gunF.dropType = 'f';
+        gunM.dropType = 'm';
+        gunS.styles = setColors(red, aqua, gunS);
+        gunM.styles = setColors(lime, aqua, gunM);
+        gunF.styles = setColors(gold, aqua, gunF);
+
+        game.Actors.push(gunS, gunF, gunM);
+    }
+    return [
+        new Alarm(0, spawn),
+        intermission(600),
+    ]
+}
+
+const Wave03 = () => new Timeline([
+    ...w3p1(),
+])
+
 const testWave = () => new Timeline([
-    w2p5(),
-    w2p4(),
-    ...w2p3(),
-    w2p1(),
-    ...w2p2()
+    ...w3p1(),
 ])

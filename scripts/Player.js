@@ -88,19 +88,19 @@ class Player extends Actor {
                 if(f === 1){
                     bDur = 30;
                     bRad = 80;
-                    this.shotCooldown = 45;
+                    this.shotCooldown = 32;
                 }
                 // 2
                 if(f === 2){
                     bDur = 45;
                     bRad = 100;
-                    this.shotCooldown = 40;
+                    this.shotCooldown = 24;
                 }
                 // 3
                 if(f >= 3){
                     bDur = 60;
                     bRad = 120;
-                    this.shotCooldown = 35;
+                    this.shotCooldown = 16;
                 }
                 game.Projectiles.push(new PlayerShotF(this.x, yPos, 270, bDur, bRad));
                 break;

@@ -5,7 +5,10 @@ class Game{
         this.frames = 0;
         this.Wave = 0;
         this.Waves = [
-            testWave(), Wave01(), Wave02()
+            testWave(),
+            Wave01(),
+            Wave02(),
+            Wave03()
         ];
         this.enemiesSpawned = 0;
         this.enemiesSlain = 0;
@@ -247,6 +250,7 @@ class Game{
                         if(overlap(hitbox, proj.getHitBox(0)) || overlap(proj.getHitBox(0), hitbox)){
                             // Apply Damage
                             this.Player.health -= proj.power;
+                            this.Player.inv = 60;
 
                             // Remove Projectile
                             proj.health = 0;
