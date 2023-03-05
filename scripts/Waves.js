@@ -276,7 +276,7 @@ const w3p1 = () => {
 
 const w3p3 = () => {
     const spawnGun = (game) => {
-        const enemy = new Gunner(400, false, 40, 90, shootArc(60, 4, 4, 40, 140));
+        const enemy = new Gunner(400, false, 40, 90, shootArc(60, 4, 4, 65, 140));
         enemy.rank = 2;
         enemy.styles = setColors(aqua, pink, enemy);
         
@@ -309,13 +309,42 @@ const w3p3 = () => {
     return alarms;
 }
 
+const w3p4 = () => {
+    const spawn = (game) => {
+        const enemies = [ new PotShot(400, false, 60, shootArc(-1, 6, 4, 65, 140 )) ];
+        const xOffset = enemies[0].drawW + 25, yOffset = enemies[0].drawH / 2;
+        enemies.push(
+            new PotShot(400 + xOffset, false, 90, shootArc( -1, 6, 4, 65, 140)),
+            new PotShot(400 - xOffset, false, 90, shootArc( -1, 6, 4, 65, 140)),
+            new PotShot(400 + (xOffset * 2), false, 120, shootArc( -1, 6, 4, 65, 140)),
+            new PotShot(400 - (xOffset * 2), false, 120, shootArc( -1, 6, 4, 65, 140))
+        )
+        enemies[1].y -= yOffset;
+        enemies[2].y -= yOffset;
+        enemies[3].y -= yOffset * 2;
+        enemies[4].y -= yOffset * 2;
+        for(const enemy of enemies){
+            enemy.speed = 2;
+            enemy.health = 4;
+            enemy.rank = 2;
+            enemy.styles = setColors(lime, red, enemy);
+        }
+        
+        game.Actors.push(...enemies);
+    }
+    return new Interval(180, spawn, 720);
+}
+
 const Wave03 = () => new Timeline([
     ...w3p1(),
     ...w2p2(),
     ...w3p3(),
+    w3p4()
 ])
 
 const testWave = () => new Timeline([
+    w3p4(),
+    intermission(120),
     ...w3p1(),
     intermission(60),
     ...w2p2(),
