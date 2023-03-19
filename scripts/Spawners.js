@@ -149,6 +149,37 @@ const spawnGun001 = (type) => {
 // SPAWN TWO MGS
 // SPAWN AN INVERSION
 
+const spawnActor = (actor) => {
+    // Parse Actor Data
+    const { className, outline, fill } = actor;
+    let enemy;
+    switch(className){
+        case 'potshot':
+            enemy = new PotShot();
+            break;
+        case 'kamikaze':
+            enemy = new Kamikaze();
+            break;
+        case 'ace':
+            enemy = new Ace();
+            break;
+        case 'gunner':
+            enemy = new Gunner();
+            break;
+    }
+    if( outline && fill ) {
+        enemy.styles = setColors(outline, fill, enemy);
+    }
+    for(const property in actor){
+        // check if the enemy has the property
+        if(enemy.hasOwnProperty(property)){
+            // if the enemy as the property assign the value of property to it
+            enemy[property] = actor[property];
+        }
+    }
+    return enemy;
+}
+
 const getRandom = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }

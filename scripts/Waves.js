@@ -14,13 +14,20 @@ const intermission = (duration = 30) => {
 
 const w1p1 = () => {
     const spawn = (game) => {
-        const enemy = new PotShot(0,false);
-        enemy.x = getRandom(200, 600);
-        enemy.speed = 4;
-        enemy.points = 9;
-        enemy.styles = setColors(white, aqua, enemy);
-
-        game.Actors.push(enemy);
+        // const enemy = new PotShot(0,false);
+        // enemy.x = getRandom(200, 600);
+        // enemy.speed = 4;
+        // enemy.points = 9;
+        // enemy.styles = setColors(white, aqua, enemy);
+        const enemy = {
+            className : 'potshot',
+            speed : 4,
+            x : getRandom(200, 600),
+            points : 9,
+            outline : white,
+            fill : aqua
+        }
+        game.Actors.push(spawnActor(enemy));
     }
     return new Interval(60, spawn, 480)
 }
@@ -428,6 +435,7 @@ const Wave04 = () => new Timeline([
 ])
 
 const testWave = () => new Timeline([
+    w1p1(),
     ...w4p2(),
     ...w4p1()
 ])

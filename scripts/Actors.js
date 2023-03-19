@@ -185,7 +185,7 @@ class Kamikaze extends EnemyPlane{
 // Psycho can appear either from the top or bottom, and shoot bullets in circular patterns.  guaranteed to drop a power up
 
 class PotShot extends EnemyPlane{
-    constructor(x, invert, toShoot = -1, shootFunc){
+    constructor(x = 0, invert, toShoot = -1, shootFunc){
         const sprite = [
             spriteData['PotShot-01'],
             spriteData['PotShot-02'],
