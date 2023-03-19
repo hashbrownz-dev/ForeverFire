@@ -356,6 +356,8 @@ class Gunner extends EnemyPlane{
                 case 's':
                     p1 = PowerUp.WeaponS(this.x,this.y);
                     break;
+                case 'bfg':
+                    p1 = PowerUp.BFG(this.x, this.y);
             }
         }
         return [

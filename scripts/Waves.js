@@ -254,9 +254,9 @@ const Wave02 = () => new Timeline([
 
 const w3p1 = () => {
     const spawn = (game) => {
-        const gunS = new Gunner(200, false, 40, 90, shootSpread(90, 3, 6, 15, 90));
-        const gunF = new Gunner(600, false, 40, 90, shootSpread(90, 3, 6, 15, 90));
-        const gunM = new Gunner(400, false, 40, 60, shootAtPlayer(30, 5, 90));
+        const gunS = new Gunner(200, false, 30, 90, shootSpread(90, 3, 6, 15, 90));
+        const gunF = new Gunner(600, false, 30, 90, shootSpread(90, 3, 6, 15, 90));
+        const gunM = new Gunner(400, false, 30, 60, shootAtPlayer(30, 5, 90));
 
         gunM.y -= gunM.drawH / 2;
         gunS.dropType = 's';
@@ -384,10 +384,50 @@ const w4p1 = () => {
     return alarms;
 }
 
+const w4p2 = () => {
+    const spawnG = (game) => {
+        const gunS = new Gunner(200, false, 30, 90, shootSpread(90, 3, 6, 15, 90));
+        const gunF = new Gunner(600, false, 30, 90, shootSpread(90, 3, 6, 15, 90));
+        const gunM = new Gunner(400, false, 30, 60, shootAtPlayer(30, 5, 90));
+
+        gunM.y -= gunM.drawH / 2;
+        gunS.dropType = 's';
+        gunF.dropType = 'f';
+        gunM.dropType = 'bfg';
+        gunS.styles = setColors(red, aqua, gunS);
+        gunM.styles = setColors(lime, aqua, gunM);
+        gunF.styles = setColors(gold, aqua, gunF);
+
+        game.Actors.push(gunS, gunF, gunM);
+    }
+    const spawnK = (game) => {
+        const enemy = new Kamikaze(getRandom(100,700));
+        enemy.speed = getRandom(3,6);
+
+        game.Actors.push(enemy);
+    }
+    return [
+        new Alarm(0, spawnG),
+        new Interval(30, spawnK, 450),
+        intermission(150),
+    ]
+}
+
+const w4p4 = () => {
+    const spawnG = (game) => {
+        const g = new Gunner(400, false, 40, 120, shootSpread(60,4,5,20,90));
+        
+    }
+}
+
 const Wave04 = () => new Timeline([
-    ...w4p1()
+    ...w4p1(),
+    ...w4p2(),
+    ...w4p1(),
+
 ])
 
 const testWave = () => new Timeline([
+    ...w4p2(),
     ...w4p1()
 ])
