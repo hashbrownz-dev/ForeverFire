@@ -25,7 +25,14 @@ const w1p1 = () => {
             x : getRandom(200, 600),
             points : 9,
             outline : white,
-            fill : aqua
+            fill : aqua,
+            toShoot : 30,
+            shootingData : {
+                type : 'player',
+                interval : 60,
+                speed : 6,
+                defTarget : 90
+            }
         }
         game.Actors.push(spawnActor(enemy));
     }

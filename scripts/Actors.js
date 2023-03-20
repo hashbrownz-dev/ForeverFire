@@ -3,10 +3,11 @@ class Actor{
         const { dimensions, hitboxes } = Sprite;
         this.x = 0;
         this.y = 0;
+        this.health = 1;
+        this.speed = 4;
         this.drawW = Number(dimensions.drawW);
         this.drawH = Number(dimensions.drawH);
         this.hitboxes = Actor.setHitBoxes(hitboxes);
-        this.health = 1;
         this.frame = 0;
         this.type = '';
     }
@@ -79,11 +80,15 @@ class EnemyPlane extends Actor{
         // Calls the Actor Constructor...
         super(sprite[0]);
         this.sprite = sprite;
+        this.rank = 1;
+        this.points = 9;
+        this.invert = false;
+        this.outline = '#FFFFFF';
+        // this.fill?
+        this.drops = 'medal';
         this.toShoot = toShoot;
         this.shootFunc = shootFunc ? shootFunc : ()=>{console.log('No Shooting Function')};
         this.type = 'enemy';
-        this.rank = 1;
-        this.outline = '#FFFFFF';
     }
     update(game){
         this.move(game);
@@ -95,12 +100,42 @@ class EnemyPlane extends Actor{
             this.shootFunc(this, game);
         }
     }
+    get drop(){
+        if(this.drops){
+            switch(this.drops){
+                case 'medal':
+                    return PowerUp.Medal(this.x, this.y, this.rank);
+                case 'smallHealth':
+                    return PowerUp.SmallHealth(this.x,this.y);
+                case 'largeHealth':
+                    return PowerUp.LargeHealth(this.x,this.y);
+                case 'extraLife':
+                    return PowerUp.ExtraLife(this.x, this.y);
+                case 'speedUp':
+                    return PowerUp.SpeedUp(this.x, this.y);
+                case 'speedDown':
+                    return PowerUp.SpeedDown(this.x, this.y);
+                case 'weaponM':
+                    return PowerUp.WeaponM(this.x, this.y);
+                case 'weaponF':
+                    return PowerUp.WeaponF(this.x, this.y);
+                case 'weaponS':
+                    return PowerUp.WeaponS(this.x, this.y);
+                case 'BFG':
+                    return PowerUp.BFG(this.x, this.y);
+                case 'invincibility':
+                    return PowerUp.Invincibility(this.x, this.y);
+            }
+        } else {
+            return null;
+        }
+    }
 }
 
 // The Kamikaze plane should bank towards the player.  The distance between the two actors on the x axis determines the xSpeed of the kamikaze plane.
 
 class Kamikaze extends EnemyPlane{
-    constructor(x, invert, toShoot = -1, shootingFunc){
+    constructor(x = 0, invert, toShoot = -1, shootingFunc){
         const sprite = [
             spriteData['Kamikaze-01'],
             spriteData['Kamikaze-02'],
@@ -166,10 +201,6 @@ class Kamikaze extends EnemyPlane{
         game.EFX.push(setEffectTrailKamikaze(emitX,emitY));
     }
 
-    get drop(){
-        return [PowerUp.Medal(this.x, this.y, this.rank)];
-    }
-
     static spawn(invert = false){
         const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
         return new Kamikaze(x, invert);
@@ -185,22 +216,19 @@ class Kamikaze extends EnemyPlane{
 // Psycho can appear either from the top or bottom, and shoot bullets in circular patterns.  guaranteed to drop a power up
 
 class PotShot extends EnemyPlane{
-    constructor(x = 0, invert, toShoot = -1, shootFunc){
+    constructor(invert){
         const sprite = [
             spriteData['PotShot-01'],
             spriteData['PotShot-02'],
             spriteData['PotShot-03'],
             spriteData['PotShot-02']
         ]
-        super(sprite, toShoot, shootFunc);
-        this.x = x;
+        super(sprite);
         this.y = !invert ? -this.drawH : viewport.height + this.drawH;
         this.invert = invert;
         this.mirrorY = invert;
-        this.points = 9;
-        this.speed = 4;
         this.fill = '#EC1C24';
-        this.healer = false;
+
         // Invert HitBox
         if(this.invert){
             const hb = this.hitboxes[0];
@@ -217,10 +245,6 @@ class PotShot extends EnemyPlane{
             this.y += this.speed;
             if( this.drawY > viewport.height ) this.health = 0;
         }
-    }
-
-    get drop(){
-        return this.healer ? [PowerUp.SmallHealth(this.x,this.y)] : [PowerUp.Medal(this.x, this.y, this.rank)];
     }
 
     static spawn(invert = false){
@@ -305,7 +329,7 @@ class Ace extends EnemyPlane{
 // Gunner's can have variable health
 
 class Gunner extends EnemyPlane{
-    constructor(x, invert, health = 10, toShoot = -1, shootingFunc){
+    constructor(x = 0, invert, health = 10, toShoot = -1, shootingFunc){
         const sprite = [
             spriteData['MidPlane2-01'],
             spriteData['MidPlane2-02'],

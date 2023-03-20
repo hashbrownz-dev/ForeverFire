@@ -151,11 +151,11 @@ const spawnGun001 = (type) => {
 
 const spawnActor = (actor) => {
     // Parse Actor Data
-    const { className, outline, fill } = actor;
+    const { className, outline, fill, invert, shootingData } = actor;
     let enemy;
     switch(className){
         case 'potshot':
-            enemy = new PotShot();
+            enemy = new PotShot(invert);
             break;
         case 'kamikaze':
             enemy = new Kamikaze();
@@ -175,6 +175,20 @@ const spawnActor = (actor) => {
         if(enemy.hasOwnProperty(property)){
             // if the enemy as the property assign the value of property to it
             enemy[property] = actor[property];
+        }
+    }
+    if(shootingData){
+        const { interval, speed } = shootingData;
+        switch(shootingData.type){
+            case 'player':
+                enemy.shootFunc = shootAtPlayer(interval, speed, shootingData.defTarget);
+                break;
+            case 'spread':
+                enemy.shootFunc = shootSpread(interval, speed, shootingData.amount, shootingData.space, shootingData.defTarget);
+                break;
+            case 'arc':
+                enemy.shootFunc = shootArc(interval, speed, shootingData.amount, shootingData.startAngle, shootingData.endAngle);
+                break;
         }
     }
     return enemy;

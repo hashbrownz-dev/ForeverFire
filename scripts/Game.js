@@ -230,7 +230,7 @@ class Game{
                                         // SPAWN POWER UP
                                         const drop = actor.drop;
                                         if(drop){
-                                            this.Actors.push(...drop);
+                                            this.Actors.push(drop);
                                         }
                                     }
                                 }
