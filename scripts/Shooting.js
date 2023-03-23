@@ -2,6 +2,21 @@
 
 // Every Shooting Function has two parameters: self ( a reference to the actor shooting ), game ( a reference to the game object )
 
+const shoot = (interval, speed, target, amount = 1, margin = 0) => {
+    return (self, game) => {
+        self.toShoot = interval;
+        const bullets = [];
+        for(let i = 0; i < amount; i++){
+            const bullet = new EnemyShot(self.x, self.y, target, speed);
+            bullet.x += (bullet.drawW + margin) * i;
+            bullets.push(bullet);
+        }
+        const length = (bullets[0].drawW * bullets.length) + ( margin * (bullets.length - 1));
+        bullets.forEach((bullet)=>{bullet.x -= length/2 - (bullet.drawW / 2)})
+        game.Projectiles.push(...bullets);
+    }
+}
+
 const shootAtPlayer = (interval, speed, defTarget) => {
     return (self, game) => {
         self.toShoot = interval;

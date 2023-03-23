@@ -204,3 +204,108 @@ const kamiSpread = {
         defTarget : 90
     }
 }
+
+const gunM = {
+    className : 'gunner',
+    health : 20,
+    speed : 0.5,
+    points : 50,
+    drops : 'weaponM',
+    outline : lime,
+    fill : yellow,
+    shootingData : {
+        type : 'player',
+        toShoot : 120,
+        interval : 60,
+        speed : 8,
+        defTarget : 90
+    }
+}
+
+const gunF = {
+    className : 'gunner',
+    health : 20,
+    speed : 0.5,
+    points : 50,
+    drops : 'weaponF',
+    outline : orange,
+    fill : yellow,
+    shootingData : {
+        type : 'arc',
+        toShoot : 120,
+        interval : 90,
+        speed : 6,
+        amount : 8,
+        startAngle : 45,
+        endAngle : 415
+    }
+}
+
+const gunS = {
+    className : 'gunner',
+    health : 20,
+    speed : 0.5,
+    points : 50,
+    drops : 'weaponS',
+    outline : red,
+    fill : aqua,
+    shootingData : {
+        type : 'spread',
+        toShoot : 120,
+        interval : 90,
+        speed : 6,
+        amount : 5,
+        margin : 20,
+        defTarget : 90
+    }
+}
+
+const gunLH = {
+    className : 'gunner',
+    health : 40,
+    speed : 1,
+    points : 50,
+    drops : 'largeHealth',
+    outline : aqua,
+    fill : pink,
+}
+
+const gunHog = {
+    className : 'gunner',
+    health : 40,
+    speed : 0.5,
+    rank : 5,
+    points : 100,
+    outline : pink,
+    fill : aqua,
+    shootingData : {
+        type : 'blank',
+        toShoot : 120,
+        interval : 75,
+        speed : 8,
+        amount : 2,
+        margin : 80,
+        defTarget : 90
+    }
+}
+
+const gunDog = {
+    className : 'gunner',
+    health : 10,
+    speed : 1.5,
+    rank : 5,
+    points : 150,
+    outline : lime,
+    fill : red,
+    invert : true,
+    shootingData : {
+        type : 'spread',
+        toShoot : 120,
+        interval : 75,
+        speed : 6,
+        amount : 3,
+        margin : 15,
+        defTarget : 270
+    }
+}
+

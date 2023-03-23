@@ -198,11 +198,6 @@ class Kamikaze extends EnemyPlane{
         const emitY = this.invert ? this.drawY + this.drawH + 5 : this.drawY - 5;
         game.EFX.push(setEffectTrailKamikaze(emitX,emitY));
     }
-
-    static spawn(invert = false){
-        const x = Math.floor(Math.random() * (viewport.width - 50) + 50);
-        return new Kamikaze(x, invert);
-    }
 }
 
 // PotShots fly Vertically, shooting at the player.
@@ -244,14 +239,6 @@ class PotShot extends EnemyPlane{
             this.y += this.speed;
             if( this.drawY > viewport.height ) this.health = 0;
         }
-    }
-
-    static spawn(invert = false){
-        // x, invert, toShoot, shootFunc
-        const { drawW } = spriteData['PotShot-01']['dimensions'];
-        const x = Math.floor(Math.random() * (viewport.width - (drawW + 10)) + (drawW + 10));
-
-        return new PotShot(x, invert, 120, shootAtPlayer(60, 5, 90));
     }
 }
 
@@ -336,7 +323,7 @@ class Gunner extends EnemyPlane{
         super(sprite);
         this.x = getRandom(200, 600);
         this.y = invert ? viewport.height + 8 : -8;
-        this.maxHealth = this.health;
+        this.maxHealth;
         this.emitters = [];
         this.fill = '#EC1E24';
     }
@@ -351,42 +338,11 @@ class Gunner extends EnemyPlane{
         }
 
         // HULL DAMAGE
-
         for(const emitter of this.emitters){
             const emitX = this.x + emitter[0];
             const emitY = this.y + emitter[1];
             game.EFX.push(setEffectTrailBurn(emitX,emitY));
         }
-    }
-
-    get drop(){
-        let p1;
-        if(!this.dropType){
-            p1 = PowerUp.Medal(this.x, this.y, this.rank + 1);
-        } else {
-            switch(this.dropType){
-                case 'm':
-                    p1 = PowerUp.WeaponM(this.x, this.y);
-                    break;
-                case 'f':
-                    p1 = PowerUp.WeaponF(this.x,this.y);
-                    break;
-                case 's':
-                    p1 = PowerUp.WeaponS(this.x,this.y);
-                    break;
-                case 'bfg':
-                    p1 = PowerUp.BFG(this.x, this.y);
-            }
-        }
-        return [
-            p1,
-            PowerUp.Medal(this.x + (p1.drawW + 8), this.y, this.rank),
-            PowerUp.Medal(this.x - (p1.drawW + 8), this.y, this.rank)
-        ];
-    }
-
-    static spawn(x = 300){
-        return new Gunner(x, 10, 120, shootAtPlayer(60, 5, 270));
     }
 }
 

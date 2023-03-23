@@ -144,6 +144,7 @@ const spawnActor = (actor) => {
             break;
         case 'gunner':
             enemy = new Gunner(invert);
+            enemy.maxHealth = actor.health;
             break;
     }
 
@@ -171,6 +172,9 @@ const spawnActor = (actor) => {
                 break;
             case 'arc':
                 enemy.shootFunc = shootArc(interval, speed, shootingData.amount, shootingData.startAngle, shootingData.endAngle);
+                break;
+            case 'blank':
+                enemy.shootFunc = shoot(interval, speed, shootingData.defTarget, shootingData.amount, shootingData.margin);
                 break;
         }
     }
