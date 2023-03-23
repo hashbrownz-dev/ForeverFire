@@ -14,37 +14,20 @@ const intermission = (duration = 30) => {
 
 const w1p1 = () => {
     const spawn = (game) => {
-        // const enemy = new PotShot(0,false);
-        // enemy.x = getRandom(200, 600);
-        // enemy.speed = 4;
-        // enemy.points = 9;
-        // enemy.styles = setColors(white, aqua, enemy);
-        const enemy = {
-            className : 'potshot',
-            speed : 4,
-            x : getRandom(200, 600),
-            points : 9,
-            outline : white,
-            fill : aqua,
-            toShoot : 30,
-            shootingData : {
-                type : 'player',
-                interval : 60,
-                speed : 6,
-                defTarget : 90
-            }
-        }
-        const enemies = [];
-        for(let i = 8; i > 0; i--){
-            enemies.push(spawnActor(enemy));
-        }
+        // const enemies = [];
+        // for(let i = 8; i > 0; i--){
+        //     enemies.push(spawnActor(ps));
+        // }
         // formRow(50, enemies);
         // formCrossX(200, enemies);
         // formV(400, enemies);
         // formBoat(400, enemies);
         // formBox(400, enemies, 4);
-        formTriangle(400, enemies);
-        game.Actors.push(...enemies);
+        // formTriangle(400, enemies, 40);
+        // game.Actors.push(...enemies);
+        // game.Actors.push(spawnActor(psX));
+        // game.Actors.push(spawnActor(psCross));
+        game.Actors.push(spawnActor(psCircle));
     }
     return new Interval(60, spawn, 480)
 }

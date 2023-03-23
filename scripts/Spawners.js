@@ -121,14 +121,14 @@ const formTriangle = (xOrigin, enemies, marginX, marginY) => {
             x += enemies[0].drawW + mX;
         } else {
             c = 0;
-            x = xOrigin - ((enemies[0].drawW / 2 + mX) * r)
+            x = xOrigin - ((enemies[0].drawW / 2 + mX / 2) * r)
             y -= enemies[0].drawH + mY;
             r++;
         }
     }
 }
 
-const spawnActor = (actor, x, speed) => {
+const spawnActor = (actor) => {
     // Parse Actor Data
     const { className, outline, fill, invert, shootingData } = actor;
     let enemy;
@@ -137,18 +137,15 @@ const spawnActor = (actor, x, speed) => {
             enemy = new PotShot(invert);
             break;
         case 'kamikaze':
-            enemy = new Kamikaze();
+            enemy = new Kamikaze(invert);
             break;
         case 'ace':
             enemy = new Ace();
             break;
         case 'gunner':
-            enemy = new Gunner();
+            enemy = new Gunner(invert);
             break;
     }
-
-    enemy.x = x;
-    enemy.speed = speed;
 
     if( outline && fill ) {
         enemy.styles = setColors(outline, fill, enemy);
@@ -163,13 +160,14 @@ const spawnActor = (actor, x, speed) => {
     }
     
     if(shootingData){
-        const { interval, speed } = shootingData;
+        const { toShoot, interval, speed } = shootingData;
+        enemy.toShoot = toShoot;
         switch(shootingData.type){
             case 'player':
                 enemy.shootFunc = shootAtPlayer(interval, speed, shootingData.defTarget);
                 break;
             case 'spread':
-                enemy.shootFunc = shootSpread(interval, speed, shootingData.amount, shootingData.space, shootingData.defTarget);
+                enemy.shootFunc = shootSpread(interval, speed, shootingData.amount, shootingData.margin, shootingData.defTarget);
                 break;
             case 'arc':
                 enemy.shootFunc = shootArc(interval, speed, shootingData.amount, shootingData.startAngle, shootingData.endAngle);

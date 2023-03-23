@@ -76,7 +76,7 @@ class Actor{
 // Small Planes
 
 class EnemyPlane extends Actor{
-    constructor(sprite, toShoot = -1, shootFunc){
+    constructor(sprite){
         // Calls the Actor Constructor...
         super(sprite[0]);
         this.sprite = sprite;
@@ -86,8 +86,8 @@ class EnemyPlane extends Actor{
         this.outline = '#FFFFFF';
         // this.fill?
         this.drops = 'medal';
-        this.toShoot = toShoot;
-        this.shootFunc = shootFunc ? shootFunc : ()=>{console.log('No Shooting Function')};
+        this.toShoot = -1;
+        this.shootFunc = ()=>{console.log('No Shooting Function')};
         this.type = 'enemy';
     }
     update(game){
@@ -135,17 +135,15 @@ class EnemyPlane extends Actor{
 // The Kamikaze plane should bank towards the player.  The distance between the two actors on the x axis determines the xSpeed of the kamikaze plane.
 
 class Kamikaze extends EnemyPlane{
-    constructor(x = 0, invert, toShoot = -1, shootingFunc){
+    constructor(invert){
         const sprite = [
             spriteData['Kamikaze-01'],
             spriteData['Kamikaze-02'],
             spriteData['Kamikaze-03']
         ];
-        super(sprite, toShoot, shootingFunc);
-        this.x = x;
+        super(sprite);
+        this.x = getRandom(100, 700);
         this.y = invert ? viewport.height + this.drawH : -this.drawH;
-        this.speed = 4;
-        this.points = 14;
         this.invert = invert;
         this.mirrorX = false;
         this.mirrorY = !invert;
@@ -224,6 +222,7 @@ class PotShot extends EnemyPlane{
             spriteData['PotShot-02']
         ]
         super(sprite);
+        this.x = getRandom(200, 600);
         this.y = !invert ? -this.drawH : viewport.height + this.drawH;
         this.invert = invert;
         this.mirrorY = invert;
@@ -257,16 +256,14 @@ class PotShot extends EnemyPlane{
 }
 
 class Ace extends EnemyPlane{
-    constructor(y, spawnLeft, keyFrames, toShoot = -1, shootFunc){
+    constructor(y, spawnLeft, keyFrames){
         const sprite = [
             spriteData['SmDyna-01']
         ];
-        super(sprite, toShoot, shootFunc);
+        super(sprite);
         this.x = spawnLeft ? 0 : viewport.width;
         this.y = y;
-        this.speed = 4;
         this.dir = spawnLeft ? 0 : 180;
-        this.points = 19;
         this.keyFrames = keyFrames;
         const { action, duration } = this.keyFrames.shift();
         this.action = action;
@@ -329,30 +326,27 @@ class Ace extends EnemyPlane{
 // Gunner's can have variable health
 
 class Gunner extends EnemyPlane{
-    constructor(x = 0, invert, health = 10, toShoot = -1, shootingFunc){
+    constructor(invert){
         const sprite = [
             spriteData['MidPlane2-01'],
             spriteData['MidPlane2-02'],
             spriteData['MidPlane2-03'],
             spriteData['MidPlane2-02']
         ]
-        super(sprite, toShoot, shootingFunc);
-        this.x = x;
-        this.speed = invert ? -0.5 : 0.5;
-        this.health = health;
-        this.maxHealth = this.health;
+        super(sprite);
+        this.x = getRandom(200, 600);
         this.y = invert ? viewport.height + 8 : -8;
-        this.points = 80;
-        this.toShoot = toShoot;
+        this.maxHealth = this.health;
         this.emitters = [];
         this.fill = '#EC1E24';
     }
     move(game){
         this.updateFrame();
-        this.y += this.speed;
-        if(this.speed > 0 ){
+        if(this.invert){
+            this.y -= this.speed;
             if( this.y < -this.drawH ) this.health = 0;
         } else {
+            this.y += this.speed;
             if( this.drawY > viewport.height ) this.health = 0;
         }
 
