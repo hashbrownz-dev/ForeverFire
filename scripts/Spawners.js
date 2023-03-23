@@ -1,155 +1,134 @@
-/*====================/
-    CLASS: PotShot
-====================*/
+/*================
+=== FORMATIONS ===
+================*/
 
-const spawnPotShot = (x, invert = false, speed = 4) => {
-    const potShot = new PotShot(0, invert);
+const defaultMargin = 8;
 
-    if(!x){
-        const drawW = potShot.drawW;
-        const spawnLimit = drawW / 2 + drawW;
-        potShot.x = getRandom(spawnLimit, viewport.width - spawnLimit);
-    } else {
-        potShot.x = x;
+const formRow = (xOrigin, enemies, margin) => {
+    // x > drawWidth > margin > nextX ...
+    const m = margin ? margin : defaultMargin;
+    let x = xOrigin;
+    enemies[0].x = x;
+
+    for(let i = 1; i < enemies.length; i++){
+        x = x + enemies[i-1].drawW + m;
+        enemies[i].x = x;
     }
-
-    potShot.speed = speed;
-    potShot.points = 9;
-
-    // CHANGE COLORS
-    potShot.styles = setColors(white, aqua, potShot);
-
-    return potShot;
 }
 
-// Pacifist - Does NOT Shoot
+const formCol = (yOrigin, enemies, margin) => {
+    // y > drawHeight > margin > nextY ...
+    const m = margin || defaultMargin;
+    let y = yOrigin;
+    enemies[0].y = y;
 
-const spawnPotShotPacifist = (x, invert = false, speed = 3) => {
-    return spawnPotShot(x, invert, speed);
-}
-
-// Sniper - Fires Projectiles targeting the player
-
-const spawnPotShotSniper = (x, invert = false, speed = 3, intensity = 0) => {
-    const potShot = spawnPotShot(x, invert, speed, intensity);
-
-    // SHOOTING MECHANICS
-    // 90 - intensity * 6 ... 84, 78, 72, 66, 60
-    // 4 + intensity * 0.6 ... 4.6, 5.2, 5.8, 6.4, 7
-    // MIN = 90 / 4
-    // MAX = 60 / 7
-    const rof = 90 - (intensity * 6);
-    const spd = 4 + (intensity * 0.6);
-
-    potShot.toShoot = 60 - (intensity * 6);
-    if(intensity >= 4){
-        potShot.shootFunc = shootSpread(rof, spd, 4, 15);
-    }else if(intensity >= 2){
-        potShot.shootFunc = shootSpread(rof,spd, 2, 30);
-    } else {
-        potShot.shootFunc = shootAtPlayer(rof, spd);
+    for(let i = 1; i < enemies.length; i++){
+        y = y + enemies[i-1].drawH + m;
+        enemies[i].y = y;
     }
-
-    potShot.health = 3;
-    potShot.points = 15;
-    potShot.points += (potShot.points + 1) * intensity;
-
-    // CHANGE COLORS
-    potShot.styles = setColors(orange, red, potShot);
-
-    return potShot;
 }
 
-// Cover - Fires Projectiles
+const formBox = (xOrigin, enemies, columns = 1, marginX, marginY) => {
+    const mX = marginX || defaultMargin,
+        mY = marginY || defaultMargin;
+    let y = enemies[0].y,
+        x = xOrigin;
+    
+    enemies[0].x = x;
 
-const spawnPotShotCover = (x, invert = false, speed = 3, intensity = 0) => {
-    const potShot = spawnPotShot(x, invert, speed, intensity);
-
-    // SHOOTING MECHANICS
-    // 90 - intensity * 6 ... 84, 78, 72, 66, 60
-    // 4 + intensity * 0.6 ... 4.6, 5.2, 5.8, 6.4, 7
-    // MIN = 90 / 4
-    // MAX = 60 / 7
-    const rof = 90 - (intensity * 6);
-    const spd = 4 + (intensity * 0.6);
-
-    potShot.toShoot = 60 - (intensity * 6);
-    if(intensity >= 3){
-        potShot.shootFunc = shootArc(rof, spd, 8, 0, 360);
-    } else {
-        potShot.shootFunc = shootArc(rof, spd, 4, 0, 360);
+    for(let i = 1; i < enemies.length; i++){
+        if(!(i%columns)){
+            x = xOrigin;
+            y -= enemies[i].drawH + mY;
+        } else {
+            x += enemies[i].drawW + mY;
+        }
+        enemies[i].x = x;
+        enemies[i].y = y;
     }
-
-    potShot.points = 49;
-    potShot.points += (potShot.points + 1) * intensity;
-
-    // CHANGE COLORS
-    const palette = [
-        pink,
-        purple,
-        aqua,
-        yellow,
-        orange,
-        red,
-    ]
-    potShot.styles = setColors(aqua, palette[intensity], potShot);
-
-    return potShot;
 }
 
-/*====================/
-    CLASS: KamiKaze
-====================*/
+const formCross = (xOrigin, enemies, marginY, marginX) => {
+    const mY = marginY || defaultMargin,
+        mX = marginX || defaultMargin;
 
-const spawnKamikaze = (x, invert = false, speed = 4, intensity = 1) => {
-    const kamikaze = new Kamikaze(0, invert);
-    if(!x){
-        const drawW = kamikaze.drawW;
-        const spawnLimit = drawW / 2 + drawW;
-        kamikaze.x = getRandom(spawnLimit, viewport.width - spawnLimit);
-    } else {
-        kamikaze.x = x;
+    enemies.forEach((enemy) => {
+        enemy.x = xOrigin;
+        enemy.y -= enemy.drawH + mY;
+    })
+
+    enemies[1].y += enemies[0].drawH + mY;
+    enemies[2].y -= enemies[0].drawH + mY;
+    enemies[3].x += enemies[0].drawW + mX;
+    enemies[4].x -= enemies[0].drawW + mX;
+}
+
+const formV = (xOrigin, enemies, marginX, marginY) => {
+    const mX = marginX || defaultMargin,
+        mY = marginY || defaultMargin;
+    
+    enemies.forEach((enemy) => {
+        enemy.x = xOrigin;
+    })
+    let y = enemies[0].y,
+        xOffset = 0;
+    for(let i = 1; i < enemies.length; i++){
+        if( i % 2 ){
+            y -= enemies[i-1].drawH + mY;
+            xOffset++;
+            enemies[i].x = enemies[0].x - ((enemies[i].drawW + mX) * xOffset);
+        } else {
+            enemies[i].x = enemies[0].x + ((enemies[i].drawW + mX) * xOffset);
+        }
+        enemies[i].y = y;
     }
-
-    kamikaze.speed = speed;
 }
 
-// Pacifist
-
-const spawnKamikazePacifist = (x, invert = false, intensity = 1) => {
-    const kamikaze = new Kamikaze(0, invert);
-    const spawnLimit = kamikaze.drawW /2 + kamikaze.drawW;
-    kamikaze.x = getRandom(spawnLimit, viewport.width - spawnLimit);
-    // CHANGE COLORS
-    return kamikaze
+const formBoat = (xOrigin, enemies, marginX, marginY) => {
+    const mX = marginX || defaultMargin,
+        mY = marginY || defaultMargin;
+    
+    enemies.forEach((enemy) => {
+        enemy.x = xOrigin;
+    })
+    let y = enemies[0].y;
+    for(let i = 1; i < enemies.length; i++){
+        if( i % 2 ){
+            y -= enemies[i-1].drawH + mY;
+            enemies[i].x = enemies[0].x - enemies[i].drawW - mX;
+        } else {
+            enemies[i].x = enemies[0].x + enemies[i].drawW + mX;
+        }
+        enemies[i].y = y;
+    }
 }
 
-// Sniper
+const formTriangle = (xOrigin, enemies, marginX, marginY) => {
+    const mX = marginX || defaultMargin,
+        mY = marginY || defaultMargin;
+    let x, y, r = 1, c = 0;
 
-// Cover
+    x = xOrigin;
+    y = enemies[0].y;
 
-/*====================/
-    CLASS: Gunner
-====================*/
+    const coords = [];
+    for(let i = 0; i < enemies.length; i++){
+        enemies[i].x = x;
+        enemies[i].y = y;
+        c++;
 
-const spawnGun001 = (type) => {
-
+        if(c < r){
+            x += enemies[0].drawW + mX;
+        } else {
+            c = 0;
+            x = xOrigin - ((enemies[0].drawW / 2 + mX) * r)
+            y -= enemies[0].drawH + mY;
+            r++;
+        }
+    }
 }
 
-// SPAWN Flying V Potshots
-// SPAWN SPREAD POT SHOTS
-// SPAWN AN INVERSION OF THE PREVIOUS
-// SPAWN KAMIKAZE SEMI-RANDOMLY
-// SPAWN 6 KAMIKAZE at once
-// SPAWN an INVERSION OF THE PREVIOUS
-// SPAWN ACE THAT PERFORM A U-TURN
-// SPAWN ACE THAT PERFORM A 90 DEG TURN
-// SPAWN ACE THAT PERFORM A 360 DEG TURN
-// SPAWN AN INVERSION OF THE PREVIOUS
-// SPAWN TWO MGS
-// SPAWN AN INVERSION
-
-const spawnActor = (actor) => {
+const spawnActor = (actor, x, speed) => {
     // Parse Actor Data
     const { className, outline, fill, invert, shootingData } = actor;
     let enemy;
@@ -167,9 +146,14 @@ const spawnActor = (actor) => {
             enemy = new Gunner();
             break;
     }
+
+    enemy.x = x;
+    enemy.speed = speed;
+
     if( outline && fill ) {
         enemy.styles = setColors(outline, fill, enemy);
     }
+
     for(const property in actor){
         // check if the enemy has the property
         if(enemy.hasOwnProperty(property)){
@@ -177,6 +161,7 @@ const spawnActor = (actor) => {
             enemy[property] = actor[property];
         }
     }
+    
     if(shootingData){
         const { interval, speed } = shootingData;
         switch(shootingData.type){

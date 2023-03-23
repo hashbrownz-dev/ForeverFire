@@ -34,7 +34,17 @@ const w1p1 = () => {
                 defTarget : 90
             }
         }
-        game.Actors.push(spawnActor(enemy));
+        const enemies = [];
+        for(let i = 8; i > 0; i--){
+            enemies.push(spawnActor(enemy));
+        }
+        // formRow(50, enemies);
+        // formCrossX(200, enemies);
+        // formV(400, enemies);
+        // formBoat(400, enemies);
+        // formBox(400, enemies, 4);
+        formTriangle(400, enemies);
+        game.Actors.push(...enemies);
     }
     return new Interval(60, spawn, 480)
 }
