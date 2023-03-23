@@ -24,7 +24,7 @@ const ps = {
     rank : 1,
     points : 10,
     outline : white,
-    fill : aqua
+    fill : red
 }
 
 const psPlayer = {
@@ -123,5 +123,84 @@ const psCircle = {
         amount : 12,
         startAngle : 30,
         endAngle : 390
+    }
+}
+
+const psHeal = {
+    className : 'potshot',
+    health : 4,
+    speed : 3,
+    points : 10,
+    drops : 'smallHealth',
+    outline : lime,
+    fill : aqua,
+}
+
+const kami = {
+    className : 'kamikaze',
+    speed : 6,
+    rank : 1,
+    points : 10,
+    outline : white,
+    fill : red,
+}
+
+const kamiPlayer = {
+    className : 'kamikaze',
+    speed : 6,
+    rank : 2,
+    points : 15,
+    outline : orange,
+    fill : aqua,
+    shootingData : {
+        type : 'player',
+        toShoot : 45,
+        interval : -1,
+        speed : 8,
+        defTarget : 90
+    }
+}
+
+const kamiJugg = {
+    className : 'kamikaze',
+    speed : 6,
+    rank : 3,
+    points : 25,
+    outline : lime,
+    fill : yellow,
+}
+
+const kamiDog = {
+    className : 'kamikaze',
+    speed : 4,
+    rank : 4,
+    points : 45,
+    outline : aqua,
+    fill : orange,
+    invert : true,
+    shootingData : {
+        type : 'player',
+        toShoot : 60,
+        interval : 75,
+        speed : 8,
+        defTarget : 270
+    }
+}
+
+const kamiSpread = {
+    className : 'kamikaze',
+    speed : 4,
+    rank : 2,
+    points : 25,
+    outline : pink,
+    fill : aqua,
+    shootingData : {
+        type : 'spread',
+        toShoot : 45,
+        interval : -1,
+        speed : 8,
+        amount : 2,
+        margin : 30,
+        defTarget : 90
     }
 }

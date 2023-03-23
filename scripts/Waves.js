@@ -27,7 +27,7 @@ const w1p1 = () => {
         // game.Actors.push(...enemies);
         // game.Actors.push(spawnActor(psX));
         // game.Actors.push(spawnActor(psCross));
-        game.Actors.push(spawnActor(psCircle));
+        game.Actors.push(spawnActor(kamiSpread));
     }
     return new Interval(60, spawn, 480)
 }
