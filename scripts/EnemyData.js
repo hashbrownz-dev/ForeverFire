@@ -327,12 +327,6 @@ const gunDog = {
 
 // FLIGHT PATTERNS
 
-const turn90 = {
-    type : 'turn',
-    duration : 90,
-    turnDegree : 90
-}
-
 const testAce = {
     className : 'ace',
     health : 2,
@@ -359,4 +353,278 @@ const testAce = {
         { type : 'shoot' },
         { type : 'exit'}
     ]
+}
+
+const aceUVert = (xPos, mirror, invert) => {
+    const getXPos = () => {
+        let output = xPos ? xPos : getRandom(50,350);
+        if(mirror) output = viewport.width - output;
+        if(invert) output =- output;
+        return output;
+    }
+    const getDeg = (deg) => {
+        let output = deg;
+        if(mirror) output =- output;
+        if(invert) output =- output;
+        return output;
+    }
+    return {
+        className : 'ace',
+        health : 2,
+        speed : 5,
+        xPos : getXPos(),
+        rank : 2,
+        points : 25,
+        outline : aqua,
+        fill : pink,
+        shootingData : {
+            type : 'player',
+            toShoot : -1,
+            interval : -1,
+            speed : 8,
+            defTarget : 90
+        },
+        momentData : [
+            { type : 'straight', duration : 50 },
+            { type : 'shoot' },
+            { type : 'straight', duration : 50 },
+            { type : 'turn', turnDegree : getDeg(-180), duration : 45 },
+            { type : 'straight', duration : 75 },
+            { type : 'shoot' },
+            { type : 'exit' },
+        ]
+    }
+}
+
+const aceUHor = (yPos, mirror, invert) => {
+    const getYPos = () => {
+        let output = yPos ? yPos : getRandom(50,350);
+        if(mirror) output = viewport.height - output;
+        if(invert) output =- output;
+        return output;
+    }
+    const getDeg = (deg) => {
+        let output = deg;
+        if(mirror) output =- output;
+        if(invert) output =- output;
+        return output;
+    }
+    return {
+        className : 'ace',
+        health : 2,
+        speed : 5,
+        yPos : getYPos(),
+        rank : 2,
+        points : 25,
+        outline : pink,
+        fill : aqua,
+        shootingData : {
+            type : 'player',
+            toShoot : -1,
+            interval : -1,
+            speed : 8,
+            defTarget : 90
+        },
+        momentData : [
+            { type : 'straight', duration : 65 },
+            { type : 'shoot' },
+            { type : 'straight', duration : 65 },
+            { type : 'turn', turnDegree : getDeg(180), duration : 45 },
+            { type : 'straight', duration : 45 },
+            { type : 'shoot' },
+            { type : 'exit' },
+        ]
+    }
+}
+
+const aceChase = (pos) => {
+    let xPos = pos ? pos : getRandom(50, 750);
+    return {
+        className : 'ace',
+        health : 4,
+        speed : 5,
+        xPos : xPos,
+        rank : 4,
+        points : 35,
+        outline : gold,
+        fill : red,
+        momentData : [
+            { type : 'straight', duration : 30 },
+            { type : 'chase', duration : 240 },
+            { type : 'exit' },
+        ]
+    }
+}
+
+const aceChaseInv = (pos) => {
+    let xPos = pos ? pos : getRandom(50, 750);
+    xPos =- xPos;
+    return {
+        className : 'ace',
+        health : 10,
+        speed : 4,
+        xPos : xPos,
+        rank : 5,
+        points : 50,
+        outline : gold,
+        fill : red,
+        momentData : [
+            { type : 'straight', duration : 110 },
+            { type : 'chase', duration : 240 },
+            { type : 'exit' },
+        ]
+    }
+}
+
+const aceSnake = (pos, mirror, invert) => {
+    let xPos = pos ? pos : getRandom(50, 400);
+    let deg = 50;
+    if(mirror){
+        xPos = viewport.width -xPos;
+        deg =- deg;
+    }
+    if(invert){
+        xPos =- xPos;
+        deg =- deg;
+    }
+    return {
+        className : 'ace',
+        health : 4,
+        speed : 5,
+        xPos : xPos,
+        rank : 3,
+        points : 25,
+        outline : lime,
+        fill : red,
+        shootingData : {
+            type : 'player',
+            toShoot : -1,
+            interval : -1,
+            speed : 8,
+            defTarget : 90
+        },
+        momentData : [
+            { type : 'straight' , duration : 10},
+            { type : 'turn', turnDegree : -deg, duration : 45},
+            { type : 'straight' , duration : 10},
+            { type : 'turn', turnDegree : deg, duration : 30},
+            { type : 'shoot'},
+            { type : 'turn', turnDegree : deg, duration : 30},
+            { type : 'straight', duration : 10},
+            { type : 'turn', turnDegree : -deg, duration : 45},
+            { type : 'exit'},
+        ]
+    }
+}
+
+const ace90Hor = (pos, mirror, invert) => {
+    let yPos = pos ? pos : getRandom(50, 300);
+    let deg = 90;
+    if(mirror){
+        yPos = viewport.height - yPos;
+        deg =- deg;
+    }
+    if(invert){
+        yPos =- yPos;
+        deg =- deg;
+    }
+    return {
+        className : 'ace',
+        health : 2,
+        speed : 5,
+        yPos : yPos,
+        rank : 2,
+        points : 25,
+        outline : red,
+        fill : orange,
+        shootingData : {
+            type : 'player',
+            toShoot : -1,
+            interval : -1,
+            speed : 8,
+            defTarget : 90
+        },
+        momentData : [
+            { type : 'straight', duration : 105 },
+            { type : 'turn', turnDegree : deg, duration : 55 },
+            { type : 'straight', duration : 15 },
+            { type : 'shoot' },
+            { type : 'exit' },
+        ]
+    }
+}
+
+const ace90Vert = (pos, mirror, invert) => {
+    let xPos = pos ? pos : getRandom(50, 400);
+    let deg = -90;
+    if(mirror){
+        xPos = viewport.width - xPos;
+        deg =- deg;
+    }
+    if(invert){
+        xPos =- xPos;
+        deg =- deg;
+    }
+    return {
+        className : 'ace',
+        health : 2,
+        speed : 5,
+        xPos : xPos,
+        rank : 2,
+        points : 25,
+        outline : red,
+        fill : orange,
+        shootingData : {
+            type : 'player',
+            toShoot : -1,
+            interval : -1,
+            speed : 8,
+            defTarget : 90
+        },
+        momentData : [
+            { type : 'straight', duration : 75 },
+            { type : 'turn', turnDegree : deg, duration : 60 },
+            { type : 'straight', duration : 15 },
+            { type : 'shoot' },
+            { type : 'exit' },
+        ]
+    }
+}
+
+const aceCircle = (invert) => {
+    let xPos = invert ? 150 : 650;
+    let deg = invert ? -90 : 90;
+    let dur = 75;
+    return {
+        className : 'ace',
+        health : 2,
+        speed : 5,
+        xPos : xPos,
+        rank : 4,
+        points : 25,
+        outline : yellow,
+        fill : orange,
+        shootingData : {
+            type : 'player',
+            toShoot : -1,
+            interval : -1,
+            speed : 6,
+            defTarget : 90
+        },
+        momentData : [
+            { type : 'straight', duration : 60},
+            { type : 'turn', turnDegree : deg, duration : dur},
+            { type : 'shoot'},
+            { type : 'turn', turnDegree : deg, duration : dur},
+            { type : 'shoot'},
+            { type : 'turn', turnDegree : deg, duration : dur},
+            { type : 'shoot'},
+            { type : 'turn', turnDegree : deg, duration : dur},
+            { type : 'shoot'},
+            { type : 'turn', turnDegree : deg, duration : dur},
+            { type : 'shoot'},
+            { type : 'turn', turnDegree : deg, duration : dur},
+            { type : 'exit'}
+        ]
+    }
 }

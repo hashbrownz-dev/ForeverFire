@@ -27,7 +27,8 @@ const w1p1 = () => {
         // game.Actors.push(...enemies);
         // game.Actors.push(spawnActor(psX));
         // game.Actors.push(spawnActor(psCross));
-        game.Actors.push(spawnActor(testAce));
+        game.Actors.push(spawnActor(aceCircle()));
+        game.Actors.push(spawnActor(aceCircle(true)));
         // y, spawnLeft : Bool, keyframes : { duration : Number, action : Function(ace) => { turnActor(ace, interval)}}
         
     }
