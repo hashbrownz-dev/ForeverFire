@@ -27,7 +27,9 @@ const w1p1 = () => {
         // game.Actors.push(...enemies);
         // game.Actors.push(spawnActor(psX));
         // game.Actors.push(spawnActor(psCross));
-        game.Actors.push(spawnActor(gunDog));
+        game.Actors.push(spawnActor(testAce));
+        // y, spawnLeft : Bool, keyframes : { duration : Number, action : Function(ace) => { turnActor(ace, interval)}}
+        
     }
     return new Interval(120, spawn, 480)
 }

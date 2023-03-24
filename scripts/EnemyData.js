@@ -18,6 +18,10 @@
 //     }
 // }
 
+/*=============
+=== POTSHOT ===
+=============*/
+
 const ps = {
     className : 'potshot',
     health : 2,
@@ -136,6 +140,10 @@ const psHeal = {
     fill : aqua,
 }
 
+/*==============
+=== KAMIKAZE ===
+==============*/
+
 const kami = {
     className : 'kamikaze',
     speed : 6,
@@ -204,6 +212,10 @@ const kamiSpread = {
         defTarget : 90
     }
 }
+
+/*============
+=== GUNNER ===
+============*/
 
 const gunM = {
     className : 'gunner',
@@ -309,3 +321,42 @@ const gunDog = {
     }
 }
 
+/*=============
+===== ACE =====
+=============*/
+
+// FLIGHT PATTERNS
+
+const turn90 = {
+    type : 'turn',
+    duration : 90,
+    turnDegree : 90
+}
+
+const testAce = {
+    className : 'ace',
+    health : 2,
+    speed : 5,
+    xPos : 700,
+    // yPos : 100,
+    rank : 2,
+    points : 25,
+    outline : red,
+    fill : orange,
+    shootingData : {
+        type : 'player',
+        toShoot : -1,
+        interval : -1,
+        speed : 8,
+        defTarget : 90
+    },
+    momentData : [
+        { type : 'straight', duration : 15},
+        { type : 'shoot' },
+        // { type : 'turn', duration : 120, turnDegree : 180},
+        { type : 'chase', duration : 240},
+        { type : 'straight', duration : 30},
+        { type : 'shoot' },
+        { type : 'exit'}
+    ]
+}

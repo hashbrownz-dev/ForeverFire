@@ -140,7 +140,33 @@ const spawnActor = (actor) => {
             enemy = new Kamikaze(invert);
             break;
         case 'ace':
-            enemy = new Ace();
+            enemy = new Ace(true);
+            // set pos and dir
+            if(actor.xPos){
+                // If xPos is POSITIVE, ENTER STAGE UP
+                if(actor.xPos > 0){
+                    enemy.y = 0;
+                    enemy.dir = 90;
+                } else {
+                    enemy.y = viewport.height;
+                    enemy.dir = 270;
+                }
+                enemy.x = Math.abs(actor.xPos);
+            }else if(actor.yPos){
+                // If yPos is POSITVE, ENTER STAGE LEFT
+                if(actor.yPos > 0){
+                    enemy.x = 0;
+                    enemy.dir = 0;
+                } else {
+                    enemy.x = viewport.width;
+                    enemy.dir = 180;
+                }
+                enemy.y = Math.abs(actor.yPos);
+            }
+            // set event data
+            for(const moment of actor.momentData){
+                enemy.moments.push(Actor.setMoment(moment))
+            }
             break;
         case 'gunner':
             enemy = new Gunner(invert);

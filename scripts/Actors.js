@@ -71,6 +71,41 @@ class Actor{
             styles : this.styles
         });
     }
+    static setMoment(moment){
+        switch(moment.type){
+            case 'straight':
+                return {
+                    duration : moment.duration,
+                    action : ()=>{}
+                }
+            case 'turn':
+                return {
+                    duration : moment.duration,
+                    action : (me) => turnActor(me, moment.turnDegree / moment.duration)
+                }
+            case 'shoot':
+                return {
+                    duration : 1,
+                    action : (me) => me.toShoot = 1
+                }
+            case 'chase':
+                return {
+                    duration : moment.duration,
+                    action : (me, game) => {
+                        if(game.Player){
+                            const targetDir = getDirection(me, game.Player);
+                            const delta = targetDir - me.dir;
+                            turnActor(me, me.speed / 2 * Math.sign(delta));
+                        }
+                    }
+                }
+            case 'exit':
+                return {
+                    duration : 1,
+                    action : ()=>{}
+                }
+        }
+    }
 }
 
 // Small Planes
@@ -243,30 +278,30 @@ class PotShot extends EnemyPlane{
 }
 
 class Ace extends EnemyPlane{
-    constructor(y, spawnLeft, keyFrames){
+    constructor(){
         const sprite = [
             spriteData['SmDyna-01']
         ];
         super(sprite);
-        this.x = spawnLeft ? 0 : viewport.width;
-        this.y = y;
-        this.dir = spawnLeft ? 0 : 180;
-        this.keyFrames = keyFrames;
-        const { action, duration } = this.keyFrames.shift();
-        this.action = action;
-        this.timer = duration;
+        this.dir = 0;
+        this.moments = [];
+        this.timer;
         this.fill = '#ED1C24';
     }
 
     move(game){
         // Update Action
-
+        if(this.timer === undefined){
+            const { action, duration } = this.moments.shift();
+            this.action = action;
+            this.timer = duration;
+        }
         this.timer--;
         if(this.timer === 0 ){
-            if(!this.keyFrames.length){
+            if(!this.moments.length){
                 this.timer = -1;
             } else {
-                const { duration, action } = this.keyFrames.shift();
+                const { duration, action } = this.moments.shift();
                 this.timer = duration;
                 this.action = action;
             }
@@ -274,7 +309,7 @@ class Ace extends EnemyPlane{
 
         // Perform Action
 
-        this.action(this);
+        this.action(this, game);
         moveActor(this);
 
         // Clean Up
@@ -282,30 +317,6 @@ class Ace extends EnemyPlane{
         if(this.timer < 0 && this.isOutOfBounds){
             this.health = 0;
         }
-    }
-
-    static setKeyFrame( turnDegree, duration ){
-        const interval = turnDegree / duration;
-        return {
-            duration: duration,
-            action: (ace) => {
-                turnActor(ace, interval)
-            }
-        }
-    }
-
-    static spawn( spawnLeft = true ){
-        // Set Y
-        const { drawH } = spriteData['SmDyna-01']['dimensions'];
-        const y = drawH * 2;
-        // Set Key Frames
-        const keyFrames = [
-            Ace.setKeyFrame(0, 70),
-            Ace.setKeyFrame(-180,180),
-            Ace.setKeyFrame(0,1)
-        ]
-        // return new Ace
-        return new Ace(y, spawnLeft, keyFrames, 120, shootAtPlayer(120, 5));
     }
 }
 // Medium Plane
