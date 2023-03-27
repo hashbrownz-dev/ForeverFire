@@ -5,10 +5,10 @@ class Game{
         this.frames = 0;
         this.Wave = 0;
         this.Waves = [
-            testWave(),
+            Wave04(),
             Wave01(),
             Wave02(),
-            Wave03()
+            Wave03(),
         ];
         this.enemiesSpawned = 0;
         this.enemiesSlain = 0;

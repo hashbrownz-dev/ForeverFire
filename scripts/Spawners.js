@@ -207,6 +207,15 @@ const spawnActor = (actor) => {
     return enemy;
 }
 
+const spawnCluster = (enemy, amount) => {
+    const interval = 20;
+    const duration = interval * amount;
+    const spawn = (game) => {
+        game.Actors.push(spawnActor(enemy));
+    }
+    return new Interval(interval, spawn, duration);
+}
+
 const getRandom = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }

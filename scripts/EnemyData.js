@@ -53,16 +53,15 @@ const psJugg = {
     speed : 3,
     rank : 3,
     points : 20,
-    drops : 'BFG',
     outline : lime,
     fill : red
 }
 
 const psSpread = {
     className : 'potshot',
-    health : 2,
-    rank : 2,
-    points : 15,
+    health : 4,
+    rank : 3,
+    points : 20,
     outline : orange,
     fill : aqua,
     shootingData : {
@@ -79,8 +78,8 @@ const psSpread = {
 const psCross = {
     className : 'potshot',
     health : 4,
-    rank : 2,
-    points : 15,
+    rank : 3,
+    points : 20,
     outline : aqua,
     fill : pink,
     shootingData : {
@@ -97,8 +96,8 @@ const psCross = {
 const psX = {
     className : 'potshot',
     health : 4,
-    rank : 2,
-    points : 15,
+    rank : 3,
+    points : 20,
     outline : pink,
     fill : aqua,
     shootingData : {
@@ -568,7 +567,7 @@ const ace90Vert = (pos, mirror, invert) => {
     return {
         className : 'ace',
         health : 2,
-        speed : 5,
+        speed : 4,
         xPos : xPos,
         rank : 2,
         points : 25,
@@ -582,7 +581,7 @@ const ace90Vert = (pos, mirror, invert) => {
             defTarget : 90
         },
         momentData : [
-            { type : 'straight', duration : 75 },
+            { type : 'straight', duration : 60 },
             { type : 'turn', turnDegree : deg, duration : 60 },
             { type : 'straight', duration : 15 },
             { type : 'shoot' },
