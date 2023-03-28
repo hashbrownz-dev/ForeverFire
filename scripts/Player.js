@@ -10,7 +10,7 @@ class Player extends Actor {
         this.x = viewport.width / 2;
         this.y = viewport.height - (48 * 2);
         this.health = 100;
-        this.shotType = 'm';
+        this.shotType = 'f';
         this.BFG = 0;
         this.inv = 60;
         this.shotCooldown = 0;

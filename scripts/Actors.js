@@ -183,7 +183,8 @@ class Kamikaze extends EnemyPlane{
         this.mirrorX = false;
         this.mirrorY = !invert;
         this.distance;
-        this.xSpeed = 1.5;
+        this.xSpeed = 0;
+        this.max = 3;
         this.fill = '#EC1E24';
     }
     move(game){
@@ -205,26 +206,25 @@ class Kamikaze extends EnemyPlane{
         }
         
         this.frame = 0;
-        if(game.Player){
-            let x = game.Player.x;
-
-            const currentDistance = Math.abs(this.x - x);
-            const delta = currentDistance / this.distance;
-            const xSpeed = this.xSpeed * delta;
-
-            if(delta >=0.375) this.frame = 1;
-            if(delta >= 0.75) this.frame = 2;       
+        if((game.Player && (this.y > 50 && !this.invert)) || (game.Player && (this.y < 550 && this.invert))){
+            let x = game.Player.x; 
 
             // Go Right
             if( this.x < x) {
-                this.x += xSpeed;
-                this.mirrorX = false;
+                this.xSpeed += 0.1;
+                if(this.xSpeed > this.max) this.xSpeed = this.max;
+                this.x += this.xSpeed;
             }
             // Go Left
             if( this.x > x) {
-                this.x -= xSpeed;
-                this.mirrorX = true;
+                this.xSpeed -= 0.1;
+                if(this.xSpeed < -this.max) this.xSpeed = -this.max;
+                this.x += this.xSpeed;
             }
+            if(this.xSpeed > 0) this.mirrorX = false;
+            if(this.xSpeed < 0) this.mirrorX = true;
+            if(Math.abs(this.xSpeed) > 0.6) this.frame = 1;
+            if(Math.abs(this.xSpeed) > 1.2) this.frame = 2;  
         }
 
         // EFX

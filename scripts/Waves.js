@@ -228,9 +228,51 @@ const Wave05 = () => new Timeline([
     })
 ])
 
+// Celebrate the flame shot by spawning enemies in triangle, boat, and rows
 const Wave06 = () => new Timeline([
+    new Interval(60, (game)=>{
+        game.Actors.push(spawnActor(kami))
+    }),
     intermission(60),
-    new Interval(45, (game) => {
-        
-    }, 450)
+    new Interval(60, (game) => {
+        const enemies = [];
+        for(let i = 4; i>0; i--){
+            enemies.push(spawnActor(ps));
+        }
+        formRow(getRandom(50,500), enemies, 16, false);
+        game.Actors.push(...enemies);
+    }, 600),
+    intermission(120),
+    new Interval(60, (game) => {
+        const enemies = [
+            spawnActor(psPlayer),
+            spawnActor(psPlayer),
+            spawnActor(psPlayer),
+        ]
+        formTriangle(getRandom(100,700), enemies, 16,20);
+        game.Actors.push(...enemies);
+    }, 600),
+    intermission(120),
+    new Interval(30, (game) => {
+        const enemies = [
+            spawnActor(kamiPlayer),
+            spawnActor(kami),
+            spawnActor(kami),
+        ]
+        formTriangle(getRandom(100,700), enemies, 16, 20);
+        game.Actors.push(...enemies);
+    }, 600),
+    intermission(240),
+    new Interval(30, (game) => {
+        const x = game.Player ? game.Player.x : 400;
+        const enemies = [
+            spawnActor(psCircle),
+            spawnActor(kami),
+            spawnActor(kami),
+            spawnActor(kami),
+            spawnActor(kami),
+        ]
+        formV(x, enemies);
+        game.Actors.push(...enemies);
+    })
 ])

@@ -5,7 +5,7 @@ class Game{
         this.frames = 0;
         this.Wave = 0;
         this.Waves = [
-            Wave04(),
+            Wave06(),
             Wave01(),
             Wave02(),
             Wave03(),
