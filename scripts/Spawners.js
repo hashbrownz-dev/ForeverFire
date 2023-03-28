@@ -4,12 +4,26 @@
 
 const defaultMargin = 8;
 
-const formRow = (xOrigin, enemies, margin) => {
+const formRow = (xOrigin, enemies, margin, center = false) => {
     // x > drawWidth > margin > nextX ...
     const m = margin ? margin : defaultMargin;
-    let x = xOrigin;
+    let x;
+    if(center){
+        let n = Math.floor(enemies.length / 2);
+        if(enemies.length % 2){
+            //ODD
+            x = xOrigin - ((enemies[0].drawW * n) + (m * n))
+        } else {
+            //EVEN
+            // if(n > 1) n--;
+            n--;
+            x = xOrigin - ((enemies[0].drawW * n) + (enemies[0].drawW / 2) + (m*n) + (m/2))
+        }
+    } else {
+        x = xOrigin;    
+    }
     enemies[0].x = x;
-
+    
     for(let i = 1; i < enemies.length; i++){
         x = x + enemies[i-1].drawW + m;
         enemies[i].x = x;

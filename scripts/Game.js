@@ -9,6 +9,9 @@ class Game{
             Wave01(),
             Wave02(),
             Wave03(),
+            Wave04(),
+            Wave05(),
+            Wave06(),
         ];
         this.enemiesSpawned = 0;
         this.enemiesSlain = 0;
