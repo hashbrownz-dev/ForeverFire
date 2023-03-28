@@ -21,6 +21,12 @@ const drawHealth = (Player) => {
     if(health <= 25) healthBarElement.style.backgroundColor = `var(--red)`;
 }
 
+const drawXP = (xp, toNextLevel) => {
+    const xpBarElement = document.getElementById('xp-bar');
+    const percent = (xp / toNextLevel) * 100;
+    xpBarElement.style.width = `${percent}%`;
+}
+
 const hideTimer = () => {
     document.getElementById('timer-container').classList.add('hidden');
     document.getElementById('timer-label').classList.add('hidden');

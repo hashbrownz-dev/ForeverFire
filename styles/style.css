@@ -58,8 +58,27 @@ html, body{
     width: 100%;
 }
 
-#health-bar-label{
+#xp-bar-container{
+    border: 1px solid var(--purple);
+    bottom: 8.2px;
+    box-sizing: border-box;
+    height: 18px;
+    position: absolute;
+    right: 0;
+    width: 301px;
+}
+
+#xp-bar{
+    background-color: var(--purple);
+    height: 100%;
+    /* transition: width 250ms; */
+    width: 0%;
+}
+
+.bar-label{
     font-weight: 300;
+    text-align: right;
+    width: 80px;
 }
 
 #message{

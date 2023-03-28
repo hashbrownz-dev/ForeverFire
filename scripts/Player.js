@@ -11,11 +11,6 @@ class Player extends Actor {
         this.y = viewport.height - (48 * 2);
         this.health = 100;
         this.shotType = 'm';
-        this.shotLevel = {
-            m : 1,
-            s : 1,
-            f : 1
-        }
         this.BFG = 0;
         this.inv = 60;
         this.shotCooldown = 0;
@@ -40,22 +35,22 @@ class Player extends Actor {
             this.shotCooldown = 24;
             return;
         }
-        const { m, s, f } = this.shotLevel;
+        const { Level } = game;
         let dur;
         switch(this.shotType){
             case 'm':
                 const margin = 12;
                 // 1 - Create One Bullet
-                if(m === 1){
+                if(Level === 1){
                     game.Projectiles.push(new PlayerShotM(this.x, yPos))
                 }
                 // 2 - Create Two Bullets
-                if(m >= 2){
+                if(Level >= 2){
                     game.Projectiles.push(new PlayerShotM(this.x - margin, yPos));
                     game.Projectiles.push(new PlayerShotM(this.x + margin, yPos));
                 }
                 // 3 - Create Three Bullets
-                if(m >= 3){
+                if(Level >= 3){
                     game.Projectiles.push(new PlayerShotM(this.x - (margin * 2), yPos));
                     game.Projectiles.push(new PlayerShotM(this.x + (margin * 2), yPos));
                 }
@@ -63,17 +58,17 @@ class Player extends Actor {
                 break;
             case 's':
                 // 1
-                if(s === 1){
+                if(Level === 1){
                     dur = 25;
                     this.shotCooldown = 30;
                 }
                 // 2
-                if(s === 2){
+                if(Level === 2){
                     dur = 30;
                     this.shotCooldown = 24;
                 }
                 // 3
-                if(s >= 3){
+                if(Level >= 3){
                     dur = 40;
                     this.shotCooldown = 16;
                 }
@@ -85,19 +80,19 @@ class Player extends Actor {
             case 'f':
                 let bDur, bRad;
                 // 1
-                if(f === 1){
+                if(Level === 1){
                     bDur = 30;
                     bRad = 80;
                     this.shotCooldown = 32;
                 }
                 // 2
-                if(f === 2){
+                if(Level === 2){
                     bDur = 45;
                     bRad = 100;
                     this.shotCooldown = 24;
                 }
                 // 3
-                if(f >= 3){
+                if(Level >= 3){
                     bDur = 60;
                     bRad = 120;
                     this.shotCooldown = 16;

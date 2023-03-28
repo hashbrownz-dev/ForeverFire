@@ -15,6 +15,9 @@ class Game{
         this.powerUpsCollected = 0;
         this.Timer;
         this.Lives = 2;
+        this.Level = 1;
+        this.toNextLevel = 50;
+        this.xp = 0;
         this.Player = new Player();
         this.Actors = [];
         this.Projectiles = [];
@@ -114,6 +117,16 @@ class Game{
             this.hiScore = this.Score;
             drawScore(this.Score, 'hi-score');
         }
+    }
+
+    updateXP(points){
+        this.xp += points;
+        if(this.xp >= this.toNextLevel){
+            this.Level++;
+            this.xp = this.xp - this.toNextLevel;
+            this.toNextLevel += 25;
+        }
+        drawXP(this.xp, this.toNextLevel);
     }
 
     updateTimer(time){
@@ -313,7 +326,10 @@ class Game{
                     if(overlap(actorBox, playerBox) || overlap(playerBox, actorBox)){
                         // APPLY EFFECT
                         const { score, health, lives, speed, weapon, temp } = actor.action;
-                        if(score) this.updateScore(score);
+                        if(score) {
+                            this.updateScore(score);
+                            this.updateXP(score);
+                        }
                         if(health){
                             if(this.Player.health === 100){
                                 this.updateScore(health * 5);
@@ -333,7 +349,7 @@ class Game{
                         if(weapon){
                             const { shotType } = this.Player;
                             if(shotType === weapon){
-                                this.Player.shotLevel[shotType] += 1;
+                                // this.Player.shotLevel[shotType] += 1;
                             }else{
                                 this.Player.shotType = weapon;
                             }
