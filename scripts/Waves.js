@@ -230,9 +230,6 @@ const Wave05 = () => new Timeline([
 
 // Celebrate the flame shot by spawning enemies in triangle, boat, and rows
 const Wave06 = () => new Timeline([
-    new Interval(60, (game)=>{
-        game.Actors.push(spawnActor(kami))
-    }),
     intermission(60),
     new Interval(60, (game) => {
         const enemies = [];
@@ -273,6 +270,282 @@ const Wave06 = () => new Timeline([
             spawnActor(kami),
         ]
         formV(x, enemies);
+        enemies[0].speed = 6;
+        game.Actors.push(...enemies);
+    },600),
+    new Alarm(120, (game) => {
+        const enemies = [];
+        for(let i = 4; i > 0; i--){
+            enemies.push(spawnActor(gunHog));
+        }
+        formRow(400, enemies, 100, true);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(240, (game) => {
+        const enemies = [
+            spawnActor(gunDog),
+            spawnActor(gunDog),
+            spawnActor(gunDog),
+        ]
+        formRow(400, enemies, 200, true);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(300, (game) => {
+        const enemy = spawnActor(gunS);
+        enemy.x = 400;
+        game.Actors.push(enemy);
+    }),
+    new Interval(30, (game) => {
+        game.Actors.push(spawnActor(psHeal));
+    }, 600),
+    intermission(60)
+])
+
+// approxmately 5 minutes of gameplay
+
+const Wave07 = () => new Timeline([
+    intermission(60),
+    new Interval(30, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(ps));
+        }
+        formRow(getRandom(50,650), enemies);
+        game.Actors.push(...enemies)
+    }, 300),
+    new Interval(20, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(kami));
+        }
+        formRow(getRandom(50,650), enemies);
+        game.Actors.push(...enemies)
+    }, 420),
+    intermission(120),
+    new Interval(30, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(psPlayer));
+        }
+        formRow(getRandom(50,650), enemies);
+        game.Actors.push(...enemies)
+    }, 450),
+    intermission(60),
+    new Interval(20, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(kamiPlayer));
+        }
+        const x = game.Player ? game.Player.x : 400;
+        formRow(x, enemies, 54, true);
+        game.Actors.push(...enemies)
+    }, 460),
+    new Alarm(120, (game) => {
+        const enemies = [];
+        for(let i = 4; i > 0 ; i--){
+            enemies.push(spawnActor(gunHog));
+        }
+        formRow(400, enemies, 100, true);
+        game.Actors.push(...enemies);
+    }),
+    new Interval(20, (game) => {
+        const enemy = spawnActor(kamiPlayer);
+        enemy.x = 400;
+        game.Actors.push(enemy);
+    }, 400),
+    new Interval(20, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0 ; i--){
+            enemies.push(spawnActor(kamiPlayer));
+        }
+        formRow(400, enemies, 20, true);
+        game.Actors.push(...enemies);
+    }, 600),
+    new Alarm(1, (game) => {
+        const enemies = [];
+        for(let i = 13; i > 0; i--){
+            enemies.push(spawnActor(psHeal));
+        }
+        formBoat(400, enemies);
         game.Actors.push(...enemies);
     })
+])
+
+const Wave08 = () => new Timeline([
+    intermission(120),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Hor(80)));
+    }, 190),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Hor(160,false,true)));
+    }, 190),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Hor(240)));
+    }, 190),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Hor(320,false,true)));
+    }, 190),
+    intermission(120),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Vert(80)));
+    }, 190),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Vert(160, true, false)));
+    }, 190),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Vert(240)));
+    }, 190),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(ace90Vert(320, true, false)));
+    }, 190),
+    intermission(120),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(aceCircle()))
+    }, 30),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(aceCircle(true)))
+    }, 30),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(aceCircle()))
+    }, 30),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(aceCircle(true)))
+    }, 30),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(aceCircle()))
+    }, 30),
+    new Interval(15, (game) => {
+        game.Actors.push(spawnActor(aceCircle(true)))
+    }, 30),
+    new Alarm(60, (game) => {
+        game.Actors.push(spawnActor(aceSnake(100)));
+        game.Actors.push(spawnActor(aceSnake(100,true)));
+    }),
+    intermission(120),
+    new Interval(30, (game) => {
+        game.Actors.push(spawnActor(aceChase(400)));
+    }, 300),
+    new Interval(30, (game) => {
+        game.Actors.push(spawnActor(aceChase()));
+    }, 300),
+    new Alarm(240, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(gunM));
+        }
+        formRow(400, enemies, 100, true);
+        game.Actors.push(...enemies);
+    }),
+    intermission(90),
+    new Interval(20, (game) => {
+        game.Actors.push(spawnActor(aceUVert(325)));
+    }, 240),
+    new Alarm(240, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(gunS));
+        }
+        formRow(400, enemies, 100, true);
+        game.Actors.push(...enemies);
+    }),
+    intermission(90),
+    new Interval(20, (game) => {
+        game.Actors.push(spawnActor(aceUVert(325, true)));
+    }, 240),
+    new Alarm(240, (game) => {
+        const enemies = [];
+        for(let i = 3; i > 0; i--){
+            enemies.push(spawnActor(gunF));
+        }
+        formRow(400, enemies, 100, true);
+        game.Actors.push(...enemies);
+    }),
+    intermission(90),
+    new Interval(20, (game) => {
+        game.Actors.push(spawnActor(aceUVert(325)));
+        game.Actors.push(spawnActor(aceUVert(325, true)));
+    }, 240),
+    new Alarm(240, (game) => {
+        const enemies = [];
+        for(let i = 10; i > 0; i--){
+            enemies.push(spawnActor(psHeal));
+        }
+        formTriangle(400, enemies);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(180, (game) => {
+        const enemies = [];
+        for(let i = 10; i > 0; i--){
+            enemies.push(spawnActor(psHeal));
+        }
+        formTriangle(200, enemies);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(180, (game) => {
+        const enemies = [];
+        for(let i = 10; i > 0; i--){
+            enemies.push(spawnActor(psHeal));
+        }
+        formTriangle(600, enemies);
+        game.Actors.push(...enemies);
+    })
+])
+
+const Wave09 = () => new Timeline([
+    new Alarm(120, (game) =>{
+        const enemies = [
+            spawnActor(gunS),
+            spawnActor(gunF),
+            spawnActor(gunF),
+            spawnActor(gunS),
+        ]
+        formRow(400, enemies, 50, true);
+        game.Actors.push(...enemies);
+    }),
+    intermission(360),
+    new Interval(60, game=>{
+        const enemies = [
+            spawnActor(psX),
+            spawnActor(psCross),
+            spawnActor(psX),
+        ];
+        formRow(getRandom(50,700), enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 300),
+    new Interval(50, game=>{
+        const enemies = [
+            spawnActor(psX),
+            spawnActor(psCross),
+            spawnActor(psX),
+        ];
+        formRow(getRandom(100,700), enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 250),
+    new Interval(30, game=>{
+        const enemies = [
+            spawnActor(psX),
+            spawnActor(psCross),
+            spawnActor(psX),
+        ];
+        formRow(getRandom(200,600), enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 270),
+    new Interval(20, game=>{
+        const enemies = [
+            spawnActor(psX),
+            spawnActor(psCross),
+            spawnActor(psX),
+        ];
+        formRow(getRandom(300,500), enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 300),
+    intermission(300),
+    new Interval(10, game => {
+        game.Actors.push(spawnActor(kami))
+    }, 480),
+    spawnCluster(kamiDog, 6),
+])
+
+const Wave10 = () => new Timeline([
+    
 ])

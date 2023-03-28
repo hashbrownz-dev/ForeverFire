@@ -5,20 +5,23 @@ class Game{
         this.frames = 0;
         this.Wave = 0;
         this.Waves = [
-            Wave06(),
+            Wave09(),
             Wave01(),
             Wave02(),
             Wave03(),
             Wave04(),
             Wave05(),
             Wave06(),
+            Wave07(),
+            Wave08(),
+            Wave09(),
         ];
         this.enemiesSpawned = 0;
         this.enemiesSlain = 0;
         this.powerUpsCollected = 0;
         this.Timer;
         this.Lives = 2;
-        this.Level = 1;
+        this.Level = 3;
         this.toNextLevel = 50;
         this.xp = 0;
         this.Player = new Player();
