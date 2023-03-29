@@ -31,7 +31,7 @@ class PowerUp extends Actor{
         this.speed += this.accel;
         if(this.speed > this.maxSpeed) this.speed = this.maxSpeed;
         this.y += this.speed;
-        if(this.isOutOfBounds){
+        if(this.y > viewport.height){
             this.health = -1;
         }
     }
