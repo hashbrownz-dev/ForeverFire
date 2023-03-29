@@ -86,9 +86,9 @@ const psCross = {
         toShoot : 75,
         type : 'arc',
         interval : -1,
-        speed : 6,
-        amount : 4,
-        startAngle : 90,
+        speed : 4,
+        amount : 3,
+        startAngle : 180,
         endAngle : 450
     }
 }
@@ -104,7 +104,7 @@ const psX = {
         toShoot : 75,
         type : 'arc',
         interval : -1,
-        speed : 6,
+        speed : 4,
         amount : 4,
         startAngle : 45,
         endAngle : 405
@@ -122,7 +122,7 @@ const psCircle = {
         toShoot : 75,
         type : 'arc',
         interval : -1,
-        speed : 6,
+        speed : 4,
         amount : 12,
         startAngle : 30,
         endAngle : 390
@@ -245,7 +245,7 @@ const gunF = {
         type : 'arc',
         toShoot : 120,
         interval : 90,
-        speed : 6,
+        speed : 4,
         amount : 8,
         startAngle : 45,
         endAngle : 415
@@ -264,7 +264,7 @@ const gunS = {
         type : 'spread',
         toShoot : 120,
         interval : 90,
-        speed : 6,
+        speed : 4,
         amount : 5,
         margin : 20,
         defTarget : 90

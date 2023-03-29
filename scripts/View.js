@@ -32,16 +32,16 @@ class View{
             if(DBR) View.drawHitBoxes(Player);
         };
 
-        // Draw Projectiles ( pBullet, Rocket, eBullet )
-        Projectiles.forEach((projectile)=> {
-            View.drawActor(projectile);
-        });
-
         // Draw Actors
 
         Actors.forEach((actor) => {
             View.drawActor(actor);
             if(DBR) View.drawHitBoxes(actor);
+        });
+
+        // Draw Projectiles ( pBullet, Rocket, eBullet )
+        Projectiles.forEach((projectile)=> {
+            View.drawActor(projectile);
         });
 
         // Draw Effects

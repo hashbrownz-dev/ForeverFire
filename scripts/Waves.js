@@ -93,7 +93,7 @@ const Wave03 = () => new Timeline([
     new Interval(20, (game)=>{
         game.Actors.push(spawnActor(ace90Vert(100, false, true)));
         game.Actors.push(spawnActor(ace90Vert(100, true, true)));
-    }, 40),
+    }, 80),
     intermission(240),
     spawnCluster(kamiPlayer, 8),
     intermission(120),
@@ -544,8 +544,386 @@ const Wave09 = () => new Timeline([
         game.Actors.push(spawnActor(kami))
     }, 480),
     spawnCluster(kamiDog, 6),
+    intermission(60),
+    new Interval(20, game => {
+        game.Actors.push(spawnActor(kamiSpread))
+    }, 480),
+    intermission(60),
+    spawnCluster(psX, 15),
+    intermission(60),
+    spawnCluster(psCross, 15),
+    intermission(60),
+    spawnCluster(psCircle, 15),
+    intermission(60),
+    spawnCluster(psHeal, 20),
 ])
 
 const Wave10 = () => new Timeline([
-    
+    new Alarm(120, (game) =>{
+        const enemies = [
+            spawnActor(gunS),
+            spawnActor(gunF),
+            spawnActor(gunM),
+            spawnActor(gunF),
+            spawnActor(gunS),
+        ]
+        formRow(400, enemies, 50, true);
+        game.Actors.push(...enemies);
+    }),
+    //PSCHAOS
+    intermission(360),
+    new Interval(20, game => {
+        const enemies = [
+            ps,
+            psPlayer,
+            psJugg,
+            psSpread,
+            psCross,
+            psX,
+            psCircle,
+            psHeal,
+        ]
+        const index = getRandom(0, enemies.length-1);
+        game.Actors.push(spawnActor(enemies[index]));
+    }, 600),
+    intermission(60),
+    new Interval(15, game => {
+        const enemies = [];
+        for(let i = 8; i > 0; i--){
+            enemies.push(spawnActor(ps))
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 60),
+    intermission(60),
+    new Interval(20, game => {
+        const enemies = [];
+        for(let i = 8; i > 0; i--){
+            enemies.push(spawnActor(psPlayer))
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 60),
+    intermission(60),
+    spawnCluster(psX, 20),
+    intermission(60),
+    spawnCluster(psCross, 20),
+    intermission(60),
+    spawnCluster(psCircle, 20),
+    intermission(60),
+    spawnCluster(psJugg, 20),
+    intermission(120),
+    new Interval(40, game => {
+        const enemyTypes = [
+            ps,
+            psPlayer,
+            psJugg,
+            psSpread,
+            psCross,
+            psX,
+            psCircle,
+            psHeal,
+        ];
+        const enemies = [];
+        for(let i = 8; i > 0; i--){
+            const index = getRandom(0, enemyTypes.length-1);
+            enemies.push(spawnActor(enemyTypes[index]));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 160),
+    intermission(120),
+    new Interval(40, game => {
+        const enemyTypes = [
+            ps,
+            psPlayer,
+            psJugg,
+            psSpread,
+            psCross,
+            psX,
+            psCircle,
+            psHeal,
+        ];
+        const enemies = [];
+        for(let i = 8; i > 0; i--){
+            const index = getRandom(0, enemyTypes.length-1);
+            enemies.push(spawnActor(enemyTypes[index]));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 160),
+    intermission(120),
+    new Interval(40, game => {
+        const enemyTypes = [
+            ps,
+            psPlayer,
+            psJugg,
+            psSpread,
+            psCross,
+            psX,
+            psCircle,
+            psHeal,
+        ];
+        const enemies = [];
+        for(let i = 8; i > 0; i--){
+            const index = getRandom(0, enemyTypes.length-1);
+            enemies.push(spawnActor(enemyTypes[index]));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }, 160),
+    intermission(300),
+    //KAMICHAOS
+    new Interval(15, game => {
+        const enemyTypes = [
+            kami,
+            kamiPlayer,
+            kamiJugg,
+            kamiSpread,
+        ]
+        game.Actors.push(spawnActor(enemyTypes[getRandom(0,3)]));
+    }, 900),
+    intermission(120),
+    spawnCluster(kami, 20),
+    spawnCluster(kamiPlayer, 20),
+    spawnCluster(kami, 20),
+    spawnCluster(kamiSpread, 20),
+    spawnCluster(kamiPlayer, 20),
+    spawnCluster(kamiDog, 8),
+    spawnCluster(kamiSpread, 20),
+    spawnCluster(kamiDog, 8),
+    intermission(120),
+    spawnCluster(psHeal, 30),
+    //ACECHAOS
+    new Interval(15, game => {
+        game.Actors.push(spawnActor(ace90Hor(50)));
+        game.Actors.push(spawnActor(ace90Hor(150)));
+        game.Actors.push(spawnActor(ace90Hor(100,false,true)));
+        game.Actors.push(spawnActor(ace90Hor(200,false,true)));
+    }, 300),
+    new Interval(15, game => {
+        game.Actors.push(spawnActor(aceUHor(50)));
+    }, 150),
+    new Interval(15, game => {
+        game.Actors.push(spawnActor(aceUHor(100, false, true)));
+    }, 150),
+    new Interval(15, game => {
+        game.Actors.push(spawnActor(aceUHor(150)));
+    }, 150),
+    new Interval(15, game => {
+        game.Actors.push(spawnActor(aceUHor(200, false, true)));
+    }, 150),
+    //GUNNER GAUNTLET
+    new Alarm(60, game=>{
+        const enemies = [];
+        for(let i = 6; i > 0; i--){
+            enemies.push(spawnActor(gunHog));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(600, game=>{
+        const enemies = [];
+        for(let i = 6; i > 0; i--){
+            enemies.push(spawnActor(gunM));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(450, game=>{
+        const enemies = [];
+        for(let i = 6; i > 0; i--){
+            enemies.push(spawnActor(gunS));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(450, game=>{
+        const enemies = [];
+        for(let i = 6; i > 0; i--){
+            enemies.push(spawnActor(gunF));
+        }
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }),
+    new Alarm(600, game=>{
+        const enemies = [
+            spawnActor(gunS),
+            spawnActor(gunF),
+            spawnActor(gunM),
+            spawnActor(gunM),
+            spawnActor(gunF),
+            spawnActor(gunS),
+        ];
+
+        formRow(400, enemies, defaultMargin, true);
+        game.Actors.push(...enemies);
+    }),
+    //REST
+    intermission(360),
+    spawnCluster(psHeal,20),
+    intermission(120),
+    //PURE CHAOS
+    new Interval(15, game=>{
+        const rng = getRandom(0,100);
+        const psTypes = [
+            ps,
+            psPlayer,
+            psJugg,
+            psSpread,
+            psCross,
+            psX,
+            psCircle,
+            psHeal,
+        ];
+        const kamiTypes = [
+            kami,
+            kamiPlayer,
+            kamiJugg,
+            kamiSpread,
+        ];
+        const aceTypes = [
+            'ace90Hor',
+            'ace90HorI',
+            'aceUHor',
+            'aceUHorI',
+            'aceSnake',
+            'aceChase',
+        ];
+        const gunTypes = [
+            gunM,
+            gunS,
+            gunF,
+            gunHog,
+            gunLH,
+        ]
+        if(rng >= 0 && rng <= 40){
+            // spawn ps
+            const i = getRandom(0, psTypes.length - 1);
+            game.Actors.push(spawnActor(psTypes[i]));
+            return;
+        }
+        if(rng > 40 && rng <= 70){
+            // spawn kami
+            const i = getRandom(0, kamiTypes.length - 1);
+            game.Actors.push(spawnActor(kamiTypes[i]));
+            return;
+        }
+        if(rng > 70 && rng <= 90){
+            // spawn ace
+            const type = aceTypes[getRandom(0, aceTypes.length-1)];
+            switch(type){
+                case 'ace90Hor':
+                    game.Actors.push(spawnActor(ace90Hor()));
+                    return;
+                case 'ace90HorI':
+                    game.Actors.push(spawnActor(ace90Hor(0,false,true)));
+                    return;
+                case 'aceUHor':
+                    game.Actors.push(spawnActor(aceUHor()));
+                    return;
+                case 'aceUHorI':
+                    game.Actors.push(spawnActor(aceUHor(0,false,true)));
+                    return;
+                case 'aceSnake':
+                    game.Actors.push(spawnActor(aceSnake()));
+                    return;
+                case 'aceSnakeI':
+                    game.Actors.push(spawnActor(aceSnake(0,false,true)));
+                    return;
+                case 'aceChase':
+                    game.Actors.push(spawnActor(aceChase()));
+                    return;
+            }
+        }
+        if(rng > 90){
+            // spawn gunner
+            const i = getRandom(0, gunTypes.length - 1);
+            game.Actors.push(spawnActor(gunTypes[i]));
+            return;
+        }
+    }, 1200)
+])
+
+const testChaos = () => new Timeline([
+//PURE CHAOS
+new Interval(15, game=>{
+    const rng = getRandom(0,100);
+    const psTypes = [
+        ps,
+        psPlayer,
+        psJugg,
+        psSpread,
+        psCross,
+        psX,
+        psCircle,
+        psHeal,
+    ];
+    const kamiTypes = [
+        kami,
+        kamiPlayer,
+        kamiJugg,
+        kamiSpread,
+    ];
+    const aceTypes = [
+        'ace90Hor',
+        'ace90HorI',
+        'aceUHor',
+        'aceUHorI',
+        'aceSnake',
+        'aceChase',
+    ];
+    const gunTypes = [
+        gunM,
+        gunS,
+        gunF,
+        gunHog,
+        gunLH,
+    ]
+    if(rng >= 0 && rng <= 40){
+        // spawn ps
+        const i = getRandom(0, psTypes.length - 1);
+        game.Actors.push(spawnActor(psTypes[i]));
+        return;
+    }
+    if(rng > 40 && rng <= 70){
+        // spawn kami
+        const i = getRandom(0, kamiTypes.length - 1);
+        game.Actors.push(spawnActor(kamiTypes[i]));
+        return;
+    }
+    if(rng > 70 && rng <= 90){
+        // spawn ace
+        const type = aceTypes[getRandom(0, aceTypes.length-1)];
+        switch(type){
+            case 'ace90Hor':
+                game.Actors.push(spawnActor(ace90Hor()));
+                return;
+            case 'ace90HorI':
+                game.Actors.push(spawnActor(ace90Hor(0,false,true)));
+                return;
+            case 'aceUHor':
+                game.Actors.push(spawnActor(aceUHor()));
+                return;
+            case 'aceUHorI':
+                game.Actors.push(spawnActor(aceUHor(0,false,true)));
+                return;
+            case 'aceSnake':
+                game.Actors.push(spawnActor(aceSnake()));
+                return;
+            case 'aceSnakeI':
+                game.Actors.push(spawnActor(aceSnake(0,false,true)));
+                return;
+            case 'aceChase':
+                game.Actors.push(spawnActor(aceChase()));
+                return;
+        }
+    }
+    if(rng > 90){
+        // spawn gunner
+        const i = getRandom(0, gunTypes.length - 1);
+        game.Actors.push(spawnActor(gunTypes[i]));
+        return;
+    }
+})
 ])
