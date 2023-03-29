@@ -31,7 +31,7 @@ class Game{
         this.EFX = [];
         this.Background = new RasterBackground();
         this.gameOver = false;
-        this.DBR = false;
+        this.DBR = true;
 
         // START GAME
         drawScore(this.Score, 'score');
@@ -129,6 +129,7 @@ class Game{
         this.xp += points;
         if(this.xp >= this.toNextLevel){
             this.Level++;
+            this.Actors.push(new Supply());
             this.xp = this.xp - this.toNextLevel;
             this.toNextLevel += 25;
         }
@@ -355,7 +356,7 @@ class Game{
                         if(weapon){
                             const { shotType } = this.Player;
                             if(shotType === weapon){
-                                // this.Player.shotLevel[shotType] += 1;
+                                this.updateXP(25);
                             }else{
                                 this.Player.shotType = weapon;
                             }

@@ -357,6 +357,45 @@ class Gunner extends EnemyPlane{
     }
 }
 
+class Supply extends EnemyPlane {
+    constructor(){
+        const sprite = [
+            spriteData['Supply-01']
+        ];
+        super(sprite);
+        this.invert = Math.round(Math.random()) ? true : false;
+        this.x = this.invert ? viewport.width + this.drawW : -this.drawW;
+        this.y = this.drawH + getRandom(0, 100);
+        this.speed = this.invert ? -2 : 2;
+        this.mirrorX = this.invert ? true : false;
+        this.health = 20;
+        this.points = 100;
+        this.timer;
+        this.drops = this.setDrop();
+        this.fill = '#FF0000';
+    }
+
+    setDrop(){
+        const types = [
+            'largeHealth',
+            'extraLife',
+            'speedUp',
+            'speedDown',
+            'weaponM',
+            'weaponS',
+            'weaponF',
+            'BFG',
+            'invincibility',
+        ]
+        return types[getRandom(0, types.length-1)];
+    }
+
+    move(game){
+        this.x += this.speed;
+        if(this.x > viewport.width + this.drawW) this.health = 0;
+    }
+}
+
 class EnemyShot extends Actor {
     constructor(x,y,dir,speed){
         const sprite = [
@@ -378,3 +417,4 @@ class EnemyShot extends Actor {
         }
     }
 }
+
