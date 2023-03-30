@@ -371,8 +371,8 @@ class Supply extends EnemyPlane {
         this.health = 20;
         this.points = 100;
         this.timer;
-        this.drops = this.setDrop();
         this.fill = '#FF0000';
+        this.drops = this.setDrop();
     }
 
     setDrop(){
@@ -381,18 +381,38 @@ class Supply extends EnemyPlane {
             'extraLife',
             'speedUp',
             'speedDown',
-            'weaponM',
-            'weaponS',
-            'weaponF',
             'BFG',
             'invincibility',
         ]
-        return types[getRandom(0, types.length-1)];
+        const drop = types[getRandom(0, types.length -1 )];
+        
+        // set colors
+        switch(drop){
+            case 'largeHealth':
+                this.styles = setColors(lime, aqua, this);
+                break;
+            case 'extraLife':
+                this.styles = setColors(yellow, orange, this);
+                break;
+            case 'speedUp':
+                this.styles = setColors(lime, gold, this);
+                break;
+            case 'speedDown':
+                this.styles = setColors(red, aqua, this);
+                break;
+            case 'BFG':
+                this.styles = setColors(orange, yellow, this);
+                break;
+            case 'invincibility':
+                this.styles = setColors(aqua, pink, this);
+                break;
+        }
+        return drop;
     }
 
     move(game){
         this.x += this.speed;
-        if(this.x > viewport.width + this.drawW) this.health = 0;
+        if(this.x > viewport.width + this.drawW || this.x < -this.drawW) this.health = 0;
     }
 }
 
