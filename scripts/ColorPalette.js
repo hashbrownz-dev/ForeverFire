@@ -25,3 +25,19 @@ const explosionPalette = [
     naplesYellow,
     white,
 ]
+
+// CREATE ALPHA PALETTE
+
+const getAlphaPalette = (color) => {
+    // Take The Color.
+    // Convert the Color to RGB
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+    const   r = parseInt(result[1], 16),
+            g = parseInt(result[2], 16),
+            b = parseInt(result[3], 16);
+    const palette = [`rgba(${r},${g},${b},1)`];
+    for(let i = 9; i > 0; i--){
+        palette.unshift(`rgba(${r},${g},${b},0.${i})`)
+    }
+    return palette;
+}

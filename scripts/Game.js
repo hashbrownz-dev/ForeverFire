@@ -31,7 +31,7 @@ class Game{
         this.EFX = [];
         this.Background = new RasterBackground();
         this.gameOver = false;
-        this.DBR = true;
+        this.DBR = false;
 
         // START GAME
         drawScore(this.Score, 'score');
@@ -336,6 +336,7 @@ class Game{
                         if(score) {
                             this.updateScore(score);
                             this.updateXP(score);
+                            this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, gold));
                         }
                         if(health){
                             if(this.Player.health === 100){
@@ -344,14 +345,17 @@ class Game{
                                 this.Player.health += health;
                                 if(this.Player.health > 100) this.Player.health = 100;
                             }
+                            this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, aqua));
                         }
                         if(lives){
                             this.updateLives(lives);
+                            this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, orange));
                         }
                         if(speed){
                             this.Player.speed += speed;
                             if(this.Player.speed > 8) this.Player.speed = 8;
                             if(this.Player.speed < 1) this.Player.speed = 1;
+                            this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, lime));
                         }
                         if(weapon){
                             const { shotType } = this.Player;
@@ -360,15 +364,29 @@ class Game{
                             }else{
                                 this.Player.shotType = weapon;
                             }
+                            // SET EFX
+                            switch(weapon){
+                                case'm':
+                                this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, lime));
+                                break;
+                                case'f':
+                                this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, orange));
+                                break;
+                                case's':
+                                this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, red));
+                                break;
+                            }
                         }
                         if(temp){
                             showTimer(temp);
                             switch(temp){
                                 case 'bfg':
                                     this.Player.BFG = 500;
+                                    this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, orange));
                                     break;
                                 case 'inv':
                                     this.Player.inv = 500;
+                                    this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, aqua));
                                     break;
                             }
                         }

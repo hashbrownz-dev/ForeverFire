@@ -20,8 +20,6 @@ class Particle{
         // Move with background
         this.y += this.scrollRate;
     }
-    // update -> Handles the heavy lifting... the update method moves a particle, and also updates it's rendering parameters as well.  THIS method is unique to each child of Particle
-    // draw -> Handles the rendering...  We'll try to use absolute positioning when we can with particles...  They don't have a bounding box, per se, so it should be relatively easy...
 }
 
 class Emitter{
@@ -36,10 +34,10 @@ class Emitter{
     get clear(){
         return !this.duration || !this.particles.length || this.del;
     }
-    update(time, game){
+    update(game){
         this.duration--;
         this.particles.forEach( particle => {
-            particle.update()
+            particle.update(game)
         })
         this.particles = this.particles.filter(particle => !particle.clear);
     }
@@ -163,4 +161,99 @@ const setEffectTrailFS = (x,y) => {
 
 const setEffectTrailBurn = (x,y) => {
     return new Emitter(x,y,-1, [new Fade(x,y,20,6,3)])
+}
+
+/*=================
+==== POWER UPS ====
+=================*/
+
+class Circle extends Particle{
+    constructor(x,y,color){
+        super(x,y,10,0,0,0);
+        this.radius = 10;
+        this.fill = color;
+    }
+    update(){
+        this.decay--;
+        this.radius += 3;
+    }
+    draw(){
+        ctx.strokeStyle = this.fill;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 7);
+        ctx.stroke();
+    }
+}
+
+class PartPlayer extends Particle{
+    constructor(x,y,color){
+        super(x,y,15,0,0,2);
+        this.scale = 1;
+        this.stroke = color;
+        this.dw = 90;
+        this.dh = 60;
+        this.alphaPalette = getAlphaPalette(color);
+    }
+    update(game){
+        this.decay--;
+        this.scale += 0.01;
+        if(game.Player){
+            this.x = game.Player.x;
+            this.y = game.Player.y;
+        }
+        this.stroke = updateColor(this, this.alphaPalette);
+    }
+    draw(){
+        ctx.strokeStyle = this.stroke;
+        // set transform
+        const x = this.x - (this.dw/2),
+            y = this.y - (this.dh/2);
+
+        ctx.translate(this.x,this.y);
+        ctx.scale(this.scale,this.scale);
+        ctx.translate(-this.x,-this.y);
+
+        // Draw Shape
+        ctx.translate(x,y);
+        ctx.beginPath();
+        ctx.stroke(new Path2D("M68.59,33.48l20.36-11.16v-6.26H68.59v-4.7l-4.01-1.74V5.77h-3.62v3.8l-4.11,1.78v4.7h-6.46V7.44L45,2.54l-5.38,4.89v8.61\t\th-6.46v-4.7l-4.11-1.78v-3.8h-3.62v3.84l-4.01,1.74v4.7H1.05v6.26l20.36,11.16l3.33,3.72v9.98h0l-5.48,7.24h6.17v3.03h3.62v-3.03\t\th31.91v3.03h3.62v-3.03h6.17l-5.48-7.24v-9.98L68.59,33.48z M60.27,47.18H29.73v-9.98l3.43-3.72h6.46h10.77h6.46l3.43,3.72V47.18z"))
+
+        // reset transform
+        ctx.resetTransform();
+    }
+}
+
+class StaticSpark extends Particle{
+    constructor(x,y,color,dir,speed,duration){
+        super(x,y,duration,speed,dir);
+        this.fill = color;
+    }
+    update(){
+        this.decay--;
+        this.updatePos();
+    }
+    draw(){
+        ctx.fillStyle = this.fill;
+        ctx.fillRect(this.x,this.y,3,3);
+    }
+}
+
+const setEffectPowerUp = (x,y,color) => {
+    const particles = [new PartPlayer(x,y,color)];
+    for(let i = 0; i < 30; i ++){
+        const   spd = getRandom(2, 5),
+                dur = getRandom(15, 30);
+        particles.push(new StaticSpark(getRandom(x-45,x+45),getRandom(y-30,y+30),color,270,spd,dur));
+    }
+    return new Emitter(x,y,-1,particles);
+}
+
+const mask = {"name":"mask",
+    "shapes":[
+        {
+            "type":"path",
+            "className":"default",
+            "coords":"M68.59,33.48l20.36-11.16v-6.26H68.59v-4.7l-4.01-1.74V5.77h-3.62v3.8l-4.11,1.78v4.7h-6.46V7.44L45,2.54l-5.38,4.89v8.61\t\th-6.46v-4.7l-4.11-1.78v-3.8h-3.62v3.84l-4.01,1.74v4.7H1.05v6.26l20.36,11.16l3.33,3.72v9.98h0l-5.48,7.24h6.17v3.03h3.62v-3.03\t\th31.91v3.03h3.62v-3.03h6.17l-5.48-7.24v-9.98L68.59,33.48z M60.27,47.18H29.73v-9.98l3.43-3.72h6.46h10.77h6.46l3.43,3.72V47.18z"
+        }
+    ]
 }
