@@ -43,6 +43,7 @@ class Game{
             this.hideMessage();
             this.startNextWave();
         }))
+        sfxGameStart.play();
     }
 
     static start(){
@@ -132,6 +133,7 @@ class Game{
             this.Actors.push(new Supply());
             this.xp = this.xp - this.toNextLevel;
             this.toNextLevel += 25;
+            sfxLevelUp.play();
         }
         drawXP(this.xp, this.toNextLevel);
     }
@@ -220,16 +222,21 @@ class Game{
                                     if(proj.isFlame){
                                         const { blastDuration, blastRadius } = proj;
                                         this.Projectiles.push(new Blast(proj.x,proj.y,blastDuration,blastRadius));
+                                        sfxBoom.currentTime = 0;
+                                        sfxBoom.play();
                                     };
 
                                     // Generate Effects
                                     // Generate Bullet Impact
                                     this.EFX.push(setEffectBulletImpact(proj.x,proj.drawY));
                                     this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
+                                    sfxBulletImpact.play();
                                     // Generate Explosion
                                     if(actor.clear){
                                         this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
                                         this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
+                                        sfxEPE.currentTime = 0;
+                                        sfxEPE.play();
                                     }
                                     // Generate Burn Trail
                                     if(actor.hasOwnProperty('emitters')){
@@ -278,10 +285,12 @@ class Game{
                             // Generate Effects
                             // Generate Bullet Impact
                             this.EFX.push(setEffectCircleExplosion(proj.x, proj.drawY, proj.drawW * 2));
+                            sfxPlayerHit.play();
                             // Generate Explosion
                             if(this.Player.clear){
                                 this.EFX.push(setEffectPartExplosion(this.Player.x,this.Player.y))
                                 this.EFX.push(setEffectCircleExplosion(this.Player.x,this.Player.y,this.Player.drawW/2))
+                                sfxPPE.play();
                             }
                         }
                     }
@@ -309,6 +318,7 @@ class Game{
                                 if(this.Player.clear){
                                     this.EFX.push(setEffectPartExplosion(this.Player.x,this.Player.y))
                                     this.EFX.push(setEffectCircleExplosion(this.Player.x,this.Player.y,this.Player.drawW/2))
+                                    sfxPPE.play();
                                 }
                                 if(actor.clear){
                                     this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
@@ -337,6 +347,8 @@ class Game{
                             this.updateScore(score);
                             this.updateXP(score);
                             this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, gold));
+                            sfxMedal.currentTime = 0;
+                            sfxMedal.play();
                         }
                         if(health){
                             if(this.Player.health === 100){
@@ -346,16 +358,20 @@ class Game{
                                 if(this.Player.health > 100) this.Player.health = 100;
                             }
                             this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, aqua));
+                            sfxSmallHealth.currentTime = 0;
+                            sfxSmallHealth.play();
                         }
                         if(lives){
                             this.updateLives(lives);
                             this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, orange));
+                            sfxExtraLife.play();
                         }
                         if(speed){
                             this.Player.speed += speed;
                             if(this.Player.speed > 8) this.Player.speed = 8;
                             if(this.Player.speed < 1) this.Player.speed = 1;
                             this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, lime));
+                            sfxPowerUp.play();
                         }
                         if(weapon){
                             const { shotType } = this.Player;
@@ -376,6 +392,8 @@ class Game{
                                 this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, red));
                                 break;
                             }
+                            sfxWeapon.currentTime = 0;
+                            sfxWeapon.play();
                         }
                         if(temp){
                             showTimer(temp);
@@ -389,6 +407,7 @@ class Game{
                                     this.EFX.push(setEffectPowerUp(this.Player.x, this.Player.y, aqua));
                                     break;
                             }
+                            sfxPowerUp.play();
                         }
                         // CLEAR THE ACTOR
                         actor.health = -1;

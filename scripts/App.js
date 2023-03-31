@@ -52,6 +52,7 @@ const main = () => {
             if(!_Game.gameOver){
                 if(_UserInput['p']){
                     _State = 'pause';
+                    sfxPause.play();
                     requestAnimationFrame(update);
                     return;
                 }

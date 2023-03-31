@@ -26,10 +26,12 @@ class Menu {
         // Change Selection
         if(ArrowUp) {
             this.delay = 10;
+            sfxMenuMove.play();
             return this.changeSelection(-1);
         }
         if(ArrowDown) {
             this.delay = 10;
+            sfxMenuMove.play();
             return this.changeSelection(1)
         }
 
@@ -46,6 +48,7 @@ class Menu {
         // Choose Selection
         if(z && !this.zLock) {
             this.delay = 10;
+            sfxMenuSelect.play();
             return this.chooseSelection()
         }
 

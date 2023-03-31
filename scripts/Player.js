@@ -33,6 +33,8 @@ class Player extends Actor {
                 game.Projectiles.push(new PlayerShotF(this.x, yPos, dirs[i], 30, 80));
             }
             this.shotCooldown = 24;
+            // PLAY SFX
+            sfxPSF.play();
             return;
         }
         const { Level } = game;
@@ -55,6 +57,9 @@ class Player extends Actor {
                     game.Projectiles.push(new PlayerShotM(this.x + (margin * 2), yPos));
                 }
                 this.shotCooldown = 8;
+                // PLAY SFX
+                sfxPSM.currentTime = 0;
+                sfxPSM.play();
                 break;
             case 's':
                 // 1
@@ -76,6 +81,8 @@ class Player extends Actor {
                 for(let i = 0; i < 5; i++){
                     game.Projectiles.push(new PlayerShotS(this.x, yPos, dirs[i], dur));
                 }
+                // PLAY SFX
+                sfxPSM.play();
                 break;
             case 'f':
                 let bDur, bRad;
@@ -98,6 +105,8 @@ class Player extends Actor {
                     this.shotCooldown = 16;
                 }
                 game.Projectiles.push(new PlayerShotF(this.x, yPos, 270, bDur, bRad));
+                // PLAY SFX
+                sfxPSF.play();
                 break;
         }
     }
