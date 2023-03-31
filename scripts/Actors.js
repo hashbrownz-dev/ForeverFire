@@ -337,6 +337,11 @@ class Gunner extends EnemyPlane{
         this.maxHealth;
         this.emitters = [];
         this.fill = '#EC1E24';
+        // SWAY
+        this.xSpeed = 0.005;
+        this.depth = 40;
+        this.angle = Math.PI / 2;
+        this.axis;
     }
     move(game){
         this.updateFrame();
@@ -347,6 +352,11 @@ class Gunner extends EnemyPlane{
             this.y += this.speed;
             if( this.drawY > viewport.height ) this.health = 0;
         }
+
+        //Sway
+        if(!this.axis) this.axis = this.x;
+        this.angle += this.xSpeed;
+        this.x = this.axis + Math.cos(this.angle) * this.depth;
 
         // HULL DAMAGE
         for(const emitter of this.emitters){
