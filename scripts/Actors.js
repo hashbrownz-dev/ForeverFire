@@ -364,6 +364,12 @@ class Gunner extends EnemyPlane{
             const emitY = this.y + emitter[1];
             game.EFX.push(setEffectTrailBurn(emitX,emitY));
         }
+
+        // PREVENT FIRING
+        if(this.y > 300 && !this.invert){
+            this.toShoot = -1;
+            this.speed = 3;
+        }
     }
 }
 
@@ -423,6 +429,8 @@ class Supply extends EnemyPlane {
     move(game){
         this.x += this.speed;
         if(this.x > viewport.width + this.drawW || this.x < -this.drawW) this.health = 0;
+        // PLAY SOUND
+        sfxSupply.play();
     }
 }
 

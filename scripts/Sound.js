@@ -1,7 +1,7 @@
 // LOAD SOUNDS
 const path = `./sounds/`
 const sfxBoom = new Audio(path+'Boom.wav');
-sfxBoom.volume = 0.75;
+sfxBoom.volume = 0.4;
 const sfxBulletImpact = new Audio('./sounds/BulletImpact.wav');
 const sfxEPE = new Audio('./sounds/EnemyPlaneExplosion.wav');
 const sfxExtraLife = new Audio('./sounds/ExtraLife.wav');
@@ -18,6 +18,6 @@ const sfxPSM = new Audio(path+'PlayerShotM.wav');
 const sfxPSS = new Audio(path+'PlayerShotS.wav');
 const sfxPowerUp = new Audio(path+'PowerUp.wav');
 const sfxSupply = new Audio(path+'sfx_vehicle_plainloop.wav');
-sfxSupply.loop = true;
+sfxSupply.volume = 0.7;
 const sfxWeapon = new Audio(path+'WeaponPickUp.wav');
 const sfxSmallHealth = new Audio(path+'SmallHealth.wav');

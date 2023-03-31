@@ -19,12 +19,18 @@ const drawHealth = (Player) => {
     healthBarElement.style.backgroundColor = `var(--lime)`;
     if(health <= 50) healthBarElement.style.backgroundColor = `var(--yellow)`;
     if(health <= 25) healthBarElement.style.backgroundColor = `var(--red)`;
+    document.getElementById('health-counter').innerText = `${health}%`;
+}
+
+const drawLevel = (level) => {
+    document.getElementById('xp-bar-label').innerText = `LV: ${String(level).padStart(2,'0')}`
 }
 
 const drawXP = (xp, toNextLevel) => {
     const xpBarElement = document.getElementById('xp-bar');
     const percent = (xp / toNextLevel) * 100;
     xpBarElement.style.width = `${percent}%`;
+    document.getElementById('xp-counter').innerText = `${xp} / ${toNextLevel}`
 }
 
 const hideTimer = () => {

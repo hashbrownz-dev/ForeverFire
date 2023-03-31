@@ -311,7 +311,7 @@ const gunDog = {
     invert : true,
     shootingData : {
         type : 'spread',
-        toShoot : 120,
+        toShoot : 240,
         interval : 75,
         speed : 6,
         amount : 3,

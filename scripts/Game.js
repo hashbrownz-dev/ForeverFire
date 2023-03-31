@@ -20,7 +20,7 @@ class Game{
         this.enemiesSlain = 0;
         this.powerUpsCollected = 0;
         this.Timer;
-        this.Lives = 90;
+        this.Lives = 2;
         this.Level = 1;
         this.toNextLevel = 50;
         this.xp = 0;
@@ -37,6 +37,8 @@ class Game{
         drawScore(this.Score, 'score');
         drawScore(this.hiScore, 'hi-score');
         drawLives(this.Lives);
+        drawLevel(this.Level);
+        drawXP(this.xp, this.toNextLevel);
         this.showMessage(`Wave ${this.currentWave}`);
         drawWave(this.currentWave);
         this.Controllers.push(new Alarm(180, () => {
@@ -134,6 +136,7 @@ class Game{
             this.xp = this.xp - this.toNextLevel;
             this.toNextLevel += 25;
             sfxLevelUp.play();
+            drawLevel(this.Level);
         }
         drawXP(this.xp, this.toNextLevel);
     }
@@ -237,6 +240,7 @@ class Game{
                                         this.EFX.push(setEffectCircleExplosion(actor.x,actor.y,actor.drawW/2))
                                         sfxEPE.currentTime = 0;
                                         sfxEPE.play();
+                                        sfxSupply.pause();
                                     }
                                     // Generate Burn Trail
                                     if(actor.hasOwnProperty('emitters')){
@@ -319,6 +323,7 @@ class Game{
                                     this.EFX.push(setEffectPartExplosion(this.Player.x,this.Player.y))
                                     this.EFX.push(setEffectCircleExplosion(this.Player.x,this.Player.y,this.Player.drawW/2))
                                     sfxPPE.play();
+                                    sfxSupply.pause();
                                 }
                                 if(actor.clear){
                                     this.EFX.push(setEffectPartExplosion(actor.x,actor.y))
