@@ -1,4 +1,3 @@
-// let _Menu;
 const _UserInput = trackKeys();
 
 const main = () => {
@@ -25,6 +24,7 @@ const main = () => {
                         _Menu = renderScoreMenu();
                         break;
                     case 'how to':
+                        _Menu = renderHowTo();
                         break;
                     case 'pause':
                         _Menu = renderPauseMenu();

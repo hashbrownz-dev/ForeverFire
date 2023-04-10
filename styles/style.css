@@ -27,6 +27,24 @@
     --pink : #f3f;
 }
 
+/* COLOR CLASSES */
+
+.red{
+    color:var(--red);
+}
+.orange{
+    color:var(--orange);
+}
+.gold{
+    color:var(--gold);
+}
+.aqua{
+    color:var(--aqua);
+}
+.pink{
+    color:var(--pink);
+}
+
 html, body{
     margin:0;
     overflow-y: hidden;
@@ -266,4 +284,63 @@ table {
 
 th, td {
     border: 1px solid white;
+}
+
+/* HOW TO */
+
+h2{
+    font-family: 'Garamond';
+    font-size: 32px;
+    font-weight: 300;
+    text-align: center;
+}
+
+#how-to-menu{
+    display:none;
+}
+
+#controls{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    width: 460px;
+}
+
+#controls > div{
+    width: 150px;
+}
+
+.arrowUp{
+    display:block;
+    margin: 5px auto;
+}
+
+.arrowKey{
+    margin: 5px;
+}
+
+.key{
+    position:relative;
+    display: block;
+    margin: 5px auto;
+    top: 25px;
+}
+
+.htp{
+    font-weight: 300;
+    margin: 4px auto;
+    text-align: center;
+    width: 600px;
+}
+
+.htt{
+    border: none;
+    border-collapse: separate;
+    margin: 25px auto;
+    width: 600px;
+}
+
+.htd{
+    border: none;
+    font-weight: 300;
 }

@@ -14,7 +14,7 @@ const renderTitleMenu = () => {
     const titleOptions = [
         new Selection('Start', ()=>'play'),
         new Selection('Scores', ()=>'score'),
-        new Selection('How to Play', ()=>'score')
+        new Selection('How to Play', ()=>'how to')
     ];
 
     const titleMenu = new Menu(titleOptions, 'title-options-container');

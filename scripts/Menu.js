@@ -38,10 +38,12 @@ class Menu {
         // Change Parameter
         if(ArrowLeft) {
             this.delay = 10;
+            sfxMenuMove.play();
             return this.changeParameter(-1)
         }
         if(ArrowRight) {
             this.delay = 10;
+            sfxMenuMove.play();
             return this.changeParameter(1)
         }
 
@@ -161,7 +163,9 @@ class Parameter{
         this.name = name;
         this.options = options;
         this.selection = 0;
-        this.type = 'parameter'
+        this.type = 'parameter';
+        this.load = ()=>'title';
+        this.changeSelection(0);
     }
 
     // Get Value
@@ -174,7 +178,9 @@ class Parameter{
     changeSelection(num){
         this.selection += num;
         if(this.selection >= this.options.length) this.selection = 0;
-        if(this.selection < 0) this.selection = this.options - 1;
+        if(this.selection < 0) this.selection = this.options.length - 1;
+        console.log(this.selection);
+        this.value();
     }
 }
 
