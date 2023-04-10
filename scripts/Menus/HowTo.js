@@ -109,7 +109,56 @@ const renderHowTo = () => {
     }
     
     const weapons = () => {
-        console.log('weapons');
+        Menu.container.innerHTML = `
+            <h2>Weapons</h2>
+            <p class='htp'>
+                <strong class='red'>Destroy Gunners and Collect their War Medals</strong> to augment your warplane's firepower!  Collecting a <strong class='gold'>War Medal</strong> of your warplane's current weapon will reward <strong class='aqua'>25 SP.</strong>  Each Gunner drops a specific War Medal. There are three Weapon Types:
+            </p>
+        `
+        // Build Table
+        const table = document.createElement('table');
+        Menu.container.append(table);
+        const ships = document.createElement('tr');
+        const tableData = [
+            {ship:'GunnerM.png', medal:'Menu-Weapons-01.png', txt:`<strong>Machine Gun</strong><br>Your warplane's default rapid fire weapon.  Dying replaces your current weapon with the Machine Gun.`},
+            {ship:'Gunner.png', medal:'Menu-Weapons-02.png', txt:`<strong class='red'>Spread Shot</strong><br>Fires five bullets in an arc.`},
+            {ship:'GunnerF.png', medal:'Menu-Weapons-03.png', txt:`<strong class='orange'>Flame Cannon</strong><br>Fires a large napalm bomb that creates an explosive blast on impact, destroying anything caught in its radius.`}
+        ]
+        // Ships
+        for(let i = 0; i < tableData.length; i++){
+            const td = document.createElement('td');
+            const img = new Image();
+            img.src = iconPath + tableData[i].ship;
+            td.style = 'text-align:center;';
+            td.append(img);
+            ships.append(td);
+        }
+        // Drops
+        const drops = document.createElement('tr');
+        for(let i = 0; i < tableData.length; i++){
+            const td = document.createElement('td');
+            td.innerHTML = 'Drops';
+            td.style = 'text-align:center';
+            drops.append(td);
+        }
+        // War Medal
+        const medals = document.createElement('tr');
+        for(let i = 0; i < tableData.length; i++){
+            const td = document.createElement('td');
+            const img = new Image();
+            img.src = iconPath + tableData[i].medal;
+            td.style = 'text-align:center';
+            td.append(img);
+            medals.append(td);
+        }
+        // Desc
+        const desc = document.createElement('tr');
+        for(let i = 0; i < tableData.length; i++){
+            const td = document.createElement('td');
+            td.innerHTML = tableData[i].txt;
+            desc.append(td);
+        }
+        table.append(ships,drops,medals,desc);
     }
     
     const medals = () => {
