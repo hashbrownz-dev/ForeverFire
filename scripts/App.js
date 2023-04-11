@@ -18,6 +18,7 @@ const main = () => {
                 _Menu = undefined;
                 switch(_State){
                     case 'title':
+                        music.pause();
                         _Menu = renderTitleMenu();
                         break;
                     case 'score':
@@ -27,6 +28,7 @@ const main = () => {
                         _Menu = renderHowTo();
                         break;
                     case 'pause':
+                        music.pause();
                         _Menu = renderPauseMenu();
                         break;
                     case 'game over':
@@ -38,6 +40,7 @@ const main = () => {
                         _Game = undefined;
                 }
             } else {
+                music.play();
                 Menu.clear();
                 hideTimer();
                 showHUD();

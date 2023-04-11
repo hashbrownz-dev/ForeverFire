@@ -46,6 +46,7 @@ class Game{
             this.startNextWave();
         }))
         sfxGameStart.play();
+        music.currentTime = 0;
     }
 
     static start(){

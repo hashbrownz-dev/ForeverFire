@@ -21,3 +21,5 @@ const sfxSupply = new Audio(path+'sfx_vehicle_plainloop.wav');
 sfxSupply.volume = 0.7;
 const sfxWeapon = new Audio(path+'WeaponPickUp.wav');
 const sfxSmallHealth = new Audio(path+'SmallHealth.wav');
+const music = new Audio(path+'arcade_acadia.mp3');
+music.loop = true;
