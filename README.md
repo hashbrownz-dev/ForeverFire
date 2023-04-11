@@ -1,6 +1,6 @@
 # Forever Fire
 
-> A clone of the arcade classic 1942, built with Vanilla Javascript and rendered with Vector graphics via the Canvas API.
+> A clone of the arcade classic 1942, built with Vanilla Javascript and rendered with Vector graphics via the Canvas API.  [Play It Here!](https://hashbrownz-dev.github.io/1942-V/)
 
 ## Mechanics
 
