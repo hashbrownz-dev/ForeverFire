@@ -368,7 +368,8 @@ class Gunner extends EnemyPlane{
         // PREVENT FIRING
         if(this.y > 300 && !this.invert){
             this.toShoot = -1;
-            this.speed = 3;
+            this.speed += 0.1;
+            if(this.speed > 3) this.speed = 3;
         }
     }
 }
