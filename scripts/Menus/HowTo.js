@@ -117,18 +117,20 @@ const renderHowTo = () => {
         `
         // Build Table
         const table = document.createElement('table');
+        table.className = 'htt';
         Menu.container.append(table);
         const ships = document.createElement('tr');
         const tableData = [
-            {ship:'GunnerM.png', medal:'Menu-Weapons-01.png', txt:`<strong>Machine Gun</strong><br>Your warplane's default rapid fire weapon.  Dying replaces your current weapon with the Machine Gun.`},
-            {ship:'Gunner.png', medal:'Menu-Weapons-02.png', txt:`<strong class='red'>Spread Shot</strong><br>Fires five bullets in an arc.`},
-            {ship:'GunnerF.png', medal:'Menu-Weapons-03.png', txt:`<strong class='orange'>Flame Cannon</strong><br>Fires a large napalm bomb that creates an explosive blast on impact, destroying anything caught in its radius.`}
+            {ship:'GunnerM.png', medal:'Menu-Weapons-01.png', txt:`<strong>Machine Gun</strong><br><br>Your warplane's default rapid fire weapon.  Dying replaces your current weapon with the Machine Gun.`},
+            {ship:'Gunner.png', medal:'Menu-Weapons-02.png', txt:`<strong class='red'>Spread Shot</strong><br><br>Fires five bullets in an arc.`},
+            {ship:'GunnerF.png', medal:'Menu-Weapons-03.png', txt:`<strong class='orange'>Flame Cannon</strong><br><br>Fires a large napalm bomb that creates an explosive blast on impact, destroying anything caught in its radius.`}
         ]
         // Ships
         for(let i = 0; i < tableData.length; i++){
             const td = document.createElement('td');
             const img = new Image();
             img.src = iconPath + tableData[i].ship;
+            td.className = 'htd';
             td.style = 'text-align:center;';
             td.append(img);
             ships.append(td);
@@ -137,7 +139,8 @@ const renderHowTo = () => {
         const drops = document.createElement('tr');
         for(let i = 0; i < tableData.length; i++){
             const td = document.createElement('td');
-            td.innerHTML = 'Drops';
+            td.innerHTML = '';
+            td.className = 'htd';
             td.style = 'text-align:center';
             drops.append(td);
         }
@@ -147,6 +150,7 @@ const renderHowTo = () => {
             const td = document.createElement('td');
             const img = new Image();
             img.src = iconPath + tableData[i].medal;
+            td.className = 'htd';
             td.style = 'text-align:center';
             td.append(img);
             medals.append(td);
@@ -155,6 +159,7 @@ const renderHowTo = () => {
         const desc = document.createElement('tr');
         for(let i = 0; i < tableData.length; i++){
             const td = document.createElement('td');
+            td.className = 'htd weapon-desc';
             td.innerHTML = tableData[i].txt;
             desc.append(td);
         }
@@ -162,11 +167,97 @@ const renderHowTo = () => {
     }
     
     const medals = () => {
-        console.log('medals');
+        Menu.container.innerHTML = `
+            <h2>Medals</h2>
+            <p class='htp'>
+                Collect <strong class='gold'>Medals</strong> to earn <strong class='aqua'>Supply Points (SP)</strong> and Level Up!  Each level up spawns a <strong class='pink'>Supply Plane</strong> carrying one random power up.  The first two levels gained also increase your base firepower!
+            </p>
+        `;
+        // Table
+        const table = document.createElement('table');
+        table.className = 'htt';
+        Menu.container.append(table);
+        const r1 = document.createElement('tr');
+        const r2 = document.createElement('tr');
+        r1.innerHTML = `
+            <td style='text-align:center;' class='htd'><img src='${iconPath}Menu-Medals-01.png'/></td>
+            <td style='text-align:center;' class='htd'><img src='${iconPath}Menu-Medals-02.png'/></td>
+            <td style='text-align:center;' class='htd'><img src='${iconPath}Menu-Medals-03.png'/></td>
+            <td style='text-align:center;' class='htd'><img src='${iconPath}Menu-Medals-04.png'/></td>
+            <td style='text-align:center;' class='htd'><img src='${iconPath}Menu-Medals-05.png'/></td>
+        `;
+
+        r2.innerHTML = `
+            <td class='medal-desc htd'>5</td>
+            <td class='medal-desc htd'>10</td>
+            <td class='medal-desc htd'>25</td>
+            <td class='medal-desc htd'>50</td>
+            <td class='medal-desc htd'>100</td>
+        `
+        table.append(r1,r2);
+        // Second P
+        const p2 = document.createElement('p');
+        p2.className = 'htp';
+        p2.innerHTML = `Destroy <strong class='pink'>Supply Planes</strong> to reveal their cargo!`;
+        const img = new Image();
+        img.src = iconPath+'Supply.png';
+        img.style = `display:block; margin: 15px auto;`
+        Menu.container.append(p2,img)
     }
     
     const powers = () => {
-        console.log('powers');
+        Menu.container.innerHTML = `
+            <h2>Power Ups</h2>
+        `;
+
+        const tableData = [
+            {
+                img:'SmallHealth.png',
+                txt:`<strong class='aqua'>Small Health</strong><br>Repairs 5% of hull damage.`
+            },
+            {
+                img:'LargeHealth.png',
+                txt:`<strong class='aqua'>Large Health</strong><br>Repairs 50% of hull damage.`
+            },
+            {
+                img:'ExtraLife.png',
+                txt:`<strong class='orange'>Extra Life</strong><br>Grants one additional life.`
+            },
+            {
+                img:'SpeedUp.png',
+                txt:`<strong>Speed Up</strong><br>Increases your warplane's speed.`
+            },
+            {
+                img:'SpeedDown.png',
+                txt:`<strong>Speed Down</strong><br>Decreases your warplane's speed.`
+            },
+            {
+                img:'BFG.png',
+                txt:`<strong class='gold'>BFG</strong><br>A Weapon of Massive Destruction!  Only lasts for a limited amount of time.`
+            },
+            {
+                img:'Ghost.png',
+                txt:`<strong class='aqua'>Ghost</strong><br>Pass through enemy aircraft and bullets without taking any damage.  Only lasts for a limited amount of time.`
+            }
+        ]
+        const table = document.createElement('table');
+        table.className = 'htt';
+        Menu.container.append(table);
+        // Populate Table
+        for(const row of tableData){
+            const tr = document.createElement('tr');
+            const   td1 = document.createElement('td'),
+                    td2 = document.createElement('td');
+            const img = new Image();
+            img.src = iconPath+row.img;
+            td1.className = 'htd';
+            td1.style = 'text-align:center; width:150px;'
+            td1.append(img);
+            td2.innerHTML = row.txt;
+            td2.className = 'htd';
+            tr.append(td1,td2);
+            table.append(tr);
+        }
     }
     const options = [
         new Parameter('pages', [
