@@ -72,6 +72,8 @@ const renderHowTo = () => {
         pause.append(keyP);
 
         controls.append(move, shoot, pause);
+
+        showKey();
     }
     
     const enemies = () => {
@@ -106,6 +108,7 @@ const renderHowTo = () => {
         }
 
         Menu.container.appendChild(table);
+        showKey();
     }
     
     const weapons = () => {
@@ -164,6 +167,7 @@ const renderHowTo = () => {
             desc.append(td);
         }
         table.append(ships,drops,medals,desc);
+        showKey();
     }
     
     const medals = () => {
@@ -203,6 +207,7 @@ const renderHowTo = () => {
         img.src = iconPath+'Supply.png';
         img.style = `display:block; margin: 15px auto;`
         Menu.container.append(p2,img)
+        showKey();
     }
     
     const powers = () => {
@@ -258,6 +263,7 @@ const renderHowTo = () => {
             tr.append(td1,td2);
             table.append(tr);
         }
+        showKey();
     }
     const options = [
         new Parameter('pages', [
@@ -271,4 +277,11 @@ const renderHowTo = () => {
     const menu = new Menu(options, 'how-to-menu');
     menu.render();
     return menu;
+}
+
+const showKey = () => {
+    const p = document.createElement('p');
+    p.innerHTML = `Press 'Left Arrow' or 'Right Arrow' to navigate slides.  Press 'Z' to return to the Title.`;
+    p.className = 'htp-key';
+    Menu.container.append(p);
 }
